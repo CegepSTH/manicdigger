@@ -394,8 +394,19 @@ namespace ManicDiggerServer
                         {
                             if (elapsed >= 60)
                             {
-                                SendHeartbeat();
-                                elapsed = 0;
+                                try 
+	                            {
+                                    SendHeartbeat();
+	                            }
+	                            catch (Exception)
+	                            {
+		
+		                            throw;
+	                            }
+                                finally
+                                {
+                                    elapsed = 0;
+                                }
                             }
                             elapsed++;
                             //Only sleep for 1 second to allow thread to exit fast
