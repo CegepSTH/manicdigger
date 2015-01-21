@@ -921,17 +921,24 @@ public class Screen
 
 public class ScreenMain : Screen
 {
-    public ScreenMain()
-    {
-        singleplayer = new MenuWidget();
-        multiplayer = new MenuWidget();
-        widgets[0] = singleplayer;
-        widgets[1] = multiplayer;
-    }
+    //EDITED FRANCIS! (btn Exit!)
+    MenuWidget exitWidget;
+
     MenuWidget singleplayer;
     MenuWidget multiplayer;
     internal float windowX;
     internal float windowY;
+
+    public ScreenMain()
+    {
+        singleplayer = new MenuWidget();
+        multiplayer = new MenuWidget();
+        exitWidget = new MenuWidget();
+        widgets[0] = singleplayer;
+        widgets[1] = multiplayer;
+        widgets[2] = exitWidget;
+    }
+
     public override void Render(float dt)
     {
         windowX = menu.p.GetCanvasWidth();
@@ -951,28 +958,34 @@ public class ScreenMain : Screen
 
         singleplayer.text = "Singleplayer";
         singleplayer.x = windowX / 2 - (256 + 100) * scale;
-        singleplayer.y = windowY * 7 / 10;
+        singleplayer.y = windowY * 7 / 12;
         singleplayer.sizex = 256 * scale;
         singleplayer.sizey = 64 * scale;
 
         multiplayer.text = "Multiplayer";
         multiplayer.x = windowX / 2 + (100) * scale;
-        multiplayer.y = windowY * 7 / 10;
+        multiplayer.y = windowY * 7 / 12;
         multiplayer.sizex = 256 * scale;
         multiplayer.sizey = 64 * scale;
+
+        exitWidget.text = "Exit";
+        exitWidget.x = windowX / 2 - (256 * scale / 2);
+        exitWidget.y = windowY * 7 / 10;
+        exitWidget.sizex = 256 * scale;
+        exitWidget.sizey = 64 * scale;
+
         DrawWidgets();
     }
 
     public override void OnButton(MenuWidget w)
     {
         if (w == singleplayer)
-        {
             menu.StartSingleplayer();
-        }
-        if (w == multiplayer)
-        {
+        else if (w == multiplayer)
             menu.StartMultiplayer();
-        }
+        else
+            menu.Exit();
+
     }
 
     public override void OnBackPressed()

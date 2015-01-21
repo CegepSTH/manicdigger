@@ -394,6 +394,8 @@ namespace ManicDiggerServer
                         {
                             if (elapsed >= 60)
                             {
+                                //ADDED Francis (TRY CATCH)
+                                //This was causing the CLR crash!
                                 try 
 	                            {
                                     SendHeartbeat();
