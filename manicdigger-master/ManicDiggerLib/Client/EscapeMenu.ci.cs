@@ -1,5 +1,18 @@
 ﻿public class GuiStateEscapeMenu
 {
+    //EDITED FRANCIS (btnExit)
+    float one;
+    Button buttonMainReturnToGame;
+    Button buttonMainOptions;
+    Button buttonMainExit;
+    Button buttonExitGame;
+    int widgetsCount;
+
+    Button optionsGraphics;
+    Button optionsKeys;
+    Button optionsOther;
+    Button optionsReturnToMainMenu;
+
     public GuiStateEscapeMenu()
     {
         one = 1;
@@ -17,12 +30,7 @@
         widgets = new Button[1024];
         keyselectid = -1;
     }
-    float one;
-    Button buttonMainReturnToGame;
-    Button buttonMainOptions;
-    Button buttonMainExit;
 
-    int widgetsCount;
     void MainSet()
     {
         Language language = game.language;
@@ -32,11 +40,14 @@
         buttonMainOptions.Text = language.Options();
         buttonMainExit = new Button();
         buttonMainExit.Text = language.Exit();
+        buttonExitGame = new Button();
+        buttonExitGame.Text = "Save and exit game";
 
         WidgetsClear();
         AddWidget(buttonMainReturnToGame);
         AddWidget(buttonMainOptions);
         AddWidget(buttonMainExit);
+        AddWidget(buttonExitGame);
     }
 
     void MainHandleClick(Button b)
@@ -45,22 +56,25 @@
         {
             game.GuiStateBackToGame();
         }
-        if (b == buttonMainOptions)
+        else if (b == buttonMainOptions)
         {
             SetEscapeMenuState(EscapeMenuState.Options);
         }
-        if (b == buttonMainExit)
+        else if (b == buttonMainExit)
         {
             game.SendLeave(Packet_LeaveReasonEnum.Leave);
             game.platform.ExitMousePointerLock();
             game.ExitToMainMenu();
         }
+        else
+        {
+            game.SendLeave(Packet_LeaveReasonEnum.Leave);
+            game.platform.ExitMousePointerLock();
+            game.ExitToMainMenu();
+            game.platform.Exit();
+        }
     }
 
-    Button optionsGraphics;
-    Button optionsKeys;
-    Button optionsOther;
-    Button optionsReturnToMainMenu;
     void OptionsSet()
     {
         Language language = game.language;
