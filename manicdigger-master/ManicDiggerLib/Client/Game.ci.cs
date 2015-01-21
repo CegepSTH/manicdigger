@@ -6520,6 +6520,16 @@
         {
             if (keyboardState[GetKey(GlKeys.Escape)])
             {
+                //ADDED FRANCIS
+                if (GuiTyping == TypingState.Typing)
+                {
+                    d_HudChat.GuiTypingBuffer = "";
+                    d_HudChat.IsTyping = false;
+
+                    GuiTyping = TypingState.None;
+                    platform.ShowKeyboard(false);
+                    return;
+                }
                 for (int i = 0; i < dialogsCount; i++)
                 {
                     if (dialogs[i] == null)
