@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{08056549-3BE8-454C-A09A-67EDCDC81261}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ManicDigger</RootNamespace>
+    <AssemblyName>ManicDiggerLib</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>c.snk</AssemblyOriginatorKeyFile>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'FastBuild|AnyCPU' ">
+    <OutputPath>bin\FastBuild\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.4056.18965, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\BCrypt.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="ENet, Version=1.3.6.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\ENet.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network, Version=2012.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="csogg">
+      <HintPath>..\Lib\csogg.dll</HintPath>
+    </Reference>
+    <Reference Include="csvorbis">
+      <HintPath>..\Lib\csvorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="LibNoise">
+      <HintPath>..\Lib\LibNoise.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\Lib\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\Lib\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\Lib\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Jint">
+      <HintPath>..\Lib\Jint.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Packet.Serializer.ci.cs">
+      <Link>Common\Packet.Serializer.ci.cs</Link>
+    </Compile>
+    <Compile Include="Client\AnimatedModel.ci.cs" />
+    <Compile Include="Client\EscapeMenu.ci.cs" />
+    <Compile Include="ClientNative\Audio.cs" />
+    <Compile Include="ClientNative\AviWriter.cs" />
+    <Compile Include="ClientNative\Misc.cs" />
+    <Compile Include="ClientNative\Screenshot.cs" />
+    <Compile Include="Client\HudInventory.ci.cs" />
+    <Compile Include="Client\MinecartRenderer.ci.cs" />
+    <Compile Include="Client\NetworkTcp.ci.cs" />
+    <Compile Include="Client\QueryClient.ci.cs" />
+    <Compile Include="Client\Server.ci.cs" />
+    <Compile Include="Client\ServerSimple.ci.cs" />
+    <Compile Include="Client\TextEditor.ci.cs" />
+    <Compile Include="Client\WeaponRenderer.ci.cs" />
+    <Compile Include="Client\BlockRendererTorch.ci.cs" />
+    <Compile Include="Client\CharacterRenderer.ci.cs" />
+    <Compile Include="Client\FrustumCulling.ci.cs" />
+    <Compile Include="Client\HudChat.ci.cs" />
+    <Compile Include="Client\Interpolation.ci.cs" />
+    <Compile Include="Client\Inventory.ci.cs" />
+    <Compile Include="Client\Language.ci.cs" />
+    <Compile Include="Client\MeshBatcher.ci.cs" />
+    <Compile Include="Client\ModAutoCamera.ci.cs" />
+    <Compile Include="Client\CharacterPhysics.ci.cs" />
+    <Compile Include="Client\Collisions.ci.cs" />
+    <Compile Include="Client\Game.ci.cs" />
+    <Compile Include="Client\Misc.ci.cs" />
+    <Compile Include="Client\ModFpsHistoryGraph.ci.cs" />
+    <Compile Include="Client\Network.ci.cs" />
+    <Compile Include="Client\NetworkDummy.ci.cs" />
+    <Compile Include="Client\NetworkEnet.ci.cs" />
+    <Compile Include="Client\ParticleEffectBlockBreak.ci.cs" />
+    <Compile Include="Client\Primitives.ci.cs" />
+    <Compile Include="Client\Shadows.ci.cs" />
+    <Compile Include="Client\SkySphere.ci.cs" />
+    <Compile Include="Client\SunMoonRenderer.ci.cs" />
+    <Compile Include="Client\TerrainChunkTesselator.ci.cs" />
+    <Compile Include="Client\TerrainRenderer.ci.cs" />
+    <Compile Include="Client\GlMatrix.ci.cs" />
+    <Compile Include="Server\GetFile.cs" />
+    <Compile Include="Server\Inventory.cs" />
+    <Compile Include="Server\ChunkDb.cs" />
+    <Compile Include="Client\MainMenu.ci.cs" />
+    <Compile Include="Server\ModLoader.cs" />
+    <Compile Include="Server\Mods\Fortress\BuildLog.cs" />
+    <Compile Include="Server\Mods\Fortress\CraftingTable.cs" />
+    <Compile Include="Server\Mods\Fortress\Default.cs" />
+    <Compile Include="Server\Mods\Fortress\DefaultWorldGenerator.cs" />
+    <Compile Include="Server\Mods\Fortress\Doors.cs" />
+    <Compile Include="Server\Mods\Fortress\Ghost.cs" />
+    <Compile Include="Server\Mods\Fortress\Monsters.cs" />
+    <Compile Include="Server\Mods\Fortress\OreGenerator.cs" />
+    <Compile Include="Server\Mods\Fortress\HttpStats.cs" />
+    <Compile Include="Server\Mods\Fortress\RememberPosition.cs" />
+    <Compile Include="Server\Mods\Unused\PermissionBlock.cs" />
+    <Compile Include="Server\Mods\Fortress\PlayerList.cs" />
+    <Compile Include="Server\Mods\Fortress\Revert.cs" />
+    <Compile Include="Server\Mods\Fortress\SandPhysics.cs" />
+    <Compile Include="Server\Mods\Fortress\Tnt.cs" />
+    <Compile Include="Server\Mods\Fortress\TreeGenerator.cs" />
+    <Compile Include="Server\Mods\Fortress\VandalFinder.cs" />
+    <Compile Include="Server\Mods\Fortress\VegetationGrowth.cs" />
+    <Compile Include="Server\Mods\Unused\BlockId.cs" />
+    <Compile Include="Server\Mods\War\Default.cs" />
+    <Compile Include="Server\Mods\War\Noise2DWorldGenerator.cs" />
+    <Compile Include="Server\Mods\War\TreeGenerator.cs" />
+    <Compile Include="Server\Mods\War\War.cs" />
+    <Compile Include="Server\Mods\War\WaterSimple.cs" />
+    <Compile Include="Server\NetworkTcpServer.cs" />
+    <Compile Include="Server\Packets.cs" />
+    <Compile Include="Client\Platform.ci.cs" />
+    <Compile Include="Client\PlatformNative.cs" />
+    <Compile Include="Server\ScriptConsole.cs" />
+    <Compile Include="Server\ScriptInterpreter.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\ServerBanlist.cs" />
+    <Compile Include="Server\ServerCommand.cs" />
+    <Compile Include="Server\ServerConfig.cs" />
+    <Compile Include="Server\ServerConsole.cs" />
+    <Compile Include="Server\ServerHeartbeat.cs" />
+    <Compile Include="Server\ServerMap.cs" />
+    <Compile Include="Server\ServerMonitor.cs" />
+    <Compile Include="Server\ServerWorldManager.cs" />
+    <Compile Include="Server\Mod.cs" />
+    <Compile Include="ClientNative\OggDecoder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Shadows.cs" />
+    <Compile Include="ClientNative\TextRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="c.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Packet.proto">
+      <Link>Packet.proto</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScriptingApi\ScriptingApi.csproj">
+      <Project>{A3582245-A1D1-4135-BA90-8EFD7830DA83}</Project>
+      <Name>ScriptingApi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Lib\ENetX64.dll">
+      <Link>ENetX64.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Lib\ENetX86.dll">
+      <Link>ENetX86.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <!-- Fix: SolutionDir is missing when building from under Xamarin Studio -->
+  <Choose>
+    <When Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">
+      <PropertyGroup>
+        <SolutionDir>$(MSBuildProjectDirectory)/../</SolutionDir>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <PropertyGroup>
+    <PreBuildEvent Condition=" ('$(OS)' == 'Windows_NT') and ( $(Configuration) != 'FastBuild')">cd $(SolutionDir)
+cmd /c "$(SolutionDir)\BuildCito.bat"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent Condition=" ('$(OS)' == 'Windows_NT') and ( $(Configuration) == 'FastBuild')">cd $(SolutionDir)
+cmd /c "$(SolutionDir)BuildCito.bat" fast</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent Condition=" '$(OS)' != 'Windows_NT' ">cd $(SolutionDir)
+sh ./BuildCito.sh</PreBuildEvent>
+  </PropertyGroup>
+</Project>
