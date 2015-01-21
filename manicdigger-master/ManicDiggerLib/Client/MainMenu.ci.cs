@@ -532,7 +532,7 @@
 
     internal void Login(string user, string password, string serverHash, string token, LoginResultRef loginResult, LoginData loginResultData)
     {
-        if (user == "" || (password == ""))
+        if (user == "" || (password == "") || token == "")
         {
             loginResult.value = LoginResult.Failed;
         }
