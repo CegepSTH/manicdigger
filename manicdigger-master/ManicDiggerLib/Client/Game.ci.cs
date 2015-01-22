@@ -34,7 +34,7 @@
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
-        AllowFreemove = true;
+        AllowFreemove = ManicDiggerLib.Client.Data.Creative?  true:false;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
         ServerInfo = new ServerInformation();
@@ -4263,7 +4263,7 @@
 
         //Added by Alexandre
         playerPositionSpawnX = player.playerposition.X;
-       // System.Threading.Thread.Sleep(2000);
+        System.Threading.Thread.Sleep(2000);
         player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
         playerPositionSpawnY = player.playerposition.Y;
         playerPositionSpawnZ = player.playerposition.Z;
@@ -6655,11 +6655,11 @@
                 return;
             }
 
-            string strFreemoveNotAllowed = "You are not allowed to enable freemove.";
+            string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
             //Added by Francis
             if (movespeed > basemovespeed * 2)
             {
-                movespeed = basemovespeed * 10;
+                movespeed = basemovespeed * 1;
                 if (eKey == GetKey(GlKeys.ShiftLeft))
                     movespeed = movespeed * 2;
                 //if (eKey == GetKey(GlKeys.ControlLeft))
