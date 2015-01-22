@@ -262,6 +262,7 @@
         PointRef scaledMouse = PointRef.Create(game.mouseCurrentX, game.mouseCurrentY);
 
         game.Draw2dBitmapFile("inventory.png", InventoryStartX(), InventoryStartY(), 1024, 1024);
+        //game.Draw2dBitmapFile("crafting.png", InventoryStartX(), InventoryStartY(), 1024, 1024);
 
         //the3d.Draw2dTexture(terrain, 50, 50, 50, 50, 0);
         //the3d.Draw2dBitmapFile("inventory_weapon_shovel.png", 100, 100, 60 * 2, 60 * 4);
