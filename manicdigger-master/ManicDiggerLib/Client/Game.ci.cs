@@ -1137,7 +1137,7 @@
         }
         return null;
     }
-    
+
     public void UpdateTextRendererFont()
     {
         platform.SetTextRendererFont(Font);
@@ -1436,7 +1436,7 @@
             platform.TextSize(this.ServerInfo.ServerMotd, 14, serverMotdWidth, serverMotdHeight);
             Draw2dText(this.ServerInfo.ServerMotd, fontMapLoading, xcenter(serverMotdWidth.value), Height / 2 - 100, null, false);
         }
-        
+
         IntRef connectingWidth = new IntRef();
         IntRef connectingHeight = new IntRef();
         platform.TextSize(connecting, 14, connectingWidth, connectingHeight);
@@ -4245,8 +4245,15 @@
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
 
+        //Added by Alexandre
+        int playerx = platform.FloatToInt(player.playerposition.X);
+        int playery = platform.FloatToInt(player.playerposition.Z);
+        //
         playerPositionSpawnX = player.playerposition.X;
-        playerPositionSpawnY = player.playerposition.Y;
+        //Commented by Alexandre
+        playerPositionSpawnX = player.playerposition.Y;
+        //Added by Alexandre
+        playerPositionSpawnY = d_Heightmap.GetBlock(playerx, playery)+6;
         playerPositionSpawnZ = player.playerposition.Z;
     }
     internal int[] materialSlots;
@@ -4683,7 +4690,7 @@
         exitToMainMenu = true;
         platform.MouseCursorSetVisible(true);
     }
-    
+
     internal Packet_ServerRedirect GetRedirect()
     {
         return redirectTo;
@@ -4918,7 +4925,7 @@
             for (int i = 0; i < requiredMd5.ItemsCount; i++)
             {
                 string md5 = requiredMd5.Items[i];
-                
+
                 //check if file with that content is already in cache
                 if (platform.IsCached(md5))
                 {
@@ -5602,14 +5609,14 @@
     void SetFile(string name, string md5, byte[] downloaded, int downloadedLength)
     {
         string nameLowercase = platform.StringToLower(name);
-        
+
         //Create new asset from given data
         Asset newAsset = new Asset();
         newAsset.data = downloaded;
         newAsset.dataLength = downloadedLength;
         newAsset.name = nameLowercase;
         newAsset.md5 = md5;
-        
+
         for (int i = 0; i < assets.count; i++)
         {
             if (assets.items[i] == null)
@@ -5630,7 +5637,7 @@
         }
         //Add new asset to asset list
         assets.items[assets.count++] = newAsset;
-        
+
         //Store new asset in cache
         CacheAsset(newAsset);
     }
@@ -6685,13 +6692,14 @@
             {
                 drawblockinfo = !drawblockinfo;
             }
-            int playerx = platform.FloatToInt(player.playerposition.X);
-            int playery = platform.FloatToInt(player.playerposition.Z);
-            if ((playerx >= 0 && playerx < MapSizeX)
-                && (playery >= 0 && playery < MapSizeY))
-            {
-                performanceinfo.Set("height", platform.StringFormat("height:{0}", platform.IntToString(d_Heightmap.GetBlock(playerx, playery))));
-            }
+            //Commented by Alexandre, set up in "internal void UpdateTitleFps(float dt)"
+            //int playerx = platform.FloatToInt(player.playerposition.X);
+            //int playery = platform.FloatToInt(player.playerposition.Z);
+            //if ((playerx >= 0 && playerx < MapSizeX)
+            //    && (playery >= 0 && playery < MapSizeY))
+            //{
+            //    performanceinfo.Set("height", platform.StringFormat("height:{0}", platform.IntToString(d_Heightmap.GetBlock(playerx, playery))));
+            //}
             if (eKey == GetKey(GlKeys.F5))
             {
                 CameraChange();
@@ -6980,6 +6988,17 @@
             performanceinfo.Set("chunk updates", platform.StringFormat(language.ChunkUpdates(), platform.IntToString(chunkupdates - lastchunkupdates)));
             lastchunkupdates = terrainRenderer.ChunkUpdates();
             performanceinfo.Set("triangles", platform.StringFormat(language.Triangles(), platform.IntToString(terrainRenderer.TrianglesCount())));
+            int playerx = platform.FloatToInt(player.playerposition.X);
+            int playery = platform.FloatToInt(player.playerposition.Z);
+            //Deplaced by Alexandre
+            if ((playerx >= 0 && playerx < MapSizeX)
+                && (playery >= 0 && playery < MapSizeY))
+            {
+                performanceinfo.Set("height", platform.StringFormat("height:{0}", platform.IntToString(d_Heightmap.GetBlock(playerx, playery))));
+                //Add by Alexandre
+                performanceinfo.Set("Positions", platform.StringFormat3("X : {0}, Y : {1}, Z : {2}", platform.FloatToString(EyesPosX()), platform.FloatToString(EyesPosY()), platform.FloatToString(EyesPosZ())));
+            }
+            //
         }
         if (!titleset)
         {
@@ -9730,7 +9749,7 @@ public class GameExit
     {
         return exit;
     }
-    
+
     public void SetRestart(bool p)
     {
         restart = p;
@@ -10721,7 +10740,7 @@ public class Chunk
 
 public class ChunkEntityClient
 {
-    
+
 }
 
 public class RenderedChunk
@@ -12212,7 +12231,7 @@ public class ServerPackets
         p.DisconnectPlayer.DisconnectReason = disconnectReason;
         return p;
     }
-    
+
     internal static Packet_Server AnswerQuery(Packet_ServerQueryAnswer answer)
     {
         Packet_Server p = new Packet_Server();
