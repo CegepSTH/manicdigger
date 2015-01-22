@@ -34,6 +34,7 @@
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
+        // Commented by Jul Toggle pour le freemove
         AllowFreemove = true;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
@@ -3604,7 +3605,7 @@
                 }
             }
         }
-        if (keyboardState[GetKey(GlKeys.ShiftLeft)])
+        if (keyboardState[GetKey(GlKeys.ControlLeft)])
         {
             //enable_acceleration = false;
             movespeednow *= one * 2 / 10;
@@ -4229,7 +4230,7 @@
             }
         }
         keyboardState[eKey] = false;
-        if (eKey == GetKey(GlKeys.ShiftLeft) || eKey == GetKey(GlKeys.ShiftRight))
+        if (eKey == GetKey(GlKeys.ControlLeft) || eKey == GetKey(GlKeys.BracketRight))
         {
             IsShiftPressed = false;
         }
@@ -5139,7 +5140,8 @@
                 break;
             case Packet_ServerIdEnum.Freemove:
                 {
-                    this.AllowFreemove = packet.Freemove.IsEnabled != 0;
+                    // ne pas mettre le free mode
+                    //this.AllowFreemove = packet.Freemove.IsEnabled != 0;
                     if (!this.AllowFreemove)
                     {
                         ENABLE_FREEMOVE = false;
@@ -6519,7 +6521,7 @@
                 Reconnect();
             }
         }
-        if (eKey == GetKey(GlKeys.ShiftLeft) || eKey == GetKey(GlKeys.ShiftRight))
+        if (eKey == GetKey(GlKeys.ControlLeft) || eKey == GetKey(GlKeys.ControlRight))
         {
             IsShiftPressed = true;
         }
@@ -6605,17 +6607,17 @@
                     }
                     return;
                 }
-                if (keyboardState[GetKey(GlKeys.ControlLeft)] || keyboardState[GetKey(GlKeys.ControlRight)])
-                {
-                    if (key == GetKey(GlKeys.V))
-                    {
-                        if (platform.ClipboardContainsText())
-                        {
-                            d_HudChat.GuiTypingBuffer = StringTools.StringAppend(platform, d_HudChat.GuiTypingBuffer, platform.ClipboardGetText());
-                        }
-                        return;
-                    }
-                }
+                //if (keyboardState[GetKey(GlKeys.ControlLeft)] || keyboardState[GetKey(GlKeys.ControlRight)])
+                //{
+                //    if (key == GetKey(GlKeys.V))
+                //    {
+                //        if (platform.ClipboardContainsText())
+                //        {
+                //            d_HudChat.GuiTypingBuffer = StringTools.StringAppend(platform, d_HudChat.GuiTypingBuffer, platform.ClipboardGetText());
+                //        }
+                //        return;
+                //    }
+                //}
                 if (key == GetKey(GlKeys.Up))
                 {
                     typinglogpos--;
@@ -6642,7 +6644,11 @@
             }
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove.";
-
+            movespeed = basemovespeed * 1;
+            if (eKey == GetKey(GlKeys.ShiftLeft))
+            {
+                movespeed = basemovespeed * 2;
+            }
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
