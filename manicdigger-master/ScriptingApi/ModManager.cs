@@ -724,6 +724,11 @@ namespace ManicDigger
         public Dictionary<ProtoPoint, Item> Items = new Dictionary<ProtoPoint, Item>();
         [ProtoMember(8, IsRequired = false)]
         public Item DragDropItem;
+
+        //Mathew 
+        //Crafting inventory
+        public Item[] CraftInv = new Item[10];
+
         public void CopyFrom(Inventory inventory)
         {
             //this.LeftHand = inventory.LeftHand;
@@ -739,6 +744,9 @@ namespace ManicDigger
         {
             Inventory i = new Inventory();
             //i.LeftHand = new Item[10];
+            //Mathew 
+            //Initialise craft inventory
+            i.CraftInv = new Item[10];
             i.RightHand = new Item[10];
             return i;
         }

@@ -1,0 +1,2 @@
+cd $(SolutionDir)
+cmd /c "$(SolutionDir)\BuildCito.bat"

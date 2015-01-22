@@ -236,4 +236,7 @@ cmd /c "$(SolutionDir)BuildCito.bat" fast</PreBuildEvent>
     <PreBuildEvent Condition=" '$(OS)' != 'Windows_NT' ">cd $(SolutionDir)
 sh ./BuildCito.sh</PreBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent />
+  </PropertyGroup>
 </Project>
