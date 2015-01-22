@@ -4263,7 +4263,7 @@
 
         //Added by Alexandre
         playerPositionSpawnX = player.playerposition.X;
-        System.Threading.Thread.Sleep(2000);
+       // System.Threading.Thread.Sleep(2000);
         player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
         playerPositionSpawnY = player.playerposition.Y;
         playerPositionSpawnZ = player.playerposition.Z;
@@ -6662,16 +6662,16 @@
                 movespeed = basemovespeed * 10;
                 if (eKey == GetKey(GlKeys.ShiftLeft))
                     movespeed = movespeed * 2;
-                if (eKey == GetKey(GlKeys.ControlLeft))
-                    movespeed = movespeed / 2;
+                //if (eKey == GetKey(GlKeys.ControlLeft))
+                //    movespeed = movespeed / 2;
             }
             else
             {
                 movespeed = basemovespeed;
                 if (eKey == GetKey(GlKeys.ShiftLeft))
                     movespeed = movespeed * 2;
-                if (eKey == GetKey(GlKeys.ControlLeft))
-                    movespeed = movespeed / 2;
+                //if (eKey == GetKey(GlKeys.ControlLeft))
+                //    movespeed = movespeed / 2;
             }
             //
             if (eKey == GetKey(GlKeys.F1))
