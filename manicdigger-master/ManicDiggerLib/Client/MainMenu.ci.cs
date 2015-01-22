@@ -1229,12 +1229,14 @@ public class ScreenWriteWorldName : Screen
                 return;
 
             int lastnumber = 0;
-            string[] list = menu.p.DirectoryGetFiles(menu.p.PathSavegames(), IntRef.Create(100));
+            string path1 = menu.p.PathSavegames();
+            string[] list = menu.p.DirectoryGetFiles(path1, IntRef.Create(100));
+            
             foreach (string item in list)
             {
-                if (item.StartsWith(txtName.text))
+                if (item.Replace(path1 + "\\", "").StartsWith(txtName.text))
                 {
-                    string str = item.Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1];
+                    string str = item.Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
                     if (str != "")
                     {
                         int number;
