@@ -34,6 +34,7 @@
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
+        // Commented by Jul Toggle pour le freemove
         AllowFreemove = true;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
@@ -1585,14 +1586,6 @@
             int posY = platform.FloatToInt(Height() - barDistanceToMargin * Scale());
             Draw2dTexture(WhiteTexture(), posX, posY - barSizeY * Scale(), barSizeX * Scale(), barSizeY * Scale(), null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
             Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY * Scale()), barSizeX * Scale(), (progress) * barSizeY * Scale(), null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
-            //Added by Alexandre
-            FontCi c = FontCi.Create("Arial", 8, 0);
-            IntRef d = IntRef.Create(20);
-            if (progress == 1)
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 30, platform.GetCanvasHeight() - 40, d, false);
-            else
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
-            //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
     }
@@ -1608,11 +1601,6 @@
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
-                //Added by Alexandre
-                FontCi c = FontCi.Create("Arial", 8, 0);
-                IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
-                //
             }
         }
     }
@@ -4258,14 +4246,15 @@
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
 
+        //Added by Alexandre
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
-
-        //Added by Alexandre
+        //
         playerPositionSpawnX = player.playerposition.X;
-        System.Threading.Thread.Sleep(2000);
-        player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
-        playerPositionSpawnY = player.playerposition.Y;
+        //Commented by Alexandre
+        playerPositionSpawnX = player.playerposition.Y;
+        //Added by Alexandre
+        playerPositionSpawnY = d_Heightmap.GetBlock(playerx, playery)+6;
         playerPositionSpawnZ = player.playerposition.Z;
     }
     internal int[] materialSlots;
@@ -6618,7 +6607,6 @@
                     }
                     return;
                 }
-                //Commented by Jull
                 //if (keyboardState[GetKey(GlKeys.ControlLeft)] || keyboardState[GetKey(GlKeys.ControlRight)])
                 //{
                 //    if (key == GetKey(GlKeys.V))
@@ -6656,24 +6644,11 @@
             }
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove.";
-            //Added by Francis
-            if (movespeed > basemovespeed * 2)
+            movespeed = basemovespeed * 1;
+            if (eKey == GetKey(GlKeys.ShiftLeft))
             {
-                movespeed = basemovespeed * 10;
-                if (eKey == GetKey(GlKeys.ShiftLeft))
-                    movespeed = movespeed * 2;
-                if (eKey == GetKey(GlKeys.ControlLeft))
-                    movespeed = movespeed / 2;
+                movespeed = basemovespeed * 2;
             }
-            else
-            {
-                movespeed = basemovespeed;
-                if (eKey == GetKey(GlKeys.ShiftLeft))
-                    movespeed = movespeed * 2;
-                if (eKey == GetKey(GlKeys.ControlLeft))
-                    movespeed = movespeed / 2;
-            }
-            //
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
