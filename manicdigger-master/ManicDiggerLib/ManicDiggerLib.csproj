@@ -95,6 +95,7 @@
       <Link>Common\Packet.Serializer.ci.cs</Link>
     </Compile>
     <Compile Include="Client\AnimatedModel.ci.cs" />
+    <Compile Include="Client\Data.cs" />
     <Compile Include="Client\EscapeMenu.ci.cs" />
     <Compile Include="ClientNative\Audio.cs" />
     <Compile Include="ClientNative\AviWriter.cs" />

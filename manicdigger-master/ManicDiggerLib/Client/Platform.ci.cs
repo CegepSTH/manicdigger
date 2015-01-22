@@ -13,6 +13,7 @@
     public abstract string StringFormat2(string format, string arg0, string arg1);
     public abstract string StringFormat3(string format, string arg0, string arg1, string arg2);
     public abstract string StringFormat4(string format, string arg0, string arg1, string arg2, string arg3);
+    public abstract string StringFormat5(string format, string arg0, string arg1, string arg2, string arg3, string arg4);
     public abstract void ClipboardSetText(string s);
     public abstract void TextSize(string text, float fontSize, IntRef outWidth, IntRef outHeight);
     public abstract void Exit();

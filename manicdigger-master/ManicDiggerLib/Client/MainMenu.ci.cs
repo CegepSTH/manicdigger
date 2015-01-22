@@ -466,6 +466,18 @@
         screen.menu = this;
     }
 
+    internal void StartWriteWorldName()
+    {
+        screen = new ScreenWriteWorldName();
+        screen.menu = this;
+    }
+
+    internal void StartSelectGamemode()
+    {
+        screen = new ScreenGameMode();
+        screen.menu = this;
+    }
+
     internal void StartLogin(string serverHash, string ip, int port)
     {
         ScreenLogin screenLogin = new ScreenLogin();
@@ -600,14 +612,6 @@
         return p.CharArrayToString(charArray, length);
     }
     
-    internal void StartNewWorld()
-    {
-    }
-
-    internal void StartModifyWorld()
-    {
-    }
-
     public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData)
     {
         ScreenGame screenGame = new ScreenGame();
@@ -1010,26 +1014,27 @@ public class ScreenMain : Screen
 
 public class ScreenSingleplayer : Screen
 {
+    MenuWidget newWorld;
+    MenuWidget play;
+    MenuWidget back;
+    MenuWidget[] worldButtons;
+
+    string[] savegames;
+    int savegamesCount;
+
     public ScreenSingleplayer()
     {
         play = new MenuWidget();
-        play.text = "Play";
+        play.text = "Play Existing World";
         newWorld = new MenuWidget();
-        newWorld.text = "New World";
-        modify = new MenuWidget();
-        modify.text = "Modify";
+        newWorld.text = "Create New World";
         back = new MenuWidget();
         back.text = "Back";
         back.type = WidgetType.Button;
-        open = new MenuWidget();
-        open.text = "Create or open...";
-        open.type = WidgetType.Button;
 
         widgets[0] = play;
         widgets[1] = newWorld;
-        widgets[2] = modify;
-        widgets[3] = back;
-        widgets[4] = open;
+        widgets[2] = back;
 
         worldButtons = new MenuWidget[10];
         for (int i = 0; i < 10; i++)
@@ -1039,17 +1044,6 @@ public class ScreenSingleplayer : Screen
             widgets[5 + i] = worldButtons[i];
         }
     }
-
-    MenuWidget newWorld;
-    MenuWidget play;
-    MenuWidget modify;
-    MenuWidget back;
-    MenuWidget open;
-
-    MenuWidget[] worldButtons;
-
-    string[] savegames;
-    int savegamesCount;
 
     public override void Render(float dt)
     {
@@ -1075,24 +1069,12 @@ public class ScreenSingleplayer : Screen
         newWorld.sizey = 64 * scale;
         newWorld.fontSize = 14 * scale;
 
-        modify.x = leftx;
-        modify.y = y + 240 * scale;
-        modify.sizex = 256 * scale;
-        modify.sizey = 64 * scale;
-        modify.fontSize = 14 * scale;
-
         back.x = 40 * scale;
         back.y = p.GetCanvasHeight() - 104 * scale;
         back.sizex = 256 * scale;
         back.sizey = 64 * scale;
         back.fontSize = 14 * scale;
 
-        open.x = leftx;
-        open.y = y + 0 * scale;
-        open.sizex = 256 * scale;
-        open.sizey = 64 * scale;
-        open.fontSize = 14 * scale;
-        
         if (savegames == null)
         {
             IntRef savegamesCount_ = new IntRef();
@@ -1115,10 +1097,6 @@ public class ScreenSingleplayer : Screen
             worldButtons[i].fontSize = 14 * scale;
         }
 
-
-        play.visible = false;
-        newWorld.visible = false;
-        modify.visible = false;
         for (int i = 0; i < savegamesCount; i++)
         {
             worldButtons[i].visible = false;
@@ -1145,27 +1123,12 @@ public class ScreenSingleplayer : Screen
                 worldButtons[i].selected = true;
             }
         }
-
+        
         if (w == newWorld)
         {
-            menu.StartNewWorld();
+            menu.StartWriteWorldName();
         }
-
-        if (w == play)
-        {
-        }
-
-        if (w == modify)
-        {
-            menu.StartModifyWorld();
-        }
-
-        if (w == back)
-        {
-            OnBackPressed();
-        }
-
-        if (w == open)
+        else if (w == play)
         {
             string extension;
             if (menu.p.SinglePlayerServerAvailable())
@@ -1181,6 +1144,208 @@ public class ScreenSingleplayer : Screen
             {
                 menu.ConnectToSingleplayer(result);
             }
+        }
+        else if (w == back)
+        {
+            OnBackPressed();
+        }
+    }
+}
+
+public class ScreenWriteWorldName : Screen
+{
+    MenuWidget back;
+    MenuWidget txtName;
+    MenuWidget btnPlay;
+
+    public ScreenWriteWorldName()
+    {
+        back = new MenuWidget();
+        back.text = "Back";
+        back.type = WidgetType.Button;
+
+        txtName = new MenuWidget();
+        txtName.text = "DefaultName";
+        txtName.type = WidgetType.Textbox;
+
+        btnPlay = new MenuWidget();
+        btnPlay.text = "Play";
+        btnPlay.type = WidgetType.Button;
+
+        widgets[0] = back;
+        widgets[1] = txtName;
+        widgets[1].visible = true;
+        widgets[2] = btnPlay;
+    }
+
+    public override void Render(float dt)
+    {
+        GamePlatform p = menu.p;
+
+        float scale = menu.GetScale();
+        menu.DrawBackground();
+        menu.DrawText("Singleplayer", 20 * scale, p.GetCanvasWidth() / 2, 10, TextAlign.Center, TextBaseline.Top);
+
+        float leftx = p.GetCanvasWidth() / 2 - 128 * scale;
+        float y = p.GetCanvasHeight() / 2;
+
+        menu.DrawText("Write the game name bellow...", 18 * scale, p.GetCanvasWidth() / 2, y - 64, TextAlign.Center, TextBaseline.Top);
+
+        txtName.x = leftx;
+        txtName.y = y;
+        txtName.sizex = 256 * scale;
+        txtName.sizey = 64 * scale;
+        txtName.fontSize = 14 * scale;
+
+        btnPlay.x = leftx;
+        btnPlay.y = y + 64;
+        btnPlay.sizex = 256 * scale;
+        btnPlay.sizey = 64 * scale;
+        btnPlay.fontSize = 14 * scale;
+
+        back.x = 40 * scale;
+        back.y = p.GetCanvasHeight() - 104 * scale;
+        back.sizex = 256 * scale;
+        back.sizey = 64 * scale;
+        back.fontSize = 14 * scale;
+
+        DrawWidgets();
+    }
+
+    public override void OnBackPressed()
+    {
+        menu.StartSingleplayer();
+    }
+
+    public override void OnButton(MenuWidget w)
+    {
+        if (w == back)
+        {
+            OnBackPressed();
+        }
+        else if (w == btnPlay)
+        {
+            if (txtName.text == "")
+                return;
+
+            int lastnumber = 0;
+            string[] list = menu.p.DirectoryGetFiles(menu.p.PathSavegames(), IntRef.Create(100));
+            foreach (string item in list)
+            {
+                if (item.StartsWith(txtName.text))
+                {
+                    string str = item.Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1];
+                    if (str != "")
+                    {
+                        int number;
+                        if (int.TryParse(str, out number))
+                        {
+                            if (lastnumber < number)
+                            {
+                                lastnumber = number;
+                            }
+                        }
+                    }
+                }
+            }
+
+            lastnumber++;
+
+            ManicDiggerLib.Client.Data.GameName = menu.p.StringFormat2("{0}{1}", txtName.text, menu.p.IntToString(lastnumber));
+
+            menu.StartSelectGamemode();
+            //menu.ConnectToSingleplayer(menu.p.StringFormat4("{0}{1}{2}{3}", menu.p.PathSavegames(), "\\", txtName.text, menu.p.IntToString(lastnumber)));
+
+        }
+    }
+}
+
+public class ScreenGameMode : Screen
+{
+    MenuWidget back;
+    MenuWidget btnCreative;
+    MenuWidget btnSurvival;
+
+    public ScreenGameMode()
+    {
+        back = new MenuWidget();
+        back.text = "Back";
+        back.type = WidgetType.Button;
+
+        btnCreative = new MenuWidget();
+        btnCreative.text = "Creative";
+        btnCreative.type = WidgetType.Button;
+
+        btnSurvival = new MenuWidget();
+        btnSurvival.text = "Survival";
+        btnSurvival.type = WidgetType.Button;
+
+        widgets[0] = back;
+        widgets[1] = btnCreative;
+        widgets[2] = btnSurvival;
+    }
+
+    public override void Render(float dt)
+    {
+        GamePlatform p = menu.p;
+
+        float scale = menu.GetScale();
+
+        menu.DrawBackground();
+        menu.DrawText("Singleplayer", 20 * scale, p.GetCanvasWidth() / 2, 10, TextAlign.Center, TextBaseline.Top);
+
+
+        float leftx = p.GetCanvasWidth() / 2 - 128 * scale;
+        float y = p.GetCanvasHeight() / 2;
+
+        menu.DrawText("Select the game mode bellow...", 18 * scale, p.GetCanvasWidth() / 2, y - 64, TextAlign.Center, TextBaseline.Top);
+
+        btnCreative.x = leftx;
+        btnCreative.y = y;
+        btnCreative.sizex = 256 * scale;
+        btnCreative.sizey = 64 * scale;
+        btnCreative.fontSize = 14 * scale;
+
+        btnSurvival.x = leftx;
+        btnSurvival.y = y + 64;
+        btnSurvival.sizex = 256 * scale;
+        btnSurvival.sizey = 64 * scale;
+        btnSurvival.fontSize = 14 * scale;
+
+        back.x = 40 * scale;
+        back.y = p.GetCanvasHeight() - 104 * scale;
+        back.sizex = 256 * scale;
+        back.sizey = 64 * scale;
+        back.fontSize = 14 * scale;
+
+        DrawWidgets();
+    }
+
+    public override void OnBackPressed()
+    {
+        menu.StartWriteWorldName();
+    }
+
+    public override void OnButton(MenuWidget w)
+    {
+        if (w == back)
+        {
+            OnBackPressed();
+            return;
+        }
+
+        string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", ManicDiggerLib.Client.Data.GameName, ".", 
+            menu.p.SinglePlayerServerAvailable() ? "mddbs": "mdss");
+        
+        if (w == btnCreative)
+        {
+            ManicDiggerLib.Client.Data.Creative = true;
+            menu.ConnectToSingleplayer(result);
+        }
+        else if (w == btnSurvival)
+        {
+            ManicDiggerLib.Client.Data.Creative = false;
+            menu.ConnectToSingleplayer(result);
         }
     }
 }
@@ -1229,7 +1394,6 @@ public class ScreenModifyWorld : Screen
         }
     }
 }
-
 
 public class ScreenLogin : Screen
 {

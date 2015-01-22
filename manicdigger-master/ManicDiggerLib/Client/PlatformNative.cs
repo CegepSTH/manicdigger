@@ -105,6 +105,11 @@ public class GamePlatformNative : GamePlatform
         return string.Format(format, arg0, arg1, arg2, arg3);
     }
 
+    public override string StringFormat5(string format, string arg0, string arg1, string arg2, string arg3, string arg4)
+    {
+        return string.Format(format, arg0, arg1, arg2, arg3, arg4);
+    }
+
     public override void ClipboardSetText(string s)
     {
         System.Windows.Forms.Clipboard.SetText(s);
