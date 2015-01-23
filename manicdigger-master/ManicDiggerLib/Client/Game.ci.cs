@@ -6655,25 +6655,22 @@
                 return;
             }
 
-            string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
             //Added by Francis
+            //TOUCHE PAS JULIEN! c comme sa qui faut!
+            //ControlLeft --> crunch... slow speed!
+            //ShiftLeft --> run... fast speed!
             if (movespeed > basemovespeed * 2)
-            {
-                movespeed = basemovespeed * 1;
-                if (eKey == GetKey(GlKeys.ShiftLeft))
-                    movespeed = movespeed * 2;
-                //if (eKey == GetKey(GlKeys.ControlLeft))
-                //    movespeed = movespeed / 2;
-            }
+                movespeed = basemovespeed * 10;
             else
-            {
                 movespeed = basemovespeed;
-                if (eKey == GetKey(GlKeys.ShiftLeft))
-                    movespeed = movespeed * 2;
-                //if (eKey == GetKey(GlKeys.ControlLeft))
-                //    movespeed = movespeed / 2;
-            }
-            //
+
+            if (eKey == GetKey(GlKeys.ShiftLeft))
+                movespeed = movespeed * 2;
+            if (eKey == GetKey(GlKeys.ControlLeft))
+                movespeed = movespeed / 2;
+
+            string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
+
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
