@@ -1086,21 +1086,21 @@ public class ScreenSingleplayer : Screen
         {
             worldButtons[i].visible = false;
         }
-        for (int i = 0; i < savegamesCount; i++)
-        {
-            worldButtons[i].visible = true;
-            worldButtons[i].text = menu.p.FileName(savegames[i]);
-            worldButtons[i].x = leftx;
-            worldButtons[i].y = 100 + 100 * scale * i;
-            worldButtons[i].sizex = 256 * scale;
-            worldButtons[i].sizey = 64 * scale;
-            worldButtons[i].fontSize = 14 * scale;
-        }
+        //for (int i = 0; i < savegamesCount; i++)
+        //{
+        //    worldButtons[i].visible = true;
+        //    worldButtons[i].text = menu.p.FileName(savegames[i]);
+        //    worldButtons[i].x = leftx;
+        //    worldButtons[i].y = 100 + 100 * scale * i;
+        //    worldButtons[i].sizex = 256 * scale;
+        //    worldButtons[i].sizey = 64 * scale;
+        //    worldButtons[i].fontSize = 14 * scale;
+        //}
 
-        for (int i = 0; i < savegamesCount; i++)
-        {
-            worldButtons[i].visible = false;
-        }
+        //for (int i = 0; i < savegamesCount; i++)
+        //{
+        //    worldButtons[i].visible = false;
+        //}
 
         DrawWidgets();
     }
@@ -1341,13 +1341,13 @@ public class ScreenGameMode : Screen
         
         if (w == btnCreative)
         {
-            ManicDiggerLib.Client.Data.Creative = true;
             menu.ConnectToSingleplayer(result);
+            ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(true);
         }
         else if (w == btnSurvival)
         {
-            ManicDiggerLib.Client.Data.Creative = false;
             menu.ConnectToSingleplayer(result);
+            ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(false);
         }
     }
 }
@@ -1652,6 +1652,7 @@ public class ScreenGame : Screen
     public ScreenGame()
     {
         game = new Game();
+        ManicDiggerLib.Client.Data.gameRef = game;
     }
     Game game;
 

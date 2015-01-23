@@ -34,7 +34,7 @@
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
-        AllowFreemove = ManicDiggerLib.Client.Data.Creative?  true:false;
+        AllowFreemove = false;// ManicDiggerLib.Client.Data.Creative ? true : false;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
         ServerInfo = new ServerInformation();
@@ -1346,6 +1346,16 @@
     internal bool ENABLE_NOCLIP;
     internal bool AllowFreemove;
     internal bool enableCameraControl;
+
+    public void ChangeGameMode(bool creative)
+    {
+        AllowFreemove = creative;
+        if (!creative)
+        {
+            ENABLE_FREEMOVE = false;
+            ENABLE_NOCLIP = false;
+        }
+    }
 
     internal void Respawn()
     {
@@ -4266,7 +4276,7 @@
         System.Threading.Thread.Sleep(2000);
         player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
         playerPositionSpawnY = player.playerposition.Y;
-        playerPositionSpawnZ = player.playerposition.Z;
+        playerPositionSpawnZ = 200;// player.playerposition.Z;
     }
     internal int[] materialSlots;
 
@@ -6659,7 +6669,7 @@
             //TOUCHE PAS JULIEN! c comme sa qui faut!
             //ControlLeft --> crunch... slow speed!
             //ShiftLeft --> run... fast speed!
-            if (movespeed > basemovespeed * 2)
+            if (AllowFreemove && movespeed > basemovespeed * 2)
                 movespeed = basemovespeed * 10;
             else
                 movespeed = basemovespeed;
@@ -6670,7 +6680,7 @@
                 movespeed = movespeed / 2;
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
-
+            
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
