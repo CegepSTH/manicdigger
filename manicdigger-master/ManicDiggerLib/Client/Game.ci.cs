@@ -1,5 +1,6 @@
 ﻿public class Game
 {
+    internal bool IsRunning;
     public Game()
     {
         one = 1;
@@ -44,6 +45,7 @@
         wasmouseleft = false;
         mouserightclick = false;
         mouserightdeclick = false;
+        IsRunning = false;
         wasmouseright = false;
         ENABLE_LAG = 0;
         znear = one / 10;
@@ -3619,7 +3621,9 @@
         return key;
     }
 
-    internal float MoveSpeedNow()
+    internal float 
+        
+        MoveSpeedNow()
     {
         float movespeednow = movespeed;
         {
@@ -4239,6 +4243,14 @@
 
     internal void KeyUp(int eKey)
     {
+        if(IsRunning)
+        {
+            if (eKey == GetKey(GlKeys.ShiftLeft))
+            {
+                IsRunning = false;
+                movespeed = basemovespeed ;
+            }
+        }
         for (int i = 0; i < clientmodsCount; i++)
         {
             KeyEventArgs args_ = new KeyEventArgs();
@@ -6679,10 +6691,16 @@
             if (AllowFreemove && movespeed > basemovespeed * 2)
                 movespeed = basemovespeed * 10;
             else
-                movespeed = basemovespeed;
+                movespeed = 5;
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
+            {
+                IsRunning = true;
                 movespeed = movespeed * 2;
+            }
+               
+          
+              
             //if (eKey == GetKey(GlKeys.ControlLeft))
             //    movespeed = movespeed / 2;
 
@@ -7208,6 +7226,8 @@
         float movedy = 0;
         bool moveup = false;
         bool movedown = false;
+
+        System.Console.WriteLine(movespeed.ToString());
         if (guistate == GuiState.Normal)
         {
             if (GuiTyping == TypingState.None)
@@ -7290,6 +7310,7 @@
         else if (guistate == GuiState.ModalDialog)
         {
         }
+    
         float movespeednow = MoveSpeedNow();
         Acceleration acceleration = new Acceleration();
         int blockunderplayer = BlockUnderPlayer();
