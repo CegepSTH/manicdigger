@@ -4279,11 +4279,7 @@
         int playery = platform.FloatToInt(player.playerposition.Z);
 
         //Added by Alexandre
-        playerPositionSpawnX = player.playerposition.X;
-        System.Threading.Thread.Sleep(2000);
-        player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
-        playerPositionSpawnY = player.playerposition.Y;
-        playerPositionSpawnZ = 200;// player.playerposition.Z;
+        Respawn();
     }
     internal int[] materialSlots;
 
@@ -7082,8 +7078,12 @@
                         DrawAim();
                     }
                     d_HudInventory.DrawMaterialSelector();
-                    DrawPlayerHealth();
-                    DrawPlayerOxygen();
+                    //added by Alex
+                    if (!AllowFreemove)
+                    {
+                        DrawPlayerHealth();
+                        DrawPlayerOxygen();
+                    }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
                     {
@@ -7360,8 +7360,12 @@
             {
                 UpdateWalkSound(dt);
             }
-            UpdateBlockDamageToPlayer(dt);
-            UpdateFallDamageToPlayer();
+            //Added by Alex
+            if (!AllowFreemove)
+            {
+                UpdateBlockDamageToPlayer(dt);
+                UpdateFallDamageToPlayer();
+            }
         }
         else
         {
