@@ -2138,35 +2138,37 @@
 
     internal void ApplyDamageToPlayer(int damage, int damageSource, int sourceId)
     {
-        PlayerStats.CurrentHealth -= damage;
-        if (PlayerStats.CurrentHealth <= 0)
+        if (!AllowFreemove)
         {
-            AudioPlay("death.wav");
+            PlayerStats.CurrentHealth -= damage;
+            if (PlayerStats.CurrentHealth <= 0)
             {
-                Packet_Client p = new Packet_Client();
-                p.Id = Packet_ClientIdEnum.Death;
-                p.Death = new Packet_ClientDeath();
+                AudioPlay("death.wav");
                 {
-                    p.Death.Reason = damageSource;
-                    p.Death.SourcePlayer = sourceId;
+                    Packet_Client p = new Packet_Client();
+                    p.Id = Packet_ClientIdEnum.Death;
+                    p.Death = new Packet_ClientDeath();
+                    {
+                        p.Death.Reason = damageSource;
+                        p.Death.SourcePlayer = sourceId;
+                    }
+                    SendPacketClient(p);
                 }
-                SendPacketClient(p);
+
+                //Respawn(); //Death is not respawn ;)
+            }
+            else
+            {
+                AudioPlay(rnd.Next() % 2 == 0 ? "grunt1.wav" : "grunt2.wav");
             }
 
-            //Respawn(); //Death is not respawn ;)
-        }
-        else
-        {
-            AudioPlay(rnd.Next() % 2 == 0 ? "grunt1.wav" : "grunt2.wav");
-        }
-        {
-            Packet_Client p = new Packet_Client();
+            Packet_Client p1 = new Packet_Client();
             {
-                p.Id = Packet_ClientIdEnum.Health;
-                p.Health = new Packet_ClientHealth();
-                p.Health.CurrentHealth = PlayerStats.CurrentHealth;
+                p1.Id = Packet_ClientIdEnum.Health;
+                p1.Health = new Packet_ClientHealth();
+                p1.Health.CurrentHealth = PlayerStats.CurrentHealth;
             }
-            SendPacketClient(p);
+            SendPacketClient(p1);
         }
     }
 
@@ -4291,11 +4293,7 @@
         int playery = platform.FloatToInt(player.playerposition.Z);
 
         //Added by Alexandre
-        playerPositionSpawnX = player.playerposition.X;
-        System.Threading.Thread.Sleep(2000);
-        player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
-        playerPositionSpawnY = player.playerposition.Y;
-        playerPositionSpawnZ = 200;// player.playerposition.Z;
+        Respawn();
     }
     internal int[] materialSlots;
 
@@ -7100,8 +7098,12 @@
                         DrawAim();
                     }
                     d_HudInventory.DrawMaterialSelector();
-                    DrawPlayerHealth();
-                    DrawPlayerOxygen();
+                    //added by Alex
+                    if (!AllowFreemove)
+                    {
+                        DrawPlayerHealth();
+                        DrawPlayerOxygen();
+                    }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
                     {
@@ -7381,8 +7383,12 @@
             {
                 UpdateWalkSound(dt);
             }
-            UpdateBlockDamageToPlayer(dt);
-            UpdateFallDamageToPlayer();
+            //Added by Alex
+            if (!AllowFreemove)
+            {
+                UpdateBlockDamageToPlayer(dt);
+                UpdateFallDamageToPlayer();
+            }
         }
         else
         {

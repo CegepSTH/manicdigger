@@ -104,12 +104,19 @@
         //Check if the click is in the crafting inventory interface
         PointRef cellinCraft = SelectedCraftCell(scaledMouse);
 
-
-
+        if(cellinCraft != null)
+        {
+            Packet_InventoryPosition p = new Packet_InventoryPosition();
+            p.Type = Packet_InventoryPositionTypeEnum.Crafting;
+            p.AreaX = cellinCraft.X;
+            p.AreaY = cellinCraft.Y;
+            controller.InventoryClick(p);
+            return true;
+        }
 
         //main inventory
         PointRef cellInPage = SelectedCell(scaledMouse);
-        //grab from inventory
+#region grab from inventory
         if (cellInPage != null)
         {
             if (args.GetButton() == MouseButtonEnum.Left)
@@ -150,6 +157,8 @@
                 return true;
             }
         }
+#endregion
+
         // //drop items on ground
         //if (scaledMouse.X < CellsStartX() && scaledMouse.Y < MaterialSelectorStartY())
         //{

@@ -1899,7 +1899,7 @@ namespace ManicDiggerServer
             for (int i = 0; i < d_Data.StartInventoryAmount().Length; i++)
             {
                 int amount = d_Data.StartInventoryAmount()[i];
-                if (config.IsCreative)
+                if (!config.IsCreative)
                 {
                     if (amount > 0 || BlockTypes[i].IsBuildable)
                     {
@@ -2948,6 +2948,7 @@ namespace ManicDiggerServer
                 SendSetBlock(k.Key, x, y, z, blocktype);
             }
         }
+        
         bool ENABLE_FINITEINVENTORY { get { return !config.IsCreative; } }
         private bool DoCommandCraft(bool execute, Packet_ClientCraft cmd)
         {
