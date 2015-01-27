@@ -187,6 +187,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="c.snk" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Packet.proto">
