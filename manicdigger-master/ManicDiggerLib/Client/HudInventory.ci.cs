@@ -37,6 +37,10 @@
 
     internal int CellDrawSize;
 
+    //Position of crafting interface
+    int CraftingInterfaceStartX() { return InventoryStartX() + 600 ; }
+    int CraftingInterfaceStartY() { return InventoryStartY() + 100; }
+
     public int InventoryStartX() { return game.Width() / 2 - 560 / 2; }
     public int InventoryStartY() { return game.Height() / 2 - 600 / 2; }
     public int CellsStartX() { return 33 + InventoryStartX(); }
@@ -75,7 +79,6 @@
 
     public bool Mouse_ButtonDown(MouseEventArgs args)
     {
-        //MATHEW
         PointRef scaledMouse = PointRef.Create(args.GetX(), args.GetY());
 
         //material selector
@@ -98,9 +101,22 @@
             return false;
         }
 
+        //Check if the click is in the crafting inventory interface
+        PointRef cellinCraft = SelectedCraftCell(scaledMouse);
+
+        if(cellinCraft != null)
+        {
+            Packet_InventoryPosition p = new Packet_InventoryPosition();
+            p.Type = Packet_InventoryPositionTypeEnum.Crafting;
+            p.AreaX = cellinCraft.X;
+            p.AreaY = cellinCraft.Y;
+            controller.InventoryClick(p);
+            return true;
+        }
+
         //main inventory
         PointRef cellInPage = SelectedCell(scaledMouse);
-        //grab from inventory
+#region grab from inventory
         if (cellInPage != null)
         {
             if (args.GetButton() == MouseButtonEnum.Left)
@@ -141,6 +157,8 @@
                 return true;
             }
         }
+#endregion
+
         // //drop items on ground
         //if (scaledMouse.X < CellsStartX() && scaledMouse.Y < MaterialSelectorStartY())
         //{
@@ -234,6 +252,43 @@
         return cell;
     }
 
+    /// <summary>
+    /// Mathew Lemonde
+    /// Code to know if the click is in the crafting interface
+    /// </summary>
+    /// <param name="scaledMouse">Mouse click position</param>
+    /// <returns>Selected cell or null</returns>
+    PointRef SelectedCraftCell(PointRef scaledMouse)
+    {
+        if (scaledMouse.X < CraftingInterfaceStartX() || scaledMouse.Y < CraftingInterfaceStartY()
+           || scaledMouse.X > CraftingInterfaceStartX() + 5 * CellDrawSize
+           || scaledMouse.Y > CraftingInterfaceStartY() + 4 * CellDrawSize)
+        {
+            return null;
+        }
+        PointRef cell = PointRef.Create((scaledMouse.X - CraftingInterfaceStartX()) / CellDrawSize,
+            (scaledMouse.Y - CraftingInterfaceStartY()) / CellDrawSize);
+
+        //The cells returned by previous code is from a 5x5 array-like
+        //The image for the crafting interface is a 3x3 array and a separate block for craft result
+        //The following if remove cells from that 5x5 array who are not in the image
+
+        if (cell.X == 3)
+            return null;
+
+        if (cell.Y == 0)
+            return null;
+
+        if (cell.X == 4)
+            if (cell.Y == 1)
+                return null;
+            else if (cell.Y == 3)
+                return null;
+
+
+        return cell;
+    }
+
     bool SelectedCellOrScrollbar(int scaledMouseX, int scaledMouseY)
     {
         if (scaledMouseX < CellsStartX() || scaledMouseY < CellsStartY()
@@ -263,7 +318,7 @@
         PointRef scaledMouse = PointRef.Create(game.mouseCurrentX, game.mouseCurrentY);
 
         game.Draw2dBitmapFile("inventory.png", InventoryStartX(), InventoryStartY(), 1024, 1024);
-        game.Draw2dBitmapFile("crafting.png", InventoryStartX() + 600, InventoryStartY() + 100 , 240, 240);
+        game.Draw2dBitmapFile("crafting.png",  CraftingInterfaceStartX(), CraftingInterfaceStartY() , 240, 240);
 
         //the3d.Draw2dTexture(terrain, 50, 50, 50, 50, 0);
         //the3d.Draw2dBitmapFile("inventory_weapon_shovel.png", 100, 100, 60 * 2, 60 * 4);

@@ -727,7 +727,7 @@ namespace ManicDigger
 
         //Mathew 
         //Crafting inventory
-        public Item[] CraftInv = new Item[10];
+        public Dictionary<ProtoPoint, Item> CraftInv = new Dictionary<ProtoPoint, Item>();
 
         public void CopyFrom(Inventory inventory)
         {
@@ -746,7 +746,7 @@ namespace ManicDigger
             //i.LeftHand = new Item[10];
             //Mathew 
             //Initialise craft inventory
-            i.CraftInv = new Item[10];
+            i.CraftInv = new Dictionary<ProtoPoint, Item>();
             i.RightHand = new Item[10];
             return i;
         }
