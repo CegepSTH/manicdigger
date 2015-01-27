@@ -1359,14 +1359,21 @@
 
     internal void Respawn()
     {
-        Packet_Client p = new Packet_Client();
+        if (AllowFreemove)
         {
-            p.Id = Packet_ClientIdEnum.SpecialKey;
-            p.SpecialKey_ = new Packet_ClientSpecialKey();
-            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+            Packet_Client p = new Packet_Client();
+            {
+                p.Id = Packet_ClientIdEnum.SpecialKey;
+                p.SpecialKey_ = new Packet_ClientSpecialKey();
+                p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+            }
+            SendPacketClient(p);
+            player.movedz = 0;
         }
-        SendPacketClient(p);
-        player.movedz = 0;
+        else
+        {
+            Log("You cannot respawn in survival mode!");
+        }
     }
 
     public static bool IsTransparentForLight(Packet_BlockType b)
@@ -6851,21 +6858,28 @@
             }
             if (eKey == GetKey(GlKeys.P))
             {
-                Packet_Client p = new Packet_Client();
+                if (AllowFreemove)
                 {
-                    p.Id = Packet_ClientIdEnum.SpecialKey;
-                    p.SpecialKey_ = new Packet_ClientSpecialKey();
-                    p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.SetSpawn;
+                    Packet_Client p = new Packet_Client();
+                    {
+                        p.Id = Packet_ClientIdEnum.SpecialKey;
+                        p.SpecialKey_ = new Packet_ClientSpecialKey();
+                        p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.SetSpawn;
+                    }
+                    SendPacketClient(p);
+
+                    playerPositionSpawnX = player.playerposition.X;
+                    playerPositionSpawnY = player.playerposition.Y;
+                    playerPositionSpawnZ = player.playerposition.Z;
+
+                    player.playerposition.X = platform.FloatToInt(player.playerposition.X) + one / 2;
+                    //player.playerposition.Y = player.playerposition.Y;
+                    player.playerposition.Z = platform.FloatToInt(player.playerposition.Z) + one / 2;
                 }
-                SendPacketClient(p);
-
-                playerPositionSpawnX = player.playerposition.X;
-                playerPositionSpawnY = player.playerposition.Y;
-                playerPositionSpawnZ = player.playerposition.Z;
-
-                player.playerposition.X = platform.FloatToInt(player.playerposition.X) + one / 2;
-                //player.playerposition.Y = player.playerposition.Y;
-                player.playerposition.Z = platform.FloatToInt(player.playerposition.Z) + one / 2;
+                else
+                {
+                    Log("You cannot set spawn in survival mode!");
+                }
             }
             if (eKey == GetKey(GlKeys.F))
             {
