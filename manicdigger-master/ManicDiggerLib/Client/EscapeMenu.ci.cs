@@ -34,6 +34,7 @@
     void MainSet()
     {
         Language language = game.language;
+
         buttonMainReturnToGame = new Button();
         buttonMainReturnToGame.Text = language.ReturnToGame();
         buttonMainOptions = new Button();
@@ -44,6 +45,7 @@
         buttonExitGame.Text = "Save and exit game";
 
         WidgetsClear();
+
         AddWidget(buttonMainReturnToGame);
         AddWidget(buttonMainOptions);
         AddWidget(buttonMainExit);
@@ -66,7 +68,7 @@
             game.platform.ExitMousePointerLock();
             game.ExitToMainMenu();
         }
-        else
+        else if (b == buttonExitGame)
         {
             game.SendLeave(Packet_LeaveReasonEnum.Leave);
             game.platform.ExitMousePointerLock();
