@@ -292,6 +292,7 @@ namespace ManicDigger
 
         public override void InventoryClick(Packet_InventoryPosition pos)
         {
+
             if (pos.Type == Packet_InventoryPositionTypeEnum.MainArea)
             {
                 Point? selected = null;
@@ -371,7 +372,7 @@ namespace ManicDigger
                 }
                 else if (d_Inventory.DragDropItem != null && d_Inventory.RightHand[pos.MaterialId] == null)
                 {
-                    if(d_Items.CanWear(WearPlace_.RightHand, d_Inventory.DragDropItem))
+                    if (d_Items.CanWear(WearPlace_.RightHand, d_Inventory.DragDropItem))
                     {
                         d_Inventory.RightHand[pos.MaterialId] = d_Inventory.DragDropItem;
                         d_Inventory.DragDropItem = null;
@@ -399,11 +400,69 @@ namespace ManicDigger
                 }
                 SendInventory();
             }
-            else
+            else if (pos.Type == Packet_InventoryPositionTypeEnum.Crafting)
             {
-                throw new Exception();
+                Point? selected = null;
+                foreach (var k in d_Inventory.CraftInv)
+                {
+
+                    if (pos.AreaX >= k.Key.X && pos.AreaY >= k.Key.Y
+                        && pos.AreaX < k.Key.X + d_Items.ItemSizeX(k.Value)
+                        && pos.AreaY < k.Key.Y + d_Items.ItemSizeY(k.Value))
+                    {
+                        selected = new Point(k.Key.X, k.Key.Y);
+                    }
+                }
+                //drag
+                if (selected != null && d_Inventory.DragDropItem == null)
+                {
+                    d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+                    d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                    SendInventory();
+                }
+                //drop
+                else if (d_Inventory.DragDropItem != null)
+                {
+                    //make sure there is nothing blocking drop.
+                    IntRef itemsAtAreaCount = new IntRef();
+                  //  PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtArea(pos.AreaX, pos.AreaY,
+                 //       d_Items.ItemSizeX(d_Inventory.DragDropItem), d_Items.ItemSizeY(d_Inventory.DragDropItem), itemsAtAreaCount);
+                    //if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                    //{
+                    //    //invalid area
+                    //    return;
+                    //}
+                    if (itemsAtAreaCount.value == 0)
+                    {
+                        d_Inventory.CraftInv.Add(new ProtoPoint(pos.AreaX, pos.AreaY), d_Inventory.DragDropItem);
+                        d_Inventory.DragDropItem = null;
+                    }
+                    else //1
+                    {
+                        //var swapWith = itemsAtArea[0];
+                        ////try to stack                        
+                        //Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
+                        //if (stackResult != null)
+                        //{
+                        //    d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)] = stackResult;
+                        //    d_Inventory.DragDropItem = null;
+                        //}
+                        //else
+                        //{
+                        //    //try to swap
+                        //    //swap (swapWith, dragdropitem)
+                        //    Item z = d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)];
+                        //    d_Inventory.CraftInv.Remove(new ProtoPoint(swapWith.X, swapWith.Y));
+                        //    d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)] = d_Inventory.DragDropItem;
+                        //    d_Inventory.DragDropItem = z;
+                        //}
+                    }
+                }
+                
             }
         }
+        
+            
         private void SendInventory()
         {
         }
