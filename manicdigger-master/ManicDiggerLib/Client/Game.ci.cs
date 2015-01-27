@@ -6676,8 +6676,8 @@
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
                 movespeed = movespeed * 2;
-            if (eKey == GetKey(GlKeys.ControlLeft))
-                movespeed = movespeed / 2;
+            //if (eKey == GetKey(GlKeys.ControlLeft))
+            //    movespeed = movespeed / 2;
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
             
