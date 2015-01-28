@@ -62,6 +62,46 @@ namespace ManicDigger
             return itemsAtArea;
         }
 
+        //Check for item in crafting area
+        public PointRef[] ItemsAtCraftArea(int pX, int pY, int sizeX, int sizeY, IntRef retCount)
+        {
+            PointRef[] itemsAtArea = new PointRef[256];
+            int itemsAtAreaCount = 0;
+            for (int xx = 0; xx < sizeX; xx++)
+            {
+                for (int yy = 0; yy < sizeY; yy++)
+                {
+                    PointRef cell = PointRef.Create(pX + xx, pY + yy);
+                    if (!IsValidCell(cell))
+                    {
+                        return null;
+                    }
+                    if (ItemAtCraftCell(cell) != null)
+                    {
+                        bool contains = false;
+                        for (int i = 0; i < itemsAtAreaCount; i++)
+                        {
+                            if (itemsAtArea[i] == null)
+                            {
+                                continue;
+                            }
+                            if (itemsAtArea[i].X == ItemAtCraftCell(cell).X
+                                && itemsAtArea[i].Y == ItemAtCraftCell(cell).Y)
+                            {
+                                contains = true;
+                            }
+                        }
+                        if (!contains)
+                        {
+                            itemsAtArea[itemsAtAreaCount++] = ItemAtCraftCell(cell);
+                        }
+                    }
+                }
+            }
+            retCount.value = itemsAtAreaCount;
+            return itemsAtArea;
+        }
+
         public bool IsValidCell(PointRef p)
         {
             return !(p.X < 0 || p.Y < 0 || p.X >= CellCountX || p.Y >= CellCountY);
@@ -79,11 +119,35 @@ namespace ManicDigger
             }
         }
 
+        public IEnumerable<PointRef> ItemCraftCells(PointRef p)
+        {
+            Item item = d_Inventory.CraftInv[new ProtoPoint(p.X, p.Y)];
+            for (int x = 0; x < d_Items.ItemSizeX(item); x++)
+            {
+                for (int y = 0; y < d_Items.ItemSizeY(item); y++)
+                {
+                    yield return PointRef.Create(p.X + x, p.Y + y);
+                }
+            }
+        }
+
         public PointRef ItemAtCell(PointRef p)
         {
             foreach (var k in d_Inventory.Items)
             {
                 foreach (var pp in ItemCells(PointRef.Create(k.Key.X, k.Key.Y)))
+                {
+                    if (p.X == pp.X && p.Y == pp.Y) { return PointRef.Create(k.Key.X, k.Key.Y); }
+                }
+            }
+            return null;
+        }
+
+        public PointRef ItemAtCraftCell(PointRef p)
+        {
+            foreach (var k in d_Inventory.CraftInv)
+            {
+                foreach (var pp in ItemCraftCells(PointRef.Create(k.Key.X, k.Key.Y)))
                 {
                     if (p.X == pp.X && p.Y == pp.Y) { return PointRef.Create(k.Key.X, k.Key.Y); }
                 }
@@ -354,6 +418,7 @@ namespace ManicDigger
             }
             else if (pos.Type == Packet_InventoryPositionTypeEnum.Ground)
             {
+                int test = 0;
                 /*
                 if (d_Inventory.DragDropItem != null)
                 {
@@ -371,7 +436,7 @@ namespace ManicDigger
                     d_Inventory.RightHand[pos.MaterialId] = null;
                 }
                 else if (d_Inventory.DragDropItem != null && d_Inventory.RightHand[pos.MaterialId] == null)
-                {
+               {
                     if (d_Items.CanWear(WearPlace_.RightHand, d_Inventory.DragDropItem))
                     {
                         d_Inventory.RightHand[pos.MaterialId] = d_Inventory.DragDropItem;
@@ -425,13 +490,13 @@ namespace ManicDigger
                 {
                     //make sure there is nothing blocking drop.
                     IntRef itemsAtAreaCount = new IntRef();
-                  //  PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtArea(pos.AreaX, pos.AreaY,
-                 //       d_Items.ItemSizeX(d_Inventory.DragDropItem), d_Items.ItemSizeY(d_Inventory.DragDropItem), itemsAtAreaCount);
-                    //if (itemsAtArea == null || itemsAtAreaCount.value > 1)
-                    //{
-                    //    //invalid area
-                    //    return;
-                    //}
+                    PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtCraftArea(pos.AreaX, pos.AreaY,
+                        d_Items.ItemSizeX(d_Inventory.DragDropItem), d_Items.ItemSizeY(d_Inventory.DragDropItem), itemsAtAreaCount);
+                    if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                    {
+                        //invalid area
+                        return;
+                    }
                     if (itemsAtAreaCount.value == 0)
                     {
                         d_Inventory.CraftInv.Add(new ProtoPoint(pos.AreaX, pos.AreaY), d_Inventory.DragDropItem);
@@ -439,23 +504,23 @@ namespace ManicDigger
                     }
                     else //1
                     {
-                        //var swapWith = itemsAtArea[0];
-                        ////try to stack                        
-                        //Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
-                        //if (stackResult != null)
-                        //{
-                        //    d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)] = stackResult;
-                        //    d_Inventory.DragDropItem = null;
-                        //}
-                        //else
-                        //{
-                        //    //try to swap
-                        //    //swap (swapWith, dragdropitem)
-                        //    Item z = d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)];
-                        //    d_Inventory.CraftInv.Remove(new ProtoPoint(swapWith.X, swapWith.Y));
-                        //    d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)] = d_Inventory.DragDropItem;
-                        //    d_Inventory.DragDropItem = z;
-                        //}
+                        var swapWith = itemsAtArea[0];
+                        //try to stack                        
+                        Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
+                        if (stackResult != null)
+                        {
+                            d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)] = stackResult;
+                            d_Inventory.DragDropItem = null;
+                        }
+                        else
+                        {
+                            //try to swap
+                            //swap (swapWith, dragdropitem)
+                            Item z = d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)];
+                            d_Inventory.CraftInv.Remove(new ProtoPoint(swapWith.X, swapWith.Y));
+                            d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)] = d_Inventory.DragDropItem;
+                            d_Inventory.DragDropItem = z;
+                        }
                     }
                 }
                 
@@ -464,7 +529,7 @@ namespace ManicDigger
         
             
         private void SendInventory()
-        {
+       {
         }
 
         public override void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to)

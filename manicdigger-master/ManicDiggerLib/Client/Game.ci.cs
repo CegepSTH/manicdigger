@@ -1,8 +1,11 @@
-﻿public class Game
+﻿using System.Reflection;
+public class Game
 {
     internal bool IsRunning;
     public Game()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         one = 1;
         performanceinfo = new DictionaryStringString();
         AudioEnabled = true;
@@ -1351,6 +1354,8 @@
 
     public void ChangeGameMode(bool creative)
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         AllowFreemove = creative;
         if (!creative)
         {
@@ -1361,6 +1366,8 @@
 
     internal void Respawn()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         if (AllowFreemove)
         {
             Packet_Client p = new Packet_Client();

@@ -4091,6 +4091,7 @@ namespace ManicDiggerServer
             {
                 try
                 {
+                    string text = Path.Combine(GameStorePath.gamepathconfig, filename);
                     using (TextReader textReader = new StreamReader(Path.Combine(GameStorePath.gamepathconfig, filename)))
                     {
                         XmlSerializer deserializer = new XmlSerializer(typeof(ServerClient));
