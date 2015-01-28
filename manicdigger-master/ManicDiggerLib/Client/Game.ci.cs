@@ -7134,6 +7134,7 @@
             case GuiState.Inventory:
                 {
                     DrawDialogs();
+                    
                     //d_The3d.ResizeGraphics(Width, Height);
                     //d_The3d.OrthoMode(d_HudInventory.ConstWidth, d_HudInventory.ConstHeight);
                     d_HudInventory.Draw();
