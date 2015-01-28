@@ -2371,7 +2371,7 @@
             return blockHealth.Get(x, y, z);
         }
         int blocktype = GetBlock(x, y, z);
-        return d_Data.Strength()[blocktype];
+        return d_Data.Durability()[blocktype];
     }
 
     internal void DrawDialogs()
@@ -11906,6 +11906,7 @@ public class GameData
         mWalkableType = new int[count];
 
         mDefaultMaterialSlots = new int[10];
+        mDurability = new int[count];
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
@@ -11923,6 +11924,8 @@ public class GameData
     public int[] DamageToPlayer() { return mDamageToPlayer; }
     public int[] WalkableType1() { return mWalkableType; }
 
+    public int[] Durability() { return mDurability; }
+
     public int[] DefaultMaterialSlots() { return mDefaultMaterialSlots; }
 
     int[] mWhenPlayerPlacesGetsConvertedTo;
@@ -11939,6 +11942,7 @@ public class GameData
     float[] mStrength;
     int[] mDamageToPlayer;
     int[] mWalkableType;
+    int[] mDurability;
 
     int[] mDefaultMaterialSlots;
 
@@ -12103,6 +12107,7 @@ public class GameData
         DamageToPlayer()[id] = b.DamageToPlayer;
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
+        Durability()[id] = b.Durability;
     }
 
     public const int SoundCount = 8;

@@ -60,7 +60,7 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
                     WhenPlayerPlacesGetsConvertedTo = 3,
-                    Durability = 1,
+                    Durability = 2,
                 });
             m.SetBlockType(3, "Dirt", new BlockType()
                 {
