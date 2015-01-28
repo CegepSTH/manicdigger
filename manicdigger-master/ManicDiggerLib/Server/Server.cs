@@ -635,7 +635,7 @@ namespace ManicDiggerServer
                 }
                 //d_Generator.SetSeed(Seed);
                 MemoryStream ms = new MemoryStream();
-                SaveGame(ms);
+                //SaveGame(ms);
                 d_ChunkDb.SetGlobalData(ms.ToArray());
                 return;
             }
@@ -670,6 +670,25 @@ namespace ManicDiggerServer
             SaveAllLoadedChunks();
             if (!config.IsCreative)
             {
+                bool found = false;
+                foreach(var k in Inventory["Local"].Inventory.CraftInv)
+                {
+                    for (int x = 0; x < 12; x++)
+                    {
+                        for (int y = 0; y < 12; y++)
+                        {
+                            if (!(Inventory["Local"].Inventory.Items.ContainsKey(new ProtoPoint(x, y))))
+                            {
+                                Inventory["Local"].Inventory.Items.Add(new ProtoPoint(x, y), k.Value);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found)
+                            break;
+                    }
+                }
+                
                 save.Inventory = Inventory;
             }
             save.PlayerStats = PlayerStats;
