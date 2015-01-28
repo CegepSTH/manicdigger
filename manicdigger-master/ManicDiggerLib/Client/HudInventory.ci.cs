@@ -318,8 +318,8 @@
 
         PointRef scaledMouse = PointRef.Create(game.mouseCurrentX, game.mouseCurrentY);
 
-        game.Draw2dBitmapFile("inventory.png", InventoryStartX(), InventoryStartY(), 1024, 1024);
-        game.Draw2dBitmapFile("crafting.png",  CraftingInterfaceStartX(), CraftingInterfaceStartY() , 240, 240);
+        game.Draw2dBitmapFile("inventory.png", InventoryStartX() + 5, InventoryStartY() + 6, 1024, 1024);
+        game.Draw2dBitmapFile("crafting.png", CraftingInterfaceStartX(), CraftingInterfaceStartY(), 240, 240);
 
         //the3d.Draw2dTexture(terrain, 50, 50, 50, 50, 0);
         //the3d.Draw2dBitmapFile("inventory_weapon_shovel.png", 100, 100, 60 * 2, 60 * 4);
@@ -335,7 +335,7 @@
             int screeny = k.Y - ScrollLine;
             if (screeny >= 0 && screeny < CellCountInPageY)
             {
-                DrawItem(CellsStartX() + k.X * CellDrawSize, CellsStartY() + screeny * CellDrawSize, k.Value_, 0, 0);
+                DrawItem(CellsStartX() + k.X * CellDrawSize + 7, CellsStartY() + screeny * CellDrawSize + 7, k.Value_, 0, 0);
             }
         }
 
