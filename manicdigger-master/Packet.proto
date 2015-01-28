@@ -837,6 +837,7 @@ package Packet;
         repeated PositionItem items = 7;
         optional Item dragDropItem = 8;
         repeated Item rightHand = 9;
+	repeated PositionItem CraftItems = 10;
     }
     
     message Item

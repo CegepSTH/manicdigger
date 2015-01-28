@@ -1598,7 +1598,22 @@ namespace ManicDiggerServer
                         p.Inventory.RightHand[i] = ConvertItem(inv.Inventory.RightHand[i]);
                     }
                 }
+
+                p.Inventory.CraftItemsCount = inv.Inventory.CraftInv.Count;
+                p.Inventory.CraftItemsLength = inv.Inventory.CraftInv.Count;
+                p.Inventory.CraftItems = new Packet_PositionItem[inv.Inventory.CraftInv.Count];
+                int i2 = 0;
+                foreach (var k in inv.Inventory.CraftInv)
+                {
+                    Packet_PositionItem item = new Packet_PositionItem();
+                    item.Key_ = SerializePoint(k.Key.X, k.Key.Y);
+                    item.Value_ = ConvertItem(k.Value);
+                    item.X = k.Key.X;
+                    item.Y = k.Key.Y;
+                    p.Inventory.CraftItems[i2++] = item;
+                }
             }
+
             return p;
         }
 
