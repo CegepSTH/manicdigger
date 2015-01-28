@@ -1713,9 +1713,16 @@
 
     internal void DrawEnemyHealthUseInfo(string name, float progress, bool useInfo)
     {
+        int x = currentAttackedBlock.X;
+        int yz = currentAttackedBlock.Y;
+        int z = currentAttackedBlock.Z;
+        int blocktype = GetBlock(x, yz, z);
+        float health = GetCurrentBlockHealth(x, yz, z);
+        float pro = health / d_Data.Durability()[blocktype];
+        System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
-        Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300 * progress, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
+        Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300*pro, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
         FontCi font = new FontCi();
         font.family = "Arial";
         font.size = 14;
@@ -2435,12 +2442,16 @@
             int z = currentAttackedBlock.Z;
             int blocktype = GetBlock(x, y, z);
             float health = GetCurrentBlockHealth(x, y, z);
-            float progress = health / d_Data.Strength()[blocktype];
+            float progress = 100 * health / d_Data.Durability()[blocktype];
+            System.Console.WriteLine(progress);
             if (IsUsableBlock(blocktype))
             {
                 DrawEnemyHealthUseInfo(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress, true);
             }
-            DrawEnemyHealthCommon(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress);
+            else
+            {
+                DrawEnemyHealthCommon(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress);
+            }
         }
     }
 
@@ -7229,7 +7240,7 @@
         bool moveup = false;
         bool movedown = false;
 
-        System.Console.WriteLine(movespeed.ToString());
+        //System.Console.WriteLine(movespeed.ToString());
         if (guistate == GuiState.Normal)
         {
             if (GuiTyping == TypingState.None)
