@@ -304,6 +304,7 @@
 
     public void Draw()
     {
+
         if (ScrollingUpTimeMilliseconds != 0 && (game.platform.TimeMillisecondsFromStart() - ScrollingUpTimeMilliseconds) > 250)
         {
             ScrollingUpTimeMilliseconds = game.platform.TimeMillisecondsFromStart();
@@ -338,23 +339,56 @@
             }
         }
 
-        //draw area selection
-        if (game.d_Inventory.DragDropItem != null)
+        //Crafting inventory Draw
+        for (int i = 0; i < game.d_Inventory.CraftItemsCount; i++ )
         {
-            PointRef selectedInPage = SelectedCell(scaledMouse);
-            if (selectedInPage != null)
+            Packet_PositionItem k = game.d_Inventory.CraftItems[i];
+            if (k == null)
             {
-                int x = (selectedInPage.X) * CellDrawSize + CellsStartX();
-                int y = (selectedInPage.Y) * CellDrawSize + CellsStartY();
-                int sizex = dataItems.ItemSizeX(game.d_Inventory.DragDropItem);
-                int sizey = dataItems.ItemSizeY(game.d_Inventory.DragDropItem);
-                if (selectedInPage.X + sizex <= CellCountInPageX
-                    && selectedInPage.Y + sizey <= CellCountInPageY)
+                continue;
+            }
+            
+                DrawItem(CraftingInterfaceStartX() + k.X * CellDrawSize, CraftingInterfaceStartY() + k.Y* CellDrawSize, k.Value_, 0, 0);
+        }
+
+            //draw area selection
+            if (game.d_Inventory.DragDropItem != null)
+            {
+                PointRef selectedInPage = SelectedCell(scaledMouse);
+                if (selectedInPage != null)
                 {
+                    int x = (selectedInPage.X) * CellDrawSize + CellsStartX();
+                    int y = (selectedInPage.Y) * CellDrawSize + CellsStartY();
+                    int sizex = dataItems.ItemSizeX(game.d_Inventory.DragDropItem);
+                    int sizey = dataItems.ItemSizeY(game.d_Inventory.DragDropItem);
+                    if (selectedInPage.X + sizex <= CellCountInPageX
+                        && selectedInPage.Y + sizey <= CellCountInPageY)
+                    {
+                        int c;
+                        IntRef itemsAtAreaCount = new IntRef();
+                        PointRef[] itemsAtArea = inventoryUtil.ItemsAtArea(selectedInPage.X, selectedInPage.Y + ScrollLine, sizex, sizey, itemsAtAreaCount);
+                        if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                        {
+                            c = Game.ColorFromArgb(100, 255, 0, 0); // red
+                        }
+                        else //0 or 1
+                        {
+                            c = Game.ColorFromArgb(100, 0, 255, 0); // green
+                        }
+                        game.Draw2dTexture(game.WhiteTexture(), x, y,
+                            CellDrawSize * sizex, CellDrawSize * sizey,
+                            null, 0, c, false);
+                    }
+                }
+                IntRef selectedWear = SelectedWearPlace(scaledMouse);
+                if (selectedWear != null)
+                {
+                    PointRef p = PointRef.Create(wearPlaceStart[selectedWear.value].X + InventoryStartX(), wearPlaceStart[selectedWear.value].Y + InventoryStartY());
+                    PointRef size = wearPlaceCells[selectedWear.value];
+
                     int c;
-                    IntRef itemsAtAreaCount = new IntRef();
-                    PointRef[] itemsAtArea = inventoryUtil.ItemsAtArea(selectedInPage.X, selectedInPage.Y + ScrollLine, sizex, sizey, itemsAtAreaCount);
-                    if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                    Packet_Item itemsAtArea = inventoryUtil.ItemAtWearPlace(selectedWear.value, game.ActiveMaterial);
+                    if (!dataItems.CanWear(selectedWear.value, game.d_Inventory.DragDropItem))
                     {
                         c = Game.ColorFromArgb(100, 255, 0, 0); // red
                     }
@@ -362,32 +396,11 @@
                     {
                         c = Game.ColorFromArgb(100, 0, 255, 0); // green
                     }
-                    game.Draw2dTexture(game.WhiteTexture(), x, y,
-                        CellDrawSize * sizex, CellDrawSize * sizey,
+                    game.Draw2dTexture(game.WhiteTexture(), p.X, p.Y,
+                        CellDrawSize * size.X, CellDrawSize * size.Y,
                         null, 0, c, false);
                 }
             }
-            IntRef selectedWear = SelectedWearPlace(scaledMouse);
-            if (selectedWear != null)
-            {
-                PointRef p = PointRef.Create(wearPlaceStart[selectedWear.value].X + InventoryStartX(), wearPlaceStart[selectedWear.value].Y + InventoryStartY());
-                PointRef size = wearPlaceCells[selectedWear.value];
-
-                int c;
-                Packet_Item itemsAtArea = inventoryUtil.ItemAtWearPlace(selectedWear.value, game.ActiveMaterial);
-                if (!dataItems.CanWear(selectedWear.value, game.d_Inventory.DragDropItem))
-                {
-                    c = Game.ColorFromArgb(100, 255, 0, 0); // red
-                }
-                else //0 or 1
-                {
-                    c = Game.ColorFromArgb(100, 0, 255, 0); // green
-                }
-                game.Draw2dTexture(game.WhiteTexture(), p.X, p.Y,
-                    CellDrawSize * size.X, CellDrawSize * size.Y,
-                    null, 0, c, false);
-            }
-        }
 
         //material selector
         DrawMaterialSelector();

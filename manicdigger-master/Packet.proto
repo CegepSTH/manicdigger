@@ -49,6 +49,7 @@ package Packet;
         optional BlockSetMode mode = 4 [default = Destroy];
         optional int32 blockType = 5; // obsolete
         optional int32 materialSlot = 6;
+		optional int32 Durability = 7;
     }
     
     message ClientFillArea
@@ -115,6 +116,7 @@ package Packet;
         Ground = 1;
         MaterialSelector = 2;
         WearPlace = 3;
+		Crafting = 4;
     }
     
     message PositionAndOrientation
@@ -329,6 +331,7 @@ package Packet;
         optional PistolType pistolType = 42 [ default = Normal ];
         optional int32 damageToPlayer = 43;
         optional int32 whenPlacedGetsConvertedTo = 44;
+		optional int32 Durability = 45;
     }
     
     enum DrawType
@@ -835,6 +838,7 @@ package Packet;
         repeated PositionItem items = 7;
         optional Item dragDropItem = 8;
         repeated Item rightHand = 9;
+	repeated PositionItem CraftItems = 10;
     }
     
     message Item

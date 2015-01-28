@@ -1036,6 +1036,8 @@ namespace ManicDigger
         public int DamageToPlayer = 0;
         [ProtoMember(44)]
         public int WhenPlayerPlacesGetsConvertedTo;
+        [ProtoMember(45)]
+        public int Durability;
         
         public string AllTextures
         {

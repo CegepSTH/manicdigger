@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 public class Game
 {
+    internal bool IsRunning;
     public Game()
     {
         System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
@@ -47,6 +48,7 @@ public class Game
         wasmouseleft = false;
         mouserightclick = false;
         mouserightdeclick = false;
+        IsRunning = false;
         wasmouseright = false;
         ENABLE_LAG = 0;
         znear = one / 10;
@@ -2143,35 +2145,37 @@ public class Game
 
     internal void ApplyDamageToPlayer(int damage, int damageSource, int sourceId)
     {
-        PlayerStats.CurrentHealth -= damage;
-        if (PlayerStats.CurrentHealth <= 0)
+        if (!AllowFreemove)
         {
-            AudioPlay("death.wav");
+            PlayerStats.CurrentHealth -= damage;
+            if (PlayerStats.CurrentHealth <= 0)
             {
-                Packet_Client p = new Packet_Client();
-                p.Id = Packet_ClientIdEnum.Death;
-                p.Death = new Packet_ClientDeath();
+                AudioPlay("death.wav");
                 {
-                    p.Death.Reason = damageSource;
-                    p.Death.SourcePlayer = sourceId;
+                    Packet_Client p = new Packet_Client();
+                    p.Id = Packet_ClientIdEnum.Death;
+                    p.Death = new Packet_ClientDeath();
+                    {
+                        p.Death.Reason = damageSource;
+                        p.Death.SourcePlayer = sourceId;
+                    }
+                    SendPacketClient(p);
                 }
-                SendPacketClient(p);
+
+                //Respawn(); //Death is not respawn ;)
+            }
+            else
+            {
+                AudioPlay(rnd.Next() % 2 == 0 ? "grunt1.wav" : "grunt2.wav");
             }
 
-            //Respawn(); //Death is not respawn ;)
-        }
-        else
-        {
-            AudioPlay(rnd.Next() % 2 == 0 ? "grunt1.wav" : "grunt2.wav");
-        }
-        {
-            Packet_Client p = new Packet_Client();
+            Packet_Client p1 = new Packet_Client();
             {
-                p.Id = Packet_ClientIdEnum.Health;
-                p.Health = new Packet_ClientHealth();
-                p.Health.CurrentHealth = PlayerStats.CurrentHealth;
+                p1.Id = Packet_ClientIdEnum.Health;
+                p1.Health = new Packet_ClientHealth();
+                p1.Health.CurrentHealth = PlayerStats.CurrentHealth;
             }
-            SendPacketClient(p);
+            SendPacketClient(p1);
         }
     }
 
@@ -3626,7 +3630,8 @@ public class Game
         return key;
     }
 
-    internal float MoveSpeedNow()
+    internal float
+ MoveSpeedNow()
     {
         float movespeednow = movespeed;
         {
@@ -4246,6 +4251,14 @@ public class Game
 
     internal void KeyUp(int eKey)
     {
+        if (IsRunning)
+        {
+            if (eKey == GetKey(GlKeys.ShiftLeft))
+            {
+                IsRunning = false;
+                movespeed = basemovespeed;
+            }
+        }
         for (int i = 0; i < clientmodsCount; i++)
         {
             KeyEventArgs args_ = new KeyEventArgs();
@@ -4284,13 +4297,17 @@ public class Game
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
-
+     
         //Added by Alexandre
-        playerPositionSpawnX = player.playerposition.X;
-        System.Threading.Thread.Sleep(2000);
-        player.playerposition.Y = d_Heightmap.GetBlock(playerx, playery) + 3;
-        playerPositionSpawnY = player.playerposition.Y;
-        playerPositionSpawnZ = 200;// player.playerposition.Z;
+
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
     }
     internal int[] materialSlots;
 
@@ -6685,16 +6702,24 @@ public class Game
             //ShiftLeft --> run... fast speed!
             if (AllowFreemove && movespeed > basemovespeed * 2)
                 movespeed = basemovespeed * 10;
-            else
-                movespeed = basemovespeed;
+
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
-                movespeed = movespeed * 2;
+            {
+                if (!IsRunning)
+                {
+                    IsRunning = true;
+                    movespeed = movespeed * 2;
+                }
+            }
+
+
+
             //if (eKey == GetKey(GlKeys.ControlLeft))
             //    movespeed = movespeed / 2;
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
-            
+
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
@@ -7089,8 +7114,12 @@ public class Game
                         DrawAim();
                     }
                     d_HudInventory.DrawMaterialSelector();
-                    DrawPlayerHealth();
-                    DrawPlayerOxygen();
+                    //added by Alex
+                    if (!AllowFreemove)
+                    {
+                        DrawPlayerHealth();
+                        DrawPlayerOxygen();
+                    }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
                     {
@@ -7112,6 +7141,7 @@ public class Game
             case GuiState.Inventory:
                 {
                     DrawDialogs();
+                    
                     //d_The3d.ResizeGraphics(Width, Height);
                     //d_The3d.OrthoMode(d_HudInventory.ConstWidth, d_HudInventory.ConstHeight);
                     d_HudInventory.Draw();
@@ -7215,6 +7245,7 @@ public class Game
         float movedy = 0;
         bool moveup = false;
         bool movedown = false;
+
         if (guistate == GuiState.Normal)
         {
             if (GuiTyping == TypingState.None)
@@ -7297,6 +7328,7 @@ public class Game
         else if (guistate == GuiState.ModalDialog)
         {
         }
+
         float movespeednow = MoveSpeedNow();
         Acceleration acceleration = new Acceleration();
         int blockunderplayer = BlockUnderPlayer();
@@ -7367,8 +7399,12 @@ public class Game
             {
                 UpdateWalkSound(dt);
             }
-            UpdateBlockDamageToPlayer(dt);
-            UpdateFallDamageToPlayer();
+            //Added by Alex
+            if (!AllowFreemove)
+            {
+                UpdateBlockDamageToPlayer(dt);
+                UpdateFallDamageToPlayer();
+            }
         }
         else
         {
