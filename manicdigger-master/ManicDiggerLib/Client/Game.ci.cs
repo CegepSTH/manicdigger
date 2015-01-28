@@ -3623,9 +3623,8 @@
         return key;
     }
 
-    internal float 
-        
-        MoveSpeedNow()
+    internal float
+ MoveSpeedNow()
     {
         float movespeednow = movespeed;
         {
@@ -4245,12 +4244,12 @@
 
     internal void KeyUp(int eKey)
     {
-        if(IsRunning)
+        if (IsRunning)
         {
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
                 IsRunning = false;
-                movespeed = basemovespeed ;
+                movespeed = basemovespeed;
             }
         }
         for (int i = 0; i < clientmodsCount; i++)
@@ -6688,22 +6687,24 @@
             //ShiftLeft --> run... fast speed!
             if (AllowFreemove && movespeed > basemovespeed * 2)
                 movespeed = basemovespeed * 10;
-            else
-                movespeed = 5;
+
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
-                IsRunning = true;
-                movespeed = movespeed * 2;
+                if (!IsRunning)
+                {
+                    IsRunning = true;
+                    movespeed = movespeed * 2;
+                }
             }
-               
-          
-              
+
+
+
             //if (eKey == GetKey(GlKeys.ControlLeft))
             //    movespeed = movespeed / 2;
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
-            
+
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
@@ -7312,7 +7313,7 @@
         else if (guistate == GuiState.ModalDialog)
         {
         }
-    
+
         float movespeednow = MoveSpeedNow();
         Acceleration acceleration = new Acceleration();
         int blockunderplayer = BlockUnderPlayer();
