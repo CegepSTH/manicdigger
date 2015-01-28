@@ -73,6 +73,7 @@
             game.SendLeave(Packet_LeaveReasonEnum.Leave);
             game.platform.ExitMousePointerLock();
             game.ExitToMainMenu();
+            System.Threading.Thread.Sleep(2500);
             game.platform.Exit();
         }
     }
