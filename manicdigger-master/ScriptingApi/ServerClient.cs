@@ -68,6 +68,7 @@ namespace ManicDigger
         public int CompareTo(Group other)
         {
             return Level.CompareTo(other.Level);
+        
         }
 
         public bool IsSuperior(Group clientGroup)

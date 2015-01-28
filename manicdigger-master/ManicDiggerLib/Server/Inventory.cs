@@ -418,6 +418,7 @@ namespace ManicDigger
             }
             else if (pos.Type == Packet_InventoryPositionTypeEnum.Ground)
             {
+                int test = 0;
                 /*
                 if (d_Inventory.DragDropItem != null)
                 {
@@ -435,7 +436,7 @@ namespace ManicDigger
                     d_Inventory.RightHand[pos.MaterialId] = null;
                 }
                 else if (d_Inventory.DragDropItem != null && d_Inventory.RightHand[pos.MaterialId] == null)
-                {
+               {
                     if (d_Items.CanWear(WearPlace_.RightHand, d_Inventory.DragDropItem))
                     {
                         d_Inventory.RightHand[pos.MaterialId] = d_Inventory.DragDropItem;
@@ -528,7 +529,7 @@ namespace ManicDigger
         
             
         private void SendInventory()
-        {
+       {
         }
 
         public override void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to)

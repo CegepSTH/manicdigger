@@ -1,8 +1,11 @@
-﻿public class Game
+﻿using System.Reflection;
+public class Game
 {
     internal bool IsRunning;
     public Game()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         one = 1;
         performanceinfo = new DictionaryStringString();
         AudioEnabled = true;
@@ -1351,6 +1354,8 @@
 
     public void ChangeGameMode(bool creative)
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         AllowFreemove = creative;
         if (!creative)
         {
@@ -1361,6 +1366,8 @@
 
     internal void Respawn()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         if (AllowFreemove)
         {
             Packet_Client p = new Packet_Client();
@@ -3639,7 +3646,7 @@
                 }
             }
         }
-        if (keyboardState[GetKey(GlKeys.ControlLeft)])
+        if (keyboardState[GetKey(GlKeys.ControlLeft)] && !ENABLE_FREEMOVE)
         {
             //enable_acceleration = false;
             movespeednow *= one * 2 / 10;
@@ -4249,7 +4256,9 @@
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
                 IsRunning = false;
+
                 movespeed = basemovespeed;
+
             }
         }
         for (int i = 0; i < clientmodsCount; i++)
@@ -4290,7 +4299,7 @@
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
-     
+
         //Added by Alexandre
 
         Packet_Client p = new Packet_Client();
@@ -6699,10 +6708,10 @@
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
-                if (!IsRunning)
+                if (!IsRunning && movespeed < 9)
                 {
                     IsRunning = true;
-                    movespeed = movespeed * 2;
+                    movespeed = basemovespeed * 2;
                 }
             }
 
@@ -7134,7 +7143,7 @@
             case GuiState.Inventory:
                 {
                     DrawDialogs();
-                    
+
                     //d_The3d.ResizeGraphics(Width, Height);
                     //d_The3d.OrthoMode(d_HudInventory.ConstWidth, d_HudInventory.ConstHeight);
                     d_HudInventory.Draw();
