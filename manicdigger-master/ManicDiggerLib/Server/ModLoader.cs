@@ -136,7 +136,7 @@ namespace ManicDigger
         {
             if (loaded.ContainsKey(name))
             {
-                return;
+               // return;
             }
             if (modRequirements.ContainsKey(name))
             {

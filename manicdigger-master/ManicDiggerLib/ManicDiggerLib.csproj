@@ -49,6 +49,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BCrypt.Net, Version=0.1.4056.18965, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -107,7 +107,7 @@
         if(cellinCraft != null)
         {
             Packet_InventoryPosition p = new Packet_InventoryPosition();
-            p.Type = Packet_InventoryPositionTypeEnum.Crafting;
+        //    p.Type = Packet_InventoryPositionTypeEnum.Crafting;
             p.AreaX = cellinCraft.X;
             p.AreaY = cellinCraft.Y;
             controller.InventoryClick(p);
