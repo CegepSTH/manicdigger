@@ -4290,9 +4290,17 @@
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
-
+     
         //Added by Alexandre
-        Respawn();
+
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
     }
     internal int[] materialSlots;
 
@@ -7231,7 +7239,6 @@
         bool moveup = false;
         bool movedown = false;
 
-        System.Console.WriteLine(movespeed.ToString());
         if (guistate == GuiState.Normal)
         {
             if (GuiTyping == TypingState.None)
