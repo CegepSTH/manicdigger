@@ -807,6 +807,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 90,
                 });
             m.SetBlockType(135, "SilverCoin", new BlockType()
                 {
