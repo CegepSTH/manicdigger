@@ -11,7 +11,7 @@
         playerPositionSpawnX = 15 + one / 2;
         playerPositionSpawnY = 64;
         playerPositionSpawnZ = 15 + one / 2;
-
+        playerTool = TOOLS.PICKAXE;
         player = new CharacterPhysicsState();
 
         TextureId = new int[MaxBlockTypes][];
@@ -35,7 +35,7 @@
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
-        AllowFreemove = false;// ManicDiggerLib.Client.Data.Creative ? true : false;
+        AllowFreemove = false;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
         ServerInfo = new ServerInformation();
@@ -1722,7 +1722,10 @@
         System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
-        Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300*pro, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
+        if (!AllowFreemove)
+            Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300 * pro, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
+        else
+            Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
         FontCi font = new FontCi();
         font.family = "Arial";
         font.size = 14;
@@ -2373,12 +2376,19 @@
 
     internal float GetCurrentBlockHealth(int x, int y, int z)
     {
-        if (blockHealth.ContainsKey(x, y, z))
+        if (!AllowFreemove)
         {
-            return blockHealth.Get(x, y, z);
+            if (blockHealth.ContainsKey(x, y, z))
+            {
+                return blockHealth.Get(x, y, z);
+            }
+            int blocktype = GetBlock(x, y, z);
+            return d_Data.Durability()[blocktype];
         }
-        int blocktype = GetBlock(x, y, z);
-        return d_Data.Durability()[blocktype];
+        else
+        {
+            return 0;
+        }
     }
 
     internal void DrawDialogs()
@@ -2443,7 +2453,6 @@
             int blocktype = GetBlock(x, y, z);
             float health = GetCurrentBlockHealth(x, y, z);
             float progress = 100 * health / d_Data.Durability()[blocktype];
-            System.Console.WriteLine(progress);
             if (IsUsableBlock(blocktype))
             {
                 DrawEnemyHealthUseInfo(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress, true);
@@ -2596,9 +2605,35 @@
         return platform.FloatToInt(p * 32);
     }
 
-    public float WeaponAttackStrength()
+    internal TOOLS playerTool;
+
+    internal enum  TOOLS
     {
-        return NextFloat(2, 4);
+        SHOVEL = 13,
+        PICKAXE = 56,
+        AXE = 32,
+        NOTOOL = 3
+    }
+
+    public float WeaponAttackStrength(int idBlock)
+    {
+        int strength = 0;
+        switch (playerTool)
+        {
+            case TOOLS.SHOVEL:
+                strength = (int)TOOLS.SHOVEL;
+                break;
+            case TOOLS.PICKAXE:
+                strength = (int)TOOLS.PICKAXE;
+                break;
+            case TOOLS.AXE:
+                strength = (int)TOOLS.AXE;
+                break;
+            default:
+                strength = (int)TOOLS.NOTOOL;
+                break;
+        }
+        return strength;
     }
 
     public float NextFloat(float min, float max)
@@ -3634,8 +3669,8 @@
         return key;
     }
 
-    internal float 
-        
+    internal float
+
         MoveSpeedNow()
     {
         float movespeednow = movespeed;
@@ -4256,12 +4291,12 @@
 
     internal void KeyUp(int eKey)
     {
-        if(IsRunning)
+        if (IsRunning)
         {
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
                 IsRunning = false;
-                movespeed = basemovespeed ;
+                movespeed = basemovespeed;
             }
         }
         for (int i = 0; i < clientmodsCount; i++)
@@ -6707,14 +6742,14 @@
                 IsRunning = true;
                 movespeed = movespeed * 2;
             }
-               
-          
-              
+
+
+
             //if (eKey == GetKey(GlKeys.ControlLeft))
             //    movespeed = movespeed / 2;
 
             string strFreemoveNotAllowed = "You are not allowed to enable freemove in survival";
-            
+
             if (eKey == GetKey(GlKeys.F1))
             {
                 if (!this.AllowFreemove)
@@ -6935,6 +6970,30 @@
             }
             return;
         }
+        //ERASE WHEN TOOLS DONE - By Alex
+        if(eKey == GetKey(GlKeys.Z))
+        {
+            switch (playerTool)
+            {
+                case TOOLS.SHOVEL:
+                    playerTool = TOOLS.PICKAXE;
+                    break;
+                case TOOLS.PICKAXE:
+                    playerTool = TOOLS.AXE;
+                    break;
+                case TOOLS.AXE:
+                    playerTool = TOOLS.NOTOOL;
+                    break;
+                case TOOLS.NOTOOL:
+                    playerTool = TOOLS.SHOVEL;
+                    break;
+                default:
+                    break;
+            }
+        }
+        IntRef ef = IntRef.Create(20);
+        FontCi c = FontCi.Create("Arial", 8, 0);
+         Draw2dText(platform.StringFormat("{0}ssdfs",playerTool.ToString()), c, 40, platform.GetCanvasHeight() - 40, ef, false);
         if (guistate == GuiState.ModalDialog)
         {
             if (eKey == GetKey(GlKeys.B)
@@ -7323,7 +7382,7 @@
         else if (guistate == GuiState.ModalDialog)
         {
         }
-    
+
         float movespeednow = MoveSpeedNow();
         Acceleration acceleration = new Acceleration();
         int blockunderplayer = BlockUnderPlayer();
@@ -8092,7 +8151,7 @@
                             {
                                 blockHealth.Set(posx, posy, posz, GetCurrentBlockHealth(posx, posy, posz));
                             }
-                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength());
+                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx,posy,posz)));
                             float health = GetCurrentBlockHealth(posx, posy, posz);
                             if (health <= 0)
                             {
