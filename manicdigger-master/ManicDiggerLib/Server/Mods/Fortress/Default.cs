@@ -1095,7 +1095,7 @@ namespace ManicDigger.Mods
                 return;
             }
             Respawn(player);
-            m.SendMessage(player, "Respawn.");
+            //m.SendMessage(player, "Respawn.");
         }
         
         string ColoredPlayername(int player)
