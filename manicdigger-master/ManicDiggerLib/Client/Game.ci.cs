@@ -1611,6 +1611,8 @@
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 30, platform.GetCanvasHeight() - 40, d, false);
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
+
+            Draw2dText(platform.StringFormat("{0}", playerTool.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
             //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
@@ -2607,12 +2609,12 @@
 
     internal TOOLS playerTool;
 
-    internal enum  TOOLS
+    internal enum TOOLS
     {
-        SHOVEL = 13,
-        PICKAXE = 56,
-        AXE = 32,
-        NOTOOL = 3
+        SHOVEL = 4,
+        PICKAXE = 10,
+        AXE = 3,
+        NOTOOL = 2
     }
 
     public float WeaponAttackStrength(int idBlock)
@@ -2621,13 +2623,25 @@
         switch (playerTool)
         {
             case TOOLS.SHOVEL:
-                strength = (int)TOOLS.SHOVEL;
+                //GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                    strength = (int)TOOLS.SHOVEL;
+                else
+                    strength = (int)TOOLS.NOTOOL;
                 break;
             case TOOLS.PICKAXE:
-                strength = (int)TOOLS.PICKAXE;
+                //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                    strength = (int)TOOLS.PICKAXE;
+                else
+                    strength = (int)TOOLS.NOTOOL;
                 break;
             case TOOLS.AXE:
-                strength = (int)TOOLS.AXE;
+                //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                    strength = (int)TOOLS.AXE;
+                else
+                    strength = (int)TOOLS.NOTOOL;
                 break;
             default:
                 strength = (int)TOOLS.NOTOOL;
@@ -6971,7 +6985,7 @@
             return;
         }
         //ERASE WHEN TOOLS DONE - By Alex
-        if(eKey == GetKey(GlKeys.Z))
+        if (eKey == GetKey(GlKeys.Z))
         {
             switch (playerTool)
             {
@@ -6990,10 +7004,10 @@
                 default:
                     break;
             }
+
+
         }
-        IntRef ef = IntRef.Create(20);
-        FontCi c = FontCi.Create("Arial", 8, 0);
-         Draw2dText(platform.StringFormat("{0}ssdfs",playerTool.ToString()), c, 40, platform.GetCanvasHeight() - 40, ef, false);
+
         if (guistate == GuiState.ModalDialog)
         {
             if (eKey == GetKey(GlKeys.B)
@@ -8151,7 +8165,7 @@
                             {
                                 blockHealth.Set(posx, posy, posz, GetCurrentBlockHealth(posx, posy, posz));
                             }
-                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx,posy,posz)));
+                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx, posy, posz)));
                             float health = GetCurrentBlockHealth(posx, posy, posz);
                             if (health <= 0)
                             {
