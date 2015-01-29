@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using ManicDigger.ClientNative;
+using System.IO;
+using System.Reflection;
 public class Game
 {
     internal bool IsRunning;
@@ -1375,17 +1377,32 @@ public class Game
 
         if (!creative)
         {
+         //   Packet_Client pp = new Packet_Client();
+         //   pp.Id = Packet_ClientIdEnum.IsCreative;
+         //   SendPacketClient(pp);
+         //   //int[] inventoryAmount = d_Data.GetStartInventoryAmount();
+         //   //if (inventoryAmount != null)
+         //   //{
+         //   //    for (int i = 0; i < inventoryAmount.Length; i++)
+         //   //        inventoryAmount[i] = 24;
 
-            int[] inventoryAmount = d_Data.GetStartInventoryAmount();
-            if (inventoryAmount != null)
-            {
-                for (int i = 0; i < inventoryAmount.Length; i++)
-                    inventoryAmount[i] = 24;
+         //   //    //7d_gameData
+         //   //    d_gameData.SetStartInventoryAmount(inventoryAmount);
+         //   //}
+         ////   d_gameData.SetWhenPlayerPlacesGetConverTo(inventoryAmount);
 
-                //7d_gameData
-                d_gameData.SetStartInventoryAmount(inventoryAmount);
-            }
-         //   d_gameData.SetWhenPlayerPlacesGetConverTo(inventoryAmount);
+
+
+            StreamReader sr = new StreamReader(Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt"));
+            string f = sr.ReadToEnd();
+            sr.Close();
+
+            StreamWriter sw = new StreamWriter(Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt"));
+            //f.Replace("<Creative>true</Creative>", "<Creative>false</Creative>");
+            f.Replace("true", "false");
+            sw.Write(f);
+            sw.Close();
+            
             ENABLE_FREEMOVE = false;
             ENABLE_NOCLIP = false;
         }

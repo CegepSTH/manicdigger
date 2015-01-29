@@ -24,6 +24,7 @@ package Packet;
         ServerQuery = 64;
         GameResolution = 10;
         ExtendedPacketCommand = 100;
+		IsCreative = 999;
 	}
 	
 	

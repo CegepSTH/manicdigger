@@ -2470,6 +2470,10 @@ namespace ManicDiggerServer
                         }
                     }
                     break;
+                case Packet_ClientIdEnum.IsCreative:
+
+                    d_Data.SetStartInventoryAmount(new int[1024]);
+                    break;
                 case Packet_ClientIdEnum.Oxygen:
                     {
                         //todo server side
