@@ -1359,8 +1359,8 @@ public class Game
         AllowFreemove = creative;
         if (!creative)
         {
-            ENABLE_FREEMOVE = false;
-            ENABLE_NOCLIP = false;
+            modmanager.SetFreemove(3);
+            
         }
     }
 
@@ -1672,7 +1672,7 @@ public class Game
         {
             return false;
         }
-        return platform.StringContains(name, "Water"); // todo
+        return platform.StringContains(name, "Water"); // todo jr
     }
 
     internal int mouseCurrentX;
