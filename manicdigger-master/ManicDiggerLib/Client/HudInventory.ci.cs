@@ -430,6 +430,23 @@
                 }
             }
         }
+
+        if(SelectedCraftCell(scaledMouse) != null)
+        {
+            PointRef selected = SelectedCraftCell(scaledMouse);
+            PointRef itematcell = inventoryUtil.ItemAtCraftCell(selected);
+            if (itematcell != null)
+            {
+                Packet_Item item = GetCraftItem(game.d_Inventory, itematcell.X, itematcell.Y);
+                if (item != null)
+                {
+                    int x = (selected.X) * CellDrawSize + CellsStartX();
+                    int y = (selected.Y) * CellDrawSize + CellsStartY();
+                    DrawItemInfo(scaledMouse.X, scaledMouse.Y, item);
+                }
+            }
+        }
+
         if (SelectedWearPlace(scaledMouse) != null)
         {
             int selected = SelectedWearPlace(scaledMouse).value;
@@ -462,6 +479,18 @@
             if (inventory.Items[i].X == x && inventory.Items[i].Y == y)
             {
                 return inventory.Items[i].Value_;
+            }
+        }
+        return null;
+    }
+
+    Packet_Item GetCraftItem(Packet_Inventory inventory, int x, int y)
+    {
+        for (int i = 0; i < inventory.ItemsCount; i++)
+        {
+            if (inventory.CraftItems[i].X == x && inventory.CraftItems[i].Y == y)
+            {
+                return inventory.CraftItems[i].Value_;
             }
         }
         return null;

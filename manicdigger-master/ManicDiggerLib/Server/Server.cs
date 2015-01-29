@@ -668,25 +668,41 @@ namespace ManicDiggerServer
             }
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
+            
             if (!config.IsCreative)
             {
+                //Put crafting inventory in the main inventory on a save call
                 bool found = false;
-                foreach(var k in Inventory["Local"].Inventory.CraftInv)
+                foreach(var k in Inventory.Values)
                 {
-                    for (int x = 0; x < 12; x++)
+                    foreach (var c in k.Inventory.CraftInv)
                     {
-                        for (int y = 0; y < 12; y++)
+                        found = false;
+                        for (int x = 0; x < 12; x++)
                         {
-                            if (!(Inventory["Local"].Inventory.Items.ContainsKey(new ProtoPoint(x, y))))
+                            for (int y = 0; y < 12; y++)
                             {
-                                Inventory["Local"].Inventory.Items.Add(new ProtoPoint(x, y), k.Value);
-                                found = true;
-                                break;
+                                if ((!(k.Inventory.Items.ContainsKey(new ProtoPoint(x, y)))))
+                                {
+                                    k.Inventory.Items.Add(new ProtoPoint(x, y), k.Inventory.CraftInv[new ProtoPoint(c.Key.X, c.Key.Y)]);
+                                    found = true;
+                                    break;
+                                }
                             }
+                            if (found)
+                                break;
                         }
-                        if (found)
-                            break;
                     }
+
+                    for (int x = 0; x < 5; x++)
+                    {
+                        for (int y = 0; y < 5; y++)
+                        {
+                            if(k.Inventory.CraftInv.ContainsKey(new ProtoPoint(x,y)))
+                                k.Inventory.CraftInv.Remove(new ProtoPoint(x,y));
+                        }
+                    }
+
                 }
                 
                 save.Inventory = Inventory;
@@ -1933,7 +1949,7 @@ namespace ManicDiggerServer
             for (int i = 0; i < d_Data.StartInventoryAmount().Length; i++)
             {
                 int amount = d_Data.StartInventoryAmount()[i];
-                if (!config.IsCreative)
+                if (config.IsCreative)
                 {
                     if (amount > 0 || BlockTypes[i].IsBuildable)
                     {

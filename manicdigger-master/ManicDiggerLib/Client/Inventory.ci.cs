@@ -1,4 +1,5 @@
-﻿public class InventoryUtilClient
+﻿using System.Collections.Generic;
+public class InventoryUtilClient
 {
     public InventoryUtilClient()
     {
@@ -52,6 +53,46 @@
         return itemsAtArea;
     }
 
+    internal PointRef[] ItemsAtCraftArea(int pX, int pY, int sizeX, int sizeY, IntRef retCount)
+    {
+        PointRef[] itemsAtArea = new PointRef[256];
+        int itemsAtAreaCount = 0;
+        for (int xx = 0; xx < sizeX; xx++)
+        {
+            for (int yy = 0; yy < sizeY; yy++)
+            {
+                PointRef cell = PointRef.Create(pX + xx, pY + yy);
+                if (!IsValidCell(cell))
+                {
+                    return null;
+                }
+                if (ItemAtCraftCell(cell) != null)
+                {
+                    bool contains = false;
+                    for (int i = 0; i < itemsAtAreaCount; i++)
+                    {
+                        if (itemsAtArea[i] == null)
+                        {
+                            continue;
+                        }
+                        if (itemsAtArea[i].X == ItemAtCraftCell(cell).X
+                            && itemsAtArea[i].Y == ItemAtCraftCell(cell).Y)
+                        {
+                            contains = true;
+                        }
+                    }
+                    if (!contains)
+                    {
+                        itemsAtArea[itemsAtAreaCount++] = ItemAtCraftCell(cell);
+                    }
+                }
+            }
+        }
+        retCount.value = itemsAtAreaCount;
+        return itemsAtArea;
+    }
+
+
     public bool IsValidCell(PointRef p)
     {
         return !(p.X < 0 || p.Y < 0 || p.X >= CellCountX || p.Y >= CellCountY);
@@ -93,6 +134,30 @@
         return null;
     }
 
+    internal PointRef ItemAtCraftCell(PointRef p)
+    {
+        for (int i = 0; i < d_Inventory.CraftItemsCount; i++)
+        {
+            Packet_PositionItem k = d_Inventory.CraftItems[i];
+            Packet_Item item = k.Value_;
+            for (int x = 0; x < d_Items.ItemSizeX(item); x++)
+            {
+                for (int y = 0; y < d_Items.ItemSizeY(item); y++)
+                {
+                    int px = k.X + x;
+                    int py = k.Y + y;
+                    if (p.X == px && p.Y == py)
+                    {
+                        return PointRef.Create(k.X, k.Y);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    
     internal IntRef FreeHand(int ActiveMaterial_)
     {
         IntRef freehand = null;
