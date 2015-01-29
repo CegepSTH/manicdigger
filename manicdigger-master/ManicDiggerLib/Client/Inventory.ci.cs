@@ -291,6 +291,7 @@ public class WearPlace_
 public abstract class IInventoryController
 {
     public abstract void InventoryClick(Packet_InventoryPosition pos);
+    public abstract void InventoryRightClick(Packet_InventoryPosition pos);
     public abstract void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to);
     public abstract void MoveToInventory(Packet_InventoryPosition from);
 }

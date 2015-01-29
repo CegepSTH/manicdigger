@@ -527,7 +527,77 @@ namespace ManicDigger
             }
         }
         
-            
+        public override void InventoryRightClick(Packet_InventoryPosition pos)
+        {
+            if (pos.Type == Packet_InventoryPositionTypeEnum.MainArea)
+            {
+                if(d_Inventory.DragDropItem == null)
+                {
+                    IntRef itemsAtAreaCount = new IntRef();
+                    PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtArea(pos.AreaX, pos.AreaY,
+                        1, 1, itemsAtAreaCount);
+                    if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                    {
+                        //invalid area
+                        return;
+                    }
+                    if (itemsAtAreaCount.value == 1)
+                    {
+                        if (d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount >= 2)
+                        {
+                            Item i = new Item();
+                            if (d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount % 2 == 1)
+                            {
+                                i.BlockCount = (d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2) + 1;
+
+                            }
+                            else
+                            {
+                                i.BlockCount = d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2;
+                            }
+                            i.BlockId = d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockId;
+                            i.ItemId = d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].ItemId;
+                            d_Inventory.DragDropItem = i;
+                            d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount = d_Inventory.Items[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2;
+                        }
+                    }
+                }
+            }
+            else if ( pos.Type == Packet_InventoryPositionTypeEnum.Crafting)
+            {
+                if(d_Inventory.DragDropItem == null)
+                {
+                    IntRef itemsAtAreaCount = new IntRef();
+                    PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtCraftArea(pos.AreaX, pos.AreaY,
+                        1, 1, itemsAtAreaCount);
+                    if (itemsAtArea == null || itemsAtAreaCount.value > 1)
+                    {
+                        //invalid area
+                        return;
+                    }
+                    if (itemsAtAreaCount.value == 1)
+                    {
+                        if(d_Inventory.CraftInv[new ProtoPoint(pos.AreaX,pos.AreaY)].BlockCount >= 2)
+                        {
+                            Item i = new Item();
+                            if (d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount % 2 == 1)
+                            {
+                                i.BlockCount = (d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2) + 1;
+
+                            }
+                            else
+                            {
+                                i.BlockCount = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2;
+                            }
+                            i.BlockId = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockId;
+                            i.ItemId = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].ItemId;
+                            d_Inventory.DragDropItem = i;
+                            d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2;
+                        }
+                    }
+                }
+            }
+        }
         private void SendInventory()
        {
         }

@@ -104,21 +104,45 @@
         //Check if the click is in the crafting inventory interface
         PointRef cellinCraft = SelectedCraftCell(scaledMouse);
 
+        
+
         if(cellinCraft != null)
         {
-            Packet_InventoryPosition p = new Packet_InventoryPosition();
-            p.Type = Packet_InventoryPositionTypeEnum.Crafting;
-            p.AreaX = cellinCraft.X;
-            p.AreaY = cellinCraft.Y;
-            controller.InventoryClick(p);
+            if (args.GetButton() == MouseButtonEnum.Right)
+            {
+                Packet_InventoryPosition p = new Packet_InventoryPosition();
+                p.Type = Packet_InventoryPositionTypeEnum.Crafting;
+                p.AreaX = cellinCraft.X;
+                p.AreaY = cellinCraft.Y;
+                controller.InventoryRightClick(p);
+                return true;
+            }
+
+            Packet_InventoryPosition p1 = new Packet_InventoryPosition();
+            p1.Type = Packet_InventoryPositionTypeEnum.Crafting;
+            p1.AreaX = cellinCraft.X;
+            p1.AreaY = cellinCraft.Y;
+            controller.InventoryClick(p1);
             return true;
         }
+
+       
 
         //main inventory
         PointRef cellInPage = SelectedCell(scaledMouse);
 #region grab from inventory
         if (cellInPage != null)
         {
+            if (args.GetButton() == MouseButtonEnum.Right)
+            {
+                Packet_InventoryPosition p = new Packet_InventoryPosition();
+                p.Type = Packet_InventoryPositionTypeEnum.MainArea;
+                p.AreaX = cellInPage.X;
+                p.AreaY = cellInPage.Y;
+                controller.InventoryRightClick(p);
+                return true;
+            }
+
             if (args.GetButton() == MouseButtonEnum.Left)
             {
                 Packet_InventoryPosition p = new Packet_InventoryPosition();

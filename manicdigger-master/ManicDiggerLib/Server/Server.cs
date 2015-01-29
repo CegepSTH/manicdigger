@@ -3110,6 +3110,9 @@ namespace ManicDiggerServer
                 case Packet_InventoryActionTypeEnum.Click:
                     s.InventoryClick(cmd.A);
                     break;
+                case Packet_InventoryActionTypeEnum.RightClick:
+                    s.InventoryRightClick(cmd.A);
+                    break;
                 case Packet_InventoryActionTypeEnum.MoveToInventory:
                     s.MoveToInventory(cmd.A);
                     break;
