@@ -152,7 +152,7 @@ public class Game
     internal AssetList assets;
     internal FloatRef assetsLoadProgress;
     internal TextColorRenderer textColorRenderer;
-
+    internal GameData d_gameData;
     public void Start()
     {
         if (!issingleplayer)
@@ -164,7 +164,8 @@ public class Game
         textColorRenderer.platform = platform;
         language.platform = platform;
         language.LoadTranslations();
-        GameData gamedata = new GameData();
+        GameData gamedata = new GameData(this);
+        d_gameData = gamedata;
         gamedata.Start();
         Config3d config3d = new Config3d();
         if (platform.IsFastSystem())
@@ -1352,13 +1353,28 @@ public class Game
     internal bool AllowFreemove;
     internal bool enableCameraControl;
 
+    internal bool CREATIVE;
     public void ChangeGameMode(bool creative)
     {
+        
+        CREATIVE = creative;
         System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
 
         AllowFreemove = creative;
+
         if (!creative)
         {
+
+            int[] inventoryAmount = d_Data.GetStartInventoryAmount();
+            if (inventoryAmount != null)
+            {
+                for (int i = 0; i < inventoryAmount.Length; i++)
+                    inventoryAmount[i] = 24;
+
+                //7d_gameData
+                d_gameData.SetStartInventoryAmount(inventoryAmount);
+            }
+         //   d_gameData.SetWhenPlayerPlacesGetConverTo(inventoryAmount);
             ENABLE_FREEMOVE = false;
             ENABLE_NOCLIP = false;
         }
@@ -11862,8 +11878,10 @@ public class SpecialBlockId
 
 public class GameData
 {
-    public GameData()
+    private Game _game;
+    public GameData(Game game)
     {
+        _game = game;
         mBlockIdEmpty = 0;
         mBlockIdDirt = -1;
         mBlockIdSponge = -1;
@@ -11929,6 +11947,8 @@ public class GameData
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
+
+    public void SetWhenPlayerPlacesGetConverTo(int[] value) { mWhenPlayerPlacesGetsConvertedTo = value; }
     public bool[] IsFlower() { return mIsFlower; }
     public int[] Rail() { return mRail; }
     public float[] WalkSpeed() { return mWalkSpeed; }
@@ -11939,6 +11959,8 @@ public class GameData
     public string[][] CloneSound() { return mCloneSound; }
     public int[] LightRadius() { return mLightRadius; }
     public int[] StartInventoryAmount() { return mStartInventoryAmount; }
+
+    public void SetStartInventoryAmount(int[] value) { mStartInventoryAmount = value; }
     public float[] Strength() { return mStrength; }
     public int[] DamageToPlayer() { return mDamageToPlayer; }
     public int[] WalkableType1() { return mWalkableType; }
@@ -11976,6 +11998,7 @@ public class GameData
     int mBlockIdLava;
     int mBlockIdStationaryLava;
     int mBlockIdFillStart;
+    
     int mBlockIdCuboid;
     int mBlockIdFillArea;
     int mBlockIdMinecart;
@@ -12118,11 +12141,16 @@ public class GameData
             }
         }
         LightRadius()[id] = b.LightRadius;
-        //StartInventoryAmount { get; }
+        _startInventoryAmont = StartInventoryAmount();
         Strength()[id] = b.Strength;
         DamageToPlayer()[id] = b.DamageToPlayer;
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
+    }
+    private int[] _startInventoryAmont;
+    public int[] GetStartInventoryAmount()
+    {
+        return _startInventoryAmont;
     }
 
     public const int SoundCount = 8;

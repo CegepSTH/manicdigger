@@ -59,6 +59,8 @@ namespace ManicDiggerServer
         {
             server = new ServerCi();
         }
+
+        public Game ServerGame { get; set; }
         internal ServerCi server;
         public GameExit exit;
         public ServerMap d_Map;
@@ -361,7 +363,7 @@ namespace ManicDiggerServer
             d_GetFile = getfile;
             
             //Initialize game components
-            var data = new GameData();
+            var data = new GameData(this.ServerGame);
             data.Start();
             d_Data = data;
             d_CraftingTableTool = new CraftingTableTool() { d_Map = map, d_Data = data };
