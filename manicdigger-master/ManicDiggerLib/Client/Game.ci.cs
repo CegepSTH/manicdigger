@@ -6878,6 +6878,8 @@ public class Game
             }
             if (eKey == GetKey(GlKeys.O))
             {
+                Log( "Respawn.");
+               
                 Respawn();
             }
             if (eKey == GetKey(GlKeys.L))
