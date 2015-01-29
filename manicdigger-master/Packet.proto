@@ -86,6 +86,7 @@ package Packet;
         Click = 0;
         WearItem = 1;
         MoveToInventory = 2;
+	RightClick = 3;
     }
     
     message ClientInventoryAction

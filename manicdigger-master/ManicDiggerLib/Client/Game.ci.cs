@@ -1317,6 +1317,17 @@ public class Game
         SendPacketClient(pp);
     }
 
+    internal void InventoryRightClick(Packet_InventoryPosition pos)
+    {
+        Packet_ClientInventoryAction p = new Packet_ClientInventoryAction();
+        p.A = pos;
+        p.Action = Packet_InventoryActionTypeEnum.RightClick;
+        Packet_Client pp = new Packet_Client();
+        pp.Id = Packet_ClientIdEnum.InventoryAction;
+        pp.InventoryAction = p;
+        SendPacketClient(pp);
+    }
+
     internal void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to)
     {
         Packet_ClientInventoryAction p = new Packet_ClientInventoryAction();
@@ -10716,6 +10727,11 @@ public class ClientInventoryController : IInventoryController
     public override void MoveToInventory(Packet_InventoryPosition from)
     {
         g.MoveToInventory(from);
+    }
+
+    public override void InventoryRightClick(Packet_InventoryPosition pos)
+    {
+        g.InventoryRightClick(pos);
     }
 }
 
