@@ -12,7 +12,6 @@ namespace ManicDigger.Mods
             System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
           
             m = manager;
-            m.SetCreative(false);
             m.RenderHint(RenderHint.Fast);
             if (m.IsSinglePlayer())
             {

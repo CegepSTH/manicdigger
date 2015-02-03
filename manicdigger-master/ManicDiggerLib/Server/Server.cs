@@ -52,6 +52,8 @@ namespace ManicDiggerServer
         public int LastMonsterId;
         [ProtoMember(11, IsRequired = false)]
         public Dictionary<string, byte[]> moddata;
+        [ProtoMember(12, IsRequired = false)]
+        public bool IsCreative;
     }
     public partial class Server : ICurrentTime, IDropItem
     {
@@ -644,6 +646,8 @@ namespace ManicDiggerServer
             ManicDiggerSave save = Serializer.Deserialize<ManicDiggerSave>(new MemoryStream(globaldata));
             //d_Generator.SetSeed(save.Seed);
             Seed = save.Seed;
+            //TODOMATHEW
+            config.IsCreative = save.IsCreative;
             d_Map.Reset(d_Map.MapSizeX, d_Map.MapSizeY, d_Map.MapSizeZ);
             if (config.IsCreative) this.Inventory = Inventory = new Dictionary<string, PacketServerInventory>(StringComparer.InvariantCultureIgnoreCase);
             else this.Inventory = save.Inventory;
@@ -670,8 +674,8 @@ namespace ManicDiggerServer
             }
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
-            
-            if (config.IsCreative)
+            save.IsCreative = config.IsCreative;
+            if (!config.IsCreative)
             {
                 //Put crafting inventory in the main inventory on a save call
                 bool found = false;
