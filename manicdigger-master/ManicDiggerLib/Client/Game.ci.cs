@@ -1,8 +1,15 @@
-﻿public class Game
+﻿using ManicDigger.ClientNative;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Xml;
+public class Game
 {
     internal bool IsRunning;
     public Game()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         one = 1;
         performanceinfo = new DictionaryStringString();
         AudioEnabled = true;
@@ -149,7 +156,7 @@
     internal AssetList assets;
     internal FloatRef assetsLoadProgress;
     internal TextColorRenderer textColorRenderer;
-
+    internal GameData d_gameData;
     public void Start()
     {
         if (!issingleplayer)
@@ -161,7 +168,8 @@
         textColorRenderer.platform = platform;
         language.platform = platform;
         language.LoadTranslations();
-        GameData gamedata = new GameData();
+        GameData gamedata = new GameData(this);
+        d_gameData = gamedata;
         gamedata.Start();
         Config3d config3d = new Config3d();
         if (platform.IsFastSystem())
@@ -1313,6 +1321,17 @@
         SendPacketClient(pp);
     }
 
+    internal void InventoryRightClick(Packet_InventoryPosition pos)
+    {
+        Packet_ClientInventoryAction p = new Packet_ClientInventoryAction();
+        p.A = pos;
+        p.Action = Packet_InventoryActionTypeEnum.RightClick;
+        Packet_Client pp = new Packet_Client();
+        pp.Id = Packet_ClientIdEnum.InventoryAction;
+        pp.InventoryAction = p;
+        SendPacketClient(pp);
+    }
+
     internal void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to)
     {
         Packet_ClientInventoryAction p = new Packet_ClientInventoryAction();
@@ -1349,9 +1368,18 @@
     internal bool AllowFreemove;
     internal bool enableCameraControl;
 
+    internal bool CREATIVE;
     public void ChangeGameMode(bool creative)
     {
+        
+        CREATIVE = creative;
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         AllowFreemove = creative;
+
+        string fileName = Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt");
+        UpdateServerConfig(new XmlDocument(), fileName, creative);
+
         if (!creative)
         {
             ENABLE_FREEMOVE = false;
@@ -1359,8 +1387,54 @@
         }
     }
 
+    /// <summary>
+    /// Permet de vérifier si un fichier existe et s'il comporte l'extension passé en paramètre
+    /// </summary>
+    private static bool ValidateFile(string fileName, string extension)
+    {
+        FileInfo file = new FileInfo(fileName);
+        if (!File.Exists(fileName))
+        {
+            Console.WriteLine("Le fichier {0} n'existe pas", fileName);
+            return false;
+        }
+        if (file.Extension != extension)
+        {
+            Console.WriteLine("Le fichier {0} n'est pas un fichier \"{1}\"", fileName, extension);
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Methode qui ajoute un cours spécifique au document xml entré en paramètre
+    /// </summary>
+    private static void UpdateServerConfig(XmlDocument doc, string xmlFileName, bool isCreative)
+    {
+        //------Validation--------
+        if (!ValidateFile(xmlFileName, ".txt"))
+            return;
+        //------------------------
+        doc.Load(xmlFileName);
+
+
+        XmlNode node = doc.DocumentElement.FirstChild;
+
+        while (node.Name != "Creative")
+        {
+            node = node.NextSibling;
+        }
+
+        node.InnerText = (isCreative) ? "true" : "false";       
+
+        doc.Save(xmlFileName);
+    }
+
     internal void Respawn()
     {
+        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+
         if (AllowFreemove)
         {
             Packet_Client p = new Packet_Client();
@@ -3684,8 +3758,7 @@
     }
 
     internal float
-
-        MoveSpeedNow()
+ MoveSpeedNow()
     {
         float movespeednow = movespeed;
         {
@@ -3700,7 +3773,7 @@
                 }
             }
         }
-        if (keyboardState[GetKey(GlKeys.ControlLeft)])
+        if (keyboardState[GetKey(GlKeys.ControlLeft)] && !ENABLE_FREEMOVE)
         {
             //enable_acceleration = false;
             movespeednow *= one * 2 / 10;
@@ -4310,7 +4383,9 @@
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
                 IsRunning = false;
+
                 movespeed = basemovespeed;
+
             }
         }
         for (int i = 0; i < clientmodsCount; i++)
@@ -4353,7 +4428,15 @@
         int playery = platform.FloatToInt(player.playerposition.Z);
 
         //Added by Alexandre
-        Respawn();
+
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
     }
     internal int[] materialSlots;
 
@@ -6748,13 +6831,15 @@
             //ShiftLeft --> run... fast speed!
             if (AllowFreemove && movespeed > basemovespeed * 2)
                 movespeed = basemovespeed * 10;
-            else
-                movespeed = 5;
+
 
             if (eKey == GetKey(GlKeys.ShiftLeft))
             {
-                IsRunning = true;
-                movespeed = movespeed * 2;
+                if (!IsRunning && movespeed < 9)
+                {
+                    IsRunning = true;
+                    movespeed = basemovespeed * 2;
+                }
             }
 
 
@@ -6920,6 +7005,8 @@
             }
             if (eKey == GetKey(GlKeys.O))
             {
+                Log( "Respawn.");
+               
                 Respawn();
             }
             if (eKey == GetKey(GlKeys.L))
@@ -7209,6 +7296,7 @@
             case GuiState.Inventory:
                 {
                     DrawDialogs();
+
                     //d_The3d.ResizeGraphics(Width, Height);
                     //d_The3d.OrthoMode(d_HudInventory.ConstWidth, d_HudInventory.ConstHeight);
                     d_HudInventory.Draw();
@@ -7313,7 +7401,6 @@
         bool moveup = false;
         bool movedown = false;
 
-        //System.Console.WriteLine(movespeed.ToString());
         if (guistate == GuiState.Normal)
         {
             if (GuiTyping == TypingState.None)
@@ -10765,6 +10852,11 @@ public class ClientInventoryController : IInventoryController
     {
         g.MoveToInventory(from);
     }
+
+    public override void InventoryRightClick(Packet_InventoryPosition pos)
+    {
+        g.InventoryRightClick(pos);
+    }
 }
 
 public enum CameraType
@@ -11926,8 +12018,10 @@ public class SpecialBlockId
 
 public class GameData
 {
-    public GameData()
+    private Game _game;
+    public GameData(Game game)
     {
+        _game = game;
         mBlockIdEmpty = 0;
         mBlockIdDirt = -1;
         mBlockIdSponge = -1;
@@ -11994,6 +12088,8 @@ public class GameData
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
+
+    public void SetWhenPlayerPlacesGetConverTo(int[] value) { mWhenPlayerPlacesGetsConvertedTo = value; }
     public bool[] IsFlower() { return mIsFlower; }
     public int[] Rail() { return mRail; }
     public float[] WalkSpeed() { return mWalkSpeed; }
@@ -12004,6 +12100,8 @@ public class GameData
     public string[][] CloneSound() { return mCloneSound; }
     public int[] LightRadius() { return mLightRadius; }
     public int[] StartInventoryAmount() { return mStartInventoryAmount; }
+
+    public void SetStartInventoryAmount(int[] value) { mStartInventoryAmount = value; }
     public float[] Strength() { return mStrength; }
     public int[] DamageToPlayer() { return mDamageToPlayer; }
     public int[] WalkableType1() { return mWalkableType; }
@@ -12044,6 +12142,7 @@ public class GameData
     int mBlockIdLava;
     int mBlockIdStationaryLava;
     int mBlockIdFillStart;
+    
     int mBlockIdCuboid;
     int mBlockIdFillArea;
     int mBlockIdMinecart;
@@ -12186,12 +12285,17 @@ public class GameData
             }
         }
         LightRadius()[id] = b.LightRadius;
-        //StartInventoryAmount { get; }
+        _startInventoryAmont = StartInventoryAmount();
         Strength()[id] = b.Strength;
         DamageToPlayer()[id] = b.DamageToPlayer;
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
         Durability()[id] = b.Durability;
+    }
+    private int[] _startInventoryAmont;
+    public int[] GetStartInventoryAmount()
+    {
+        return _startInventoryAmont;
     }
 
     public const int SoundCount = 8;

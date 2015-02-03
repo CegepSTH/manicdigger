@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace ManicDigger.Mods
 {
@@ -8,7 +9,10 @@ namespace ManicDigger.Mods
         public void PreStart(ModManager m) { }
         public void Start(ModManager manager)
         {
+            System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+          
             m = manager;
+            m.SetCreative(false);
             m.RenderHint(RenderHint.Fast);
             if (m.IsSinglePlayer())
             {
@@ -949,13 +953,13 @@ namespace ManicDigger.Mods
             m.SetGameDayRealHours(1);
             m.SetGameYearRealHours(24);
             
-            //Creative inventory
+            ////Creative inventory
             m.AddToCreativeInventory("Stone");
             m.AddToCreativeInventory("Dirt");
             m.AddToCreativeInventory("Cobblestone");
             m.AddToCreativeInventory("Wood");
             m.AddToCreativeInventory("Sapling");
-            //m.AddToCreativeInventory("Adminium");
+            m.AddToCreativeInventory("Adminium");
             m.AddToCreativeInventory("Water");
             m.AddToCreativeInventory("Lava");
             m.AddToCreativeInventory("Sand");
@@ -1032,12 +1036,12 @@ namespace ManicDigger.Mods
             m.AddToCreativeInventory("Rail60");
             
             m.AddToStartInventory("Torch", 6);
-            m.AddToStartInventory("Crops1", 1);
-            m.AddToStartInventory("CraftingTable", 6);
-            m.AddToStartInventory("GoldCoin", 2);
-            m.AddToStartInventory("GoldBar", 5);
-            m.AddToStartInventory("SilverCoin", 1);
-            m.AddToStartInventory("Compass", 1);
+            //m.AddToStartInventory("Crops1", 1);
+            //m.AddToStartInventory("CraftingTable", 6);
+            //m.AddToStartInventory("GoldCoin", 2);
+            //m.AddToStartInventory("GoldBar", 5);
+            //m.AddToStartInventory("SilverCoin", 1);
+            //m.AddToStartInventory("Compass", 1);
             
             
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
@@ -1145,7 +1149,7 @@ namespace ManicDigger.Mods
                 return;
             }
             Respawn(player);
-            m.SendMessage(player, "Respawn.");
+            //m.SendMessage(player, "Respawn.");
         }
         
         string ColoredPlayername(int player)

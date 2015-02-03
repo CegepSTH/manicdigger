@@ -24,6 +24,7 @@ package Packet;
         ServerQuery = 64;
         GameResolution = 10;
         ExtendedPacketCommand = 100;
+		IsCreative = 999;
 	}
 	
 	
@@ -86,6 +87,7 @@ package Packet;
         Click = 0;
         WearItem = 1;
         MoveToInventory = 2;
+	RightClick = 3;
     }
     
     message ClientInventoryAction
@@ -838,6 +840,7 @@ package Packet;
         repeated PositionItem items = 7;
         optional Item dragDropItem = 8;
         repeated Item rightHand = 9;
+	repeated PositionItem CraftItems = 10;
     }
     
     message Item

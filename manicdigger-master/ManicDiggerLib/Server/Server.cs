@@ -59,6 +59,8 @@ namespace ManicDiggerServer
         {
             server = new ServerCi();
         }
+
+        public Game ServerGame { get; set; }
         internal ServerCi server;
         public GameExit exit;
         public ServerMap d_Map;
@@ -361,7 +363,7 @@ namespace ManicDiggerServer
             d_GetFile = getfile;
             
             //Initialize game components
-            var data = new GameData();
+            var data = new GameData(this.ServerGame);
             data.Start();
             d_Data = data;
             d_CraftingTableTool = new CraftingTableTool() { d_Map = map, d_Data = data };
@@ -635,7 +637,7 @@ namespace ManicDiggerServer
                 }
                 //d_Generator.SetSeed(Seed);
                 MemoryStream ms = new MemoryStream();
-                SaveGame(ms);
+                //SaveGame(ms);
                 d_ChunkDb.SetGlobalData(ms.ToArray());
                 return;
             }
@@ -668,8 +670,43 @@ namespace ManicDiggerServer
             }
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
-            if (!config.IsCreative)
+            
+            if (config.IsCreative)
             {
+                //Put crafting inventory in the main inventory on a save call
+                bool found = false;
+                foreach(var k in Inventory.Values)
+                {
+                    foreach (var c in k.Inventory.CraftInv)
+                    {
+                        found = false;
+                        for (int x = 0; x < 12; x++)
+                        {
+                            for (int y = 0; y < 12; y++)
+                            {
+                                if ((!(k.Inventory.Items.ContainsKey(new ProtoPoint(x, y)))))
+                                {
+                                    k.Inventory.Items.Add(new ProtoPoint(x, y), k.Inventory.CraftInv[new ProtoPoint(c.Key.X, c.Key.Y)]);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found)
+                                break;
+                        }
+                    }
+
+                    for (int x = 0; x < 5; x++)
+                    {
+                        for (int y = 0; y < 5; y++)
+                        {
+                            if(k.Inventory.CraftInv.ContainsKey(new ProtoPoint(x,y)))
+                                k.Inventory.CraftInv.Remove(new ProtoPoint(x,y));
+                        }
+                    }
+
+                }
+                
                 save.Inventory = Inventory;
             }
             save.PlayerStats = PlayerStats;
@@ -1598,7 +1635,22 @@ namespace ManicDiggerServer
                         p.Inventory.RightHand[i] = ConvertItem(inv.Inventory.RightHand[i]);
                     }
                 }
+
+                p.Inventory.CraftItemsCount = inv.Inventory.CraftInv.Count;
+                p.Inventory.CraftItemsLength = inv.Inventory.CraftInv.Count;
+                p.Inventory.CraftItems = new Packet_PositionItem[inv.Inventory.CraftInv.Count];
+                int i2 = 0;
+                foreach (var k in inv.Inventory.CraftInv)
+                {
+                    Packet_PositionItem item = new Packet_PositionItem();
+                    item.Key_ = SerializePoint(k.Key.X, k.Key.Y);
+                    item.Value_ = ConvertItem(k.Value);
+                    item.X = k.Key.X;
+                    item.Y = k.Key.Y;
+                    p.Inventory.CraftItems[i2++] = item;
+                }
             }
+
             return p;
         }
 
@@ -1899,7 +1951,7 @@ namespace ManicDiggerServer
             for (int i = 0; i < d_Data.StartInventoryAmount().Length; i++)
             {
                 int amount = d_Data.StartInventoryAmount()[i];
-                if (!config.IsCreative)
+                if (config.IsCreative)
                 {
                     if (amount > 0 || BlockTypes[i].IsBuildable)
                     {
@@ -2417,6 +2469,10 @@ namespace ManicDiggerServer
                             }
                         }
                     }
+                    break;
+                case Packet_ClientIdEnum.IsCreative:
+
+                    d_Data.SetStartInventoryAmount(new int[1024]);
                     break;
                 case Packet_ClientIdEnum.Oxygen:
                     {
@@ -3059,6 +3115,9 @@ namespace ManicDiggerServer
             {
                 case Packet_InventoryActionTypeEnum.Click:
                     s.InventoryClick(cmd.A);
+                    break;
+                case Packet_InventoryActionTypeEnum.RightClick:
+                    s.InventoryRightClick(cmd.A);
                     break;
                 case Packet_InventoryActionTypeEnum.MoveToInventory:
                     s.MoveToInventory(cmd.A);
@@ -4076,6 +4135,7 @@ namespace ManicDiggerServer
             {
                 try
                 {
+                    string text = Path.Combine(GameStorePath.gamepathconfig, filename);
                     using (TextReader textReader = new StreamReader(Path.Combine(GameStorePath.gamepathconfig, filename)))
                     {
                         XmlSerializer deserializer = new XmlSerializer(typeof(ServerClient));

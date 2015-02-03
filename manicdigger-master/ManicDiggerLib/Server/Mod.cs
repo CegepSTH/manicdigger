@@ -49,6 +49,10 @@ namespace ManicDigger
             throw new Exception(name);
         }
 
+        /// <summary>
+        /// here!
+        /// </summary>
+        /// <param name="blockType"></param>
         public void AddToCreativeInventory(string blockType)
         {
             int id = GetBlockId(blockType);
