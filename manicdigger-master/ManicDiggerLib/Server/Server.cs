@@ -671,7 +671,7 @@ namespace ManicDiggerServer
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
             
-            if (!config.IsCreative)
+            if (config.IsCreative)
             {
                 //Put crafting inventory in the main inventory on a save call
                 bool found = false;

@@ -1,6 +1,8 @@
 ﻿using ManicDigger.ClientNative;
+using System;
 using System.IO;
 using System.Reflection;
+using System.Xml;
 public class Game
 {
     internal bool IsRunning;
@@ -1375,37 +1377,58 @@ public class Game
 
         AllowFreemove = creative;
 
+        string fileName = Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt");
+        UpdateServerConfig(new XmlDocument(), fileName, creative);
+
         if (!creative)
         {
-         //   Packet_Client pp = new Packet_Client();
-         //   pp.Id = Packet_ClientIdEnum.IsCreative;
-         //   SendPacketClient(pp);
-         //   //int[] inventoryAmount = d_Data.GetStartInventoryAmount();
-         //   //if (inventoryAmount != null)
-         //   //{
-         //   //    for (int i = 0; i < inventoryAmount.Length; i++)
-         //   //        inventoryAmount[i] = 24;
-
-         //   //    //7d_gameData
-         //   //    d_gameData.SetStartInventoryAmount(inventoryAmount);
-         //   //}
-         ////   d_gameData.SetWhenPlayerPlacesGetConverTo(inventoryAmount);
-
-
-
-            StreamReader sr = new StreamReader(Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt"));
-            string f = sr.ReadToEnd();
-            sr.Close();
-
-            StreamWriter sw = new StreamWriter(Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt"));
-            //f.Replace("<Creative>true</Creative>", "<Creative>false</Creative>");
-            f.Replace("true", "false");
-            sw.Write(f);
-            sw.Close();
-            
             ENABLE_FREEMOVE = false;
             ENABLE_NOCLIP = false;
         }
+    }
+
+    /// <summary>
+    /// Permet de vérifier si un fichier existe et s'il comporte l'extension passé en paramètre
+    /// </summary>
+    private static bool ValidateFile(string fileName, string extension)
+    {
+        FileInfo file = new FileInfo(fileName);
+        if (!File.Exists(fileName))
+        {
+            Console.WriteLine("Le fichier {0} n'existe pas", fileName);
+            return false;
+        }
+        if (file.Extension != extension)
+        {
+            Console.WriteLine("Le fichier {0} n'est pas un fichier \"{1}\"", fileName, extension);
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Methode qui ajoute un cours spécifique au document xml entré en paramètre
+    /// </summary>
+    private static void UpdateServerConfig(XmlDocument doc, string xmlFileName, bool isCreative)
+    {
+        //------Validation--------
+        if (!ValidateFile(xmlFileName, ".txt"))
+            return;
+        //------------------------
+        doc.Load(xmlFileName);
+
+
+        XmlNode node = doc.DocumentElement.FirstChild;
+
+        while (node.Name != "Creative")
+        {
+            node = node.NextSibling;
+        }
+
+        node.InnerText = (isCreative) ? "true" : "false";       
+
+        doc.Save(xmlFileName);
     }
 
     internal void Respawn()
