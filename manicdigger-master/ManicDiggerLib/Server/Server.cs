@@ -4737,6 +4737,7 @@ namespace ManicDiggerServer
             p.WalkSpeedFloat = Server.SerializeFloat(block.WalkSpeed);
             p.WalkSpeedWhenUsedFloat = Server.SerializeFloat(block.WalkSpeedWhenUsed);
             p.WhenPlacedGetsConvertedTo = block.WhenPlayerPlacesGetsConvertedTo;
+            p.Durability = block.Durability;
             return p;
         }
 

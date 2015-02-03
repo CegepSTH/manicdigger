@@ -18,7 +18,7 @@ public class Game
         playerPositionSpawnX = 15 + one / 2;
         playerPositionSpawnY = 64;
         playerPositionSpawnZ = 15 + one / 2;
-
+        playerTool = TOOLS.PICKAXE;
         player = new CharacterPhysicsState();
 
         TextureId = new int[MaxBlockTypes][];
@@ -42,7 +42,7 @@ public class Game
         cachedTextTextures = new CachedTextTexture[cachedTextTexturesMax];
         packetLen = new IntRef();
         ENABLE_DRAW2D = true;
-        AllowFreemove = false;// ManicDiggerLib.Client.Data.Creative ? true : false;
+        AllowFreemove = false;
         enableCameraControl = true;
         textures = new DictionaryStringInt1024();
         ServerInfo = new ServerInformation();
@@ -1685,6 +1685,8 @@ public class Game
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 30, platform.GetCanvasHeight() - 40, d, false);
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
+
+            Draw2dText(platform.StringFormat("{0}", playerTool.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
             //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
@@ -1787,9 +1789,19 @@ public class Game
 
     internal void DrawEnemyHealthUseInfo(string name, float progress, bool useInfo)
     {
+        int x = currentAttackedBlock.X;
+        int yz = currentAttackedBlock.Y;
+        int z = currentAttackedBlock.Z;
+        int blocktype = GetBlock(x, yz, z);
+        float health = GetCurrentBlockHealth(x, yz, z);
+        float pro = health / d_Data.Durability()[blocktype];
+        System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
-        Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300 * progress, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
+        if (!AllowFreemove)
+            Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300 * pro, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
+        else
+            Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
         FontCi font = new FontCi();
         font.family = "Arial";
         font.size = 14;
@@ -2440,12 +2452,19 @@ public class Game
 
     internal float GetCurrentBlockHealth(int x, int y, int z)
     {
-        if (blockHealth.ContainsKey(x, y, z))
+        if (!AllowFreemove)
         {
-            return blockHealth.Get(x, y, z);
+            if (blockHealth.ContainsKey(x, y, z))
+            {
+                return blockHealth.Get(x, y, z);
+            }
+            int blocktype = GetBlock(x, y, z);
+            return d_Data.Durability()[blocktype];
         }
-        int blocktype = GetBlock(x, y, z);
-        return d_Data.Strength()[blocktype];
+        else
+        {
+            return 0;
+        }
     }
 
     internal void DrawDialogs()
@@ -2509,12 +2528,15 @@ public class Game
             int z = currentAttackedBlock.Z;
             int blocktype = GetBlock(x, y, z);
             float health = GetCurrentBlockHealth(x, y, z);
-            float progress = health / d_Data.Strength()[blocktype];
+            float progress = 100 * health / d_Data.Durability()[blocktype];
             if (IsUsableBlock(blocktype))
             {
                 DrawEnemyHealthUseInfo(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress, true);
             }
-            DrawEnemyHealthCommon(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress);
+            else
+            {
+                DrawEnemyHealthCommon(language.Get(StringTools.StringAppend(platform, "Block_", blocktypes[blocktype].Name)), progress);
+            }
         }
     }
 
@@ -2659,9 +2681,47 @@ public class Game
         return platform.FloatToInt(p * 32);
     }
 
-    public float WeaponAttackStrength()
+    internal TOOLS playerTool;
+
+    internal enum TOOLS
     {
-        return NextFloat(2, 4);
+        SHOVEL = 4,
+        PICKAXE = 10,
+        AXE = 3,
+        NOTOOL = 2
+    }
+
+    public float WeaponAttackStrength(int idBlock)
+    {
+        int strength = 0;
+        switch (playerTool)
+        {
+            case TOOLS.SHOVEL:
+                //GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                    strength = (int)TOOLS.SHOVEL;
+                else
+                    strength = (int)TOOLS.NOTOOL;
+                break;
+            case TOOLS.PICKAXE:
+                //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                    strength = (int)TOOLS.PICKAXE;
+                else
+                    strength = (int)TOOLS.NOTOOL;
+                break;
+            case TOOLS.AXE:
+                //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                    strength = (int)TOOLS.AXE;
+                else
+                    strength = (int)TOOLS.NOTOOL;
+                break;
+            default:
+                strength = (int)TOOLS.NOTOOL;
+                break;
+        }
+        return strength;
     }
 
     public float NextFloat(float min, float max)
@@ -7011,6 +7071,30 @@ public class Game
             }
             return;
         }
+        //ERASE WHEN TOOLS DONE - By Alex
+        if (eKey == GetKey(GlKeys.Z))
+        {
+            switch (playerTool)
+            {
+                case TOOLS.SHOVEL:
+                    playerTool = TOOLS.PICKAXE;
+                    break;
+                case TOOLS.PICKAXE:
+                    playerTool = TOOLS.AXE;
+                    break;
+                case TOOLS.AXE:
+                    playerTool = TOOLS.NOTOOL;
+                    break;
+                case TOOLS.NOTOOL:
+                    playerTool = TOOLS.SHOVEL;
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
         if (guistate == GuiState.ModalDialog)
         {
             if (eKey == GetKey(GlKeys.B)
@@ -8168,7 +8252,7 @@ public class Game
                             {
                                 blockHealth.Set(posx, posy, posz, GetCurrentBlockHealth(posx, posy, posz));
                             }
-                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength());
+                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx, posy, posz)));
                             float health = GetCurrentBlockHealth(posx, posy, posz);
                             if (health <= 0)
                             {
@@ -12000,6 +12084,7 @@ public class GameData
         mWalkableType = new int[count];
 
         mDefaultMaterialSlots = new int[10];
+        mDurability = new int[count];
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
@@ -12021,6 +12106,8 @@ public class GameData
     public int[] DamageToPlayer() { return mDamageToPlayer; }
     public int[] WalkableType1() { return mWalkableType; }
 
+    public int[] Durability() { return mDurability; }
+
     public int[] DefaultMaterialSlots() { return mDefaultMaterialSlots; }
 
     int[] mWhenPlayerPlacesGetsConvertedTo;
@@ -12037,6 +12124,7 @@ public class GameData
     float[] mStrength;
     int[] mDamageToPlayer;
     int[] mWalkableType;
+    int[] mDurability;
 
     int[] mDefaultMaterialSlots;
 
@@ -12202,6 +12290,7 @@ public class GameData
         DamageToPlayer()[id] = b.DamageToPlayer;
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
+        Durability()[id] = b.Durability;
     }
     private int[] _startInventoryAmont;
     public int[] GetStartInventoryAmount()

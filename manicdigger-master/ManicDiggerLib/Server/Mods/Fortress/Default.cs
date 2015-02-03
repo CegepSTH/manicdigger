@@ -49,6 +49,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 30,
+
                 });
             m.SetBlockType(2, "Grass", new BlockType()
                 {
@@ -63,15 +65,15 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
                     WhenPlayerPlacesGetsConvertedTo = 3,
-                    Durability = 1,
+                    Durability = 20,
                 });
             m.SetBlockType(3, "Dirt", new BlockType()
                 {
-                    AllTextures = "Wood",
+                    AllTextures = "Dirt",
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
-                    Durability = 10,
+                    Durability = 20,
                 });
             m.SetBlockType(4, "Cobblestone", new BlockType()
                 {
@@ -79,6 +81,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 30,
+
                 });
             m.SetBlockType(5, "Wood", new BlockType()
                 {
@@ -86,6 +90,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 25,
+
                 });
             m.SetBlockType(6, "Sapling", new BlockType()
                 {
@@ -93,6 +99,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Plant,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
+
                 });
             m.SetBlockType(7, "Adminium", new BlockType()
                 {
@@ -139,6 +147,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 7,
+
                 });
             m.SetBlockType(13, "Gravel", new BlockType()
                 {
@@ -146,6 +156,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
+
                 });
             m.SetBlockType(14, "GoldOre", new BlockType()
                 {
@@ -153,6 +165,8 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 70,
+
                 });
             m.SetBlockType(15, "IronOre", new BlockType()
                 {
@@ -160,6 +174,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 60,
                 });
             m.SetBlockType(16, "CoalOre", new BlockType()
                 {
@@ -167,6 +182,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 50,
                 });
             m.SetBlockType(17, "TreeTrunk", new BlockType()
                 {
@@ -180,6 +196,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 15,
                 });
             m.SetBlockType(18, "Leaves", new BlockType()
                 {
@@ -187,6 +204,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Transparent,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(19, "Sponge", new BlockType()
                 {
@@ -194,6 +212,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(20, "Glass", new BlockType()
                 {
@@ -201,6 +220,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Transparent,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 5,
                 });
             m.SetBlockType(21, "RedCloth", new BlockType()
                 {
@@ -208,6 +228,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(22, "OrangeCloth", new BlockType()
                 {
@@ -215,6 +236,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(23, "YellowCloth", new BlockType()
                 {
@@ -222,6 +244,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(24, "LightGreenCloth", new BlockType()
                 {
@@ -229,6 +252,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(25, "GreenCloth", new BlockType()
                 {
@@ -236,6 +260,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(26, "AquaGreenCloth", new BlockType()
                 {
@@ -243,6 +268,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(27, "CyanCloth", new BlockType()
                 {
@@ -250,6 +276,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(28, "BlueCloth", new BlockType()
                 {
@@ -257,6 +284,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(29, "PurpleCloth", new BlockType()
                 {
@@ -264,6 +292,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(30, "IndigoCloth", new BlockType()
                 {
@@ -271,6 +300,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(31, "VioletCloth", new BlockType()
                 {
@@ -278,6 +308,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(32, "MagentaCloth", new BlockType()
                 {
@@ -285,6 +316,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(33, "PinkCloth", new BlockType()
                 {
@@ -292,6 +324,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(34, "BlackCloth", new BlockType()
                 {
@@ -299,6 +332,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(35, "GrayCloth", new BlockType()
                 {
@@ -306,6 +340,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(36, "WhiteCloth", new BlockType()
                 {
@@ -313,6 +348,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 10,
                 });
             m.SetBlockType(37, "YellowFlowerDecorations", new BlockType()
                 {
@@ -320,6 +356,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Plant,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(38, "RedRoseDecorations", new BlockType()
                 {
@@ -327,6 +364,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Plant,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(39, "RedMushroom", new BlockType()
                 {
@@ -334,6 +372,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Plant,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(40, "BrownMushroom", new BlockType()
                 {
@@ -341,6 +380,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Plant,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(41, "GoldBlock", new BlockType()
                 {
@@ -348,6 +388,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 70,
                 });
             m.SetBlockType(42, "IronBlock", new BlockType()
                 {
@@ -355,6 +396,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 80,
                 });
             m.SetBlockType(43, "DoubleStair", new BlockType()
                 {
@@ -368,6 +410,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 15,
                 });
             m.SetBlockType(44, "Stair", new BlockType()
                 {
@@ -381,6 +424,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.HalfHeight,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 15,
                 });
             m.SetBlockType(45, "Brick", new BlockType()
                 {
@@ -388,6 +432,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 25,
                 });
             m.SetBlockType(47, "Bookcase", new BlockType()
                 {
@@ -401,6 +446,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 15,
                 });
             m.SetBlockType(48, "MossyCobblestone", new BlockType()
                 {
@@ -408,6 +454,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 30,
                 });
             m.SetBlockType(49, "Obsidian", new BlockType()
                 {
@@ -415,6 +462,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 150,
                 });
             m.SetBlockType(50, "Torch", new BlockType()
                 {
@@ -429,6 +477,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Torch,
                     WalkableType = WalkableType.Empty,
                     Sounds = solidSounds,
+                    Durability = 1,
                 });
             m.SetBlockType(51, "FireBlock", new BlockType()
                 {
@@ -457,6 +506,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 20,
                 });
             m.SetBlockType(55, "Gear", new BlockType()
                 {
@@ -610,6 +660,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 15,
                 });
             m.SetBlockType(113, "Minecart", new BlockType()
                 {
@@ -759,6 +810,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 90,
                 });
             m.SetBlockType(135, "SilverCoin", new BlockType()
                 {
@@ -787,6 +839,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 20,
                 });
             m.SetBlockType(143, "FakeBookcase", new BlockType()
                 {
@@ -813,6 +866,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Transparent,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
+                    Durability = 20,
                 });
             m.SetBlockType(145, "GlassDesk", new BlockType()
                 {
