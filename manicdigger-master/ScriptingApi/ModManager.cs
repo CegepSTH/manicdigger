@@ -757,24 +757,29 @@ namespace ManicDigger
 
         public Inventory()
         {
-            InitialiseRecipes();
+            InitializeRecipes();
         }
 
         //Create all of the game's recipe for crafting in the inventory
-        public void InitialiseRecipes()
+        public void InitializeRecipes()
         {
-            List<CraftIngredient> ings = new List<CraftIngredient>();
-
             //Recipe 2 tree -> 4 planche
-            ings.Add(new CraftIngredient(17,1,1,2));
+            List<CraftIngredient> ings = new List<CraftIngredient>();
+            ings.Add(new CraftIngredient(17, 1, 1, 2));
             AddCraftRecipe(ings, new CraftIngredient(5, 4, 4, 2));
+
+            ings.Clear();
+            ings.Add(new CraftIngredient(5,1,1,2));
+            ings.Add(new CraftIngredient(5, 1, 1, 3));
+            AddCraftRecipe(ings, new CraftIngredient(2, 4, 4, 2));
+
         }
 
         //Add a recipe to the game
         public void AddCraftRecipe(List<CraftIngredient> ingredients, CraftIngredient output)
         {
             Recipe r = new Recipe();
-            r.ingredients = ingredients;
+            r.ingredients = new List<CraftIngredient>(ingredients);
             r.output = output;
             lstCraftingRecipe.Add(r);
             
