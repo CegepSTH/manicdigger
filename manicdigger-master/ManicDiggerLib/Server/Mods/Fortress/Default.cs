@@ -949,7 +949,7 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(255, "Silver pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Pickaxe",
+                AllTextures = "Grid_Silver_Pickaxe",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
@@ -1043,7 +1043,7 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(265, "Silver hoe", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Hoe",
+                AllTextures = "Grid_Silver_Hoe",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
@@ -1089,7 +1089,7 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(270, "Silver shovel", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Shovel",
+                AllTextures = "Grid_Silver_Shovel",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
