@@ -1687,7 +1687,7 @@ public class Game
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
 
-            Draw2dText(platform.StringFormat("{0}", playerTool.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
+            Draw2dText(platform.StringFormat2("{0} in {1}", playerTool.ToString(),toolType.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
             //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
@@ -8827,6 +8827,8 @@ public class Game
                         toolType = TOOLTYPE.WOOD;
                         break;
                     default:
+                        playerTool = TOOLS.NOTOOL;
+                        toolType = TOOLTYPE.WOOD;
                         break;
                 }
                 string img = null;
