@@ -728,6 +728,10 @@ namespace ManicDigger
         //Mathew 
         //Crafting inventory
         public Dictionary<ProtoPoint, Item> CraftInv = new Dictionary<ProtoPoint, Item>();
+        //List of all crafting recipe
+        public List<Recipe> lstCraftingRecipe = new List<Recipe>();
+        //Recipe whos output is currently in the grid
+        public Recipe currentRecipe;
 
         public void CopyFrom(Inventory inventory)
         {
@@ -750,7 +754,56 @@ namespace ManicDigger
             i.RightHand = new Item[10];
             return i;
         }
+
+        public Inventory()
+        {
+            InitialiseRecipes();
+        }
+
+        //Create all of the game's recipe for crafting in the inventory
+        public void InitialiseRecipes()
+        {
+            List<CraftIngredient> ings = new List<CraftIngredient>();
+
+            //Recipe 2 tree -> 4 planche
+            ings.Add(new CraftIngredient(17,1,1,2));
+            AddCraftRecipe(ings, new CraftIngredient(5, 4, 4, 2));
+        }
+
+        //Add a recipe to the game
+        public void AddCraftRecipe(List<CraftIngredient> ingredients, CraftIngredient output)
+        {
+            Recipe r = new Recipe();
+            r.ingredients = ingredients;
+            r.output = output;
+            lstCraftingRecipe.Add(r);
+            
+        }
     }
+
+    public class Recipe
+    {
+        public List<CraftIngredient> ingredients;
+        public CraftIngredient output;
+    }
+
+    public class CraftIngredient
+    {
+        public int Type;
+        public int Amount;
+        public int PosX;
+        public int PosY;
+
+        public CraftIngredient(int itype, int iamount, int x, int y)
+        {
+            Type = itype;
+            Amount = iamount;
+            PosX = x;
+            PosY = y;
+        }
+    }
+
+
 
     [ProtoContract]
     public class ProtoPoint

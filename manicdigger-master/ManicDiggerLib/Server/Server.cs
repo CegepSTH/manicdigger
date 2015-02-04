@@ -467,6 +467,9 @@ namespace ManicDiggerServer
             serverGroup.GroupColor = ServerClientMisc.ClientColor.Red;
             serverConsoleClient.AssignGroup(serverGroup);
             serverConsole = new ServerConsole(this, exit);
+
+            
+
         }
         void Start(int port)
         {
@@ -3114,7 +3117,6 @@ namespace ManicDiggerServer
             s.d_InventoryUtil = GetInventoryUtil(inventory);
             s.d_Items = d_DataItems;
             s.d_DropItem = this;
-
             switch (cmd.Action)
             {
                 case Packet_InventoryActionTypeEnum.Click:
@@ -5085,6 +5087,10 @@ namespace ManicDiggerServer
         public int Type;
         [ProtoMember(2)]
         public int Amount;
+        [ProtoMember(3)]
+        public int PosX;
+        [ProtoMember(4)]
+        public int PosY;
     }
 
     [ProtoContract()]

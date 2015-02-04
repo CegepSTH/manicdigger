@@ -11,6 +11,13 @@ namespace ManicDigger.Mods
         {
             System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
           
+
+            //Crafting recipes test
+            
+
+
+
+
             m = manager;
             m.RenderHint(RenderHint.Fast);
             if (m.IsSinglePlayer())
