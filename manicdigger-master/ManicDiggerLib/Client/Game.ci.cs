@@ -1687,7 +1687,7 @@ public class Game
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
 
-            Draw2dText(platform.StringFormat2("{0} in {1}", playerTool.ToString(),toolType.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
+            Draw2dText(platform.StringFormat2("{1} {0}", playerTool.ToString(),toolType.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
             //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
@@ -2706,7 +2706,7 @@ public class Game
 
     public float WeaponAttackStrength(int idBlock)
     {
-        int strength = 0;
+        float strength = 0;
         switch (playerTool)
         {
             case TOOLS.SHOVEL:
@@ -8746,83 +8746,83 @@ public class Game
                 Packet_Item item = d_Inventory.RightHand[ActiveMaterial];
                 switch (item.GetBlockId())
                 {
-                    case 255: //Silver Pickaxe
+                    case 155: //Silver Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 256: //Iron Pickaxe
+                    case 156: //Iron Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 257: //Golden Pickaxe
+                    case 157: //Golden Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 258: //Stone Pickaxe
+                    case 158: //Stone Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 259: //Wooden Pickaxe
+                    case 159: //Wooden Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 260: //Silver Axe
+                    case 160: //Silver Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 261: //Iron Axe
+                    case 161: //Iron Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 262: //Goldeen Axe
+                    case 162: //Goldeen Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 263: //Stone Axe
+                    case 163: //Stone Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 264: //Wooden Axe
+                    case 164: //Wooden Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 265: //Silver Hoe
+                    case 165: //Silver Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 266: //Iron Hoe
+                    case 166: //Iron Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 267: //Goldeen Hoe
+                    case 167: //Goldeen Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 268: //Stone Hoe
+                    case 168: //Stone Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 269: //Wooden Hoe
+                    case 169: //Wooden Hoe
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 270: //Silver Shovel
+                    case 170: //Silver Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 271: //Iron Shovel
+                    case 171: //Iron Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 272: //Goldeen Shovel
+                    case 172: //Goldeen Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 273: //Stone Shovel
+                    case 173: //Stone Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 274: //Wooden Shovel
+                    case 174: //Wooden Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.WOOD;
                         break;
