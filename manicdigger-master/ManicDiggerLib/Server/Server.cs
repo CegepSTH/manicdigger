@@ -4711,7 +4711,7 @@ namespace ManicDiggerServer
             p.IronSightsImage = block.IronSightsImage;
             p.IronSightsMoveSpeedFloat = Server.SerializeFloat(block.IronSightsMoveSpeed);
             p.IsBuildable = block.IsBuildable;
-            p.IsPistol = block.IsPistol;
+            p.IsPistol = block.ObjectType == ObjectType.PISTOL;
             p.IsSlipperyWalk = block.IsSlipperyWalk;
             p.IsTool = block.IsTool;
             p.IsUsable = block.IsUsable;

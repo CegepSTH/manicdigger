@@ -8713,7 +8713,30 @@ public class Game
                             platform.BitmapDelete(bmp);
                         }
                     }
-                    Draw2dTexture(handTexture, Width() / 2, Height() - 512, 512, 512, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
+                    
+
+                    GLTranslate(Width()* 2 / 3, Height() * 11/10,0);
+                    GLRotate(ManicDiggerLib.Client.Data.ToolRotation, 0,0,90);
+
+                    if (mouseLeft)
+                    {
+                        if (ManicDiggerLib.Client.Data.up)
+                            ManicDiggerLib.Client.Data.ToolRotation += 4;
+                        else
+                            ManicDiggerLib.Client.Data.ToolRotation -= 4;
+
+                        if (ManicDiggerLib.Client.Data.ToolRotation < -170f)
+                            ManicDiggerLib.Client.Data.up = true;
+                        else if (ManicDiggerLib.Client.Data.ToolRotation > -125f)
+                            ManicDiggerLib.Client.Data.up = false;
+                    }
+                    else
+                    {
+                        ManicDiggerLib.Client.Data.ToolRotation = -125f;
+                        ManicDiggerLib.Client.Data.up = false;
+                    }
+                    
+                    Draw2dTexture(handTexture, 0, 0, 750/2, 750/2, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
                     PerspectiveMode();
                 }
             }
