@@ -2686,7 +2686,7 @@ public class Game
 
     internal enum TOOLS
     {
-        SHOVEL = 4,
+        SHOVEL = 4, //4 = Wood, 6=stone, 6 = iron, 2.75 = Silver, 1.77 = Gold
         PICKAXE = 11,  //11 = Wood, 5.5=stone, 3.66 = iron, 2.75 = Silver, 1.77 = Gold
         AXE = 3,
         HOE = 2,
