@@ -686,20 +686,24 @@ namespace ManicDiggerServer
                 {
                     foreach (var c in k.Inventory.CraftInv)
                     {
-                        found = false;
-                        for (int x = 0; x < 12; x++)
+                        if (!(c.Key.X == 4 && c.Key.Y == 2))
                         {
-                            for (int y = 0; y < 12; y++)
+                            found = false;
+                            for (int x = 0; x < 12; x++)
                             {
-                                if ((!(k.Inventory.Items.ContainsKey(new ProtoPoint(x, y)))))
+                                for (int y = 0; y < 12; y++)
                                 {
-                                    k.Inventory.Items.Add(new ProtoPoint(x, y), k.Inventory.CraftInv[new ProtoPoint(c.Key.X, c.Key.Y)]);
-                                    found = true;
-                                    break;
+                                    if ((!(k.Inventory.Items.ContainsKey(new ProtoPoint(y, x)))))
+                                    {
+
+                                        k.Inventory.Items.Add(new ProtoPoint(y, x), k.Inventory.CraftInv[new ProtoPoint(c.Key.X, c.Key.Y)]);
+                                        found = true;
+                                        break;
+                                    }
                                 }
+                                if (found)
+                                    break;
                             }
-                            if (found)
-                                break;
                         }
                     }
 
