@@ -49,7 +49,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
-                    Durability = 30,
+                    Durability = 75,
 
                 });
             m.SetBlockType(2, "Grass", new BlockType()
@@ -147,7 +147,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
-                    Durability = 7,
+                    Durability = 10,
 
                 });
             m.SetBlockType(13, "Gravel", new BlockType()
