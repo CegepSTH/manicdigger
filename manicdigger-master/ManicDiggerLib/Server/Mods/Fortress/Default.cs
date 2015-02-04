@@ -949,11 +949,11 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(255, "Silver pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Pickaxe",
+                AllTextures = "Grid_Silver_Pickaxe",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Silver_Pickaxe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(256, "Iron pickaxe", new BlockType()
@@ -962,7 +962,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Pickaxe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(257, "Golden pickaxe", new BlockType()
@@ -971,7 +971,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Golden_Pickaxe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(258, "Stone pickaxe", new BlockType()
@@ -980,7 +980,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Stone_Pickaxe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(259, "Wooden pickaxe", new BlockType()
@@ -989,7 +989,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Wooden_Pickaxe.png",
                 WalkSpeedWhenUsed = 1f
             });
 
@@ -1000,7 +1000,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Toolhand_Silver_Axe.png",
+                handimage = ".png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(261, "Iron axe", new BlockType()
@@ -1043,7 +1043,7 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(265, "Silver hoe", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Hoe",
+                AllTextures = "Grid_Silver_Hoe",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
@@ -1089,7 +1089,7 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(270, "Silver shovel", new BlockType()
             {
-                AllTextures = "Grid_Diamond_Shovel",
+                AllTextures = "Grid_Silver_Shovel",
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
