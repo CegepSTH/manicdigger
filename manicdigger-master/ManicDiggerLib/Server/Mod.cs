@@ -108,7 +108,7 @@ namespace ManicDigger
             server.SetBlockAndNotify(x, y, z, tileType);
         }
 
-        private Server server;
+        private ManicDiggerServer.Server server;
         internal void Start(ManicDiggerServer.Server server)
         {
             this.server = server;
@@ -274,7 +274,7 @@ namespace ManicDigger
 
         public bool IsTransparentForLight(int p)
         {
-            return Server.IsTransparentForLight(server.BlockTypes[p]);
+            return ManicDiggerServer.Server.IsTransparentForLight(server.BlockTypes[p]);
         }
 
         public void RegisterWorldGenerator(ModDelegates.WorldGenerator f)
@@ -291,7 +291,7 @@ namespace ManicDigger
 
         public int GetChunkSize()
         {
-            return Server.chunksize;
+            return ManicDiggerServer.Server.chunksize;
         }
 
         public object GetOption(string optionname)
@@ -771,8 +771,8 @@ namespace ManicDigger
             DummyNetwork network = new DummyNetwork() { ClientReceiveBufferLock = new MonitorObject(), ServerReceiveBufferLock = new MonitorObject() };
             c.socket = new DummyNetConnection() { network = network , platform = new GamePlatformNative() };
             c.Ping.SetTimeoutValue(int.MaxValue);
-            c.chunksseen = new bool[server.d_Map.MapSizeX / Server.chunksize
-                * server.d_Map.MapSizeY / Server.chunksize * server.d_Map.MapSizeZ / Server.chunksize];
+            c.chunksseen = new bool[server.d_Map.MapSizeX / ManicDiggerServer.Server.chunksize
+                * server.d_Map.MapSizeY / ManicDiggerServer.Server.chunksize * server.d_Map.MapSizeZ / ManicDiggerServer.Server.chunksize];
             c.clientGroup = server.defaultGroupRegistered;
             server.SendPlayerSpawnToAll(id);
             return id;

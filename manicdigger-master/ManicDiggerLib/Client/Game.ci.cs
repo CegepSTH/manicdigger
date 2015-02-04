@@ -1374,7 +1374,7 @@ public class Game
     {
         
         CREATIVE = creative;
-        System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+      //  System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
 
         AllowFreemove = creative;
 
@@ -1796,7 +1796,7 @@ public class Game
         int blocktype = GetBlock(x, yz, z);
         float health = GetCurrentBlockHealth(x, yz, z);
         float pro = health / d_Data.Durability()[blocktype];
-        System.Console.WriteLine(pro);
+      //  System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
         if (!AllowFreemove)
