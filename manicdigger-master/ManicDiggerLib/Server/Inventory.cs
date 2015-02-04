@@ -493,6 +493,7 @@ namespace ManicDigger
                 //drop
                 else if (d_Inventory.DragDropItem != null)
                 {
+                    
                     //make sure there is nothing blocking drop.
                     IntRef itemsAtAreaCount = new IntRef();
                     PointRef[] itemsAtArea = d_InventoryUtil.ItemsAtCraftArea(pos.AreaX, pos.AreaY,
@@ -513,6 +514,17 @@ namespace ManicDigger
                     else //1
                     {
                         var swapWith = itemsAtArea[0];
+                        if (swapWith.X == 4 && swapWith.Y == 2)
+                        {
+                            if (d_Inventory.DragDropItem.BlockId == d_Inventory.currentRecipe.output.Type)
+                            {
+                                ApplyRecipe(d_Inventory.currentRecipe);
+                                d_Inventory.DragDropItem.BlockCount += d_Inventory.currentRecipe.output.Amount;
+                                CheckRecipes();
+                                return;
+                            }
+
+                        }
                         //try to stack                        
                         Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
                         if (stackResult != null)
@@ -708,7 +720,9 @@ namespace ManicDigger
                                 output.BlockId = r.output.Type;
                                 output.BlockCount = r.output.Amount;
                                 if (d_Inventory.CraftInv.ContainsKey(new ProtoPoint(4, 2)))
-                                    return;
+                                {
+                                    d_Inventory.CraftInv.Remove(new ProtoPoint(4, 2));
+                                }
                                 d_Inventory.CraftInv.Add(new ProtoPoint(r.output.PosX, r.output.PosY), output);
                                 d_Inventory.currentRecipe = r;
                                 return;
