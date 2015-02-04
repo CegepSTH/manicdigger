@@ -955,8 +955,15 @@ namespace ManicDigger.Mods
                 });
             m.SetBlockType(154, "Stick", new BlockType()
             {
-                AllTextures = "Stick",
-                DrawType = DrawType.Transparent,
+                TextureIdTop = "Empty",
+                TextureIdBottom = "Empty",
+                TextureIdBack = "Empty",
+                TextureIdFront = "Empty",
+                TextureIdLeft = "Empty",
+                TextureIdRight = "Empty",
+                TextureIdForInventory = "Stick",
+                //AllTextures = "Stick",
+                DrawType = DrawType.Torch,
                 WalkableType = WalkableType.Empty,
                 Sounds = noSound,
             });
