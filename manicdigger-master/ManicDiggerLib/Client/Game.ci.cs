@@ -405,6 +405,8 @@ public class Game
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
+        if (tileType >= 154 && tileType <= 174)
+            return;
         SetBlockInChunk(chunk, pos, tileType);
     }
 
@@ -1372,7 +1374,7 @@ public class Game
     internal bool CREATIVE;
     public void ChangeGameMode(bool creative)
     {
-        
+
         CREATIVE = creative;
       //  System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
 
@@ -1427,7 +1429,7 @@ public class Game
             node = node.NextSibling;
         }
 
-        node.InnerText = (isCreative) ? "true" : "false";       
+        node.InnerText = (isCreative) ? "true" : "false";
 
         doc.Save(xmlFileName);
     }
@@ -1687,7 +1689,7 @@ public class Game
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
 
-            Draw2dText(platform.StringFormat2("{0} in {1}", playerTool.ToString(),toolType.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
+            Draw2dText(platform.StringFormat2("{1} {0}", playerTool.ToString(), toolType.ToString()), c, 70, platform.GetCanvasHeight() - 40, d, false);
             //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
@@ -2687,7 +2689,7 @@ public class Game
     internal enum TOOLS
     {
         SHOVEL = 4,
-        PICKAXE = 11,  //11 = Wood, 5.5=stone, 3.66 = iron, 2.75 = Silver, 1.77 = Gold
+        PICKAXE = 11,
         AXE = 3,
         HOE = 2,
         NOTOOL = 2
@@ -2697,11 +2699,11 @@ public class Game
 
     internal enum TOOLTYPE
     {
-        WOOD,
-        STONE,
-        IRON,
-        GOLD,
-        SILVER
+        WOOD = 1,
+        STONE = 2,
+        IRON = 3,
+        SILVER = 4,
+        GOLD = 5
     }
 
     public float WeaponAttackStrength(int idBlock)
@@ -2713,67 +2715,128 @@ public class Game
                 switch (toolType)
                 {
                     case TOOLTYPE.WOOD:
+                        //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                        if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                            strength = (int)TOOLS.SHOVEL * (int)TOOLTYPE.WOOD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.STONE:
+                        //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                        if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                            strength = (int)TOOLS.SHOVEL * (int)TOOLTYPE.STONE;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.IRON:
-                        break;
-                    case TOOLTYPE.GOLD:
+                        //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                        if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                            strength = (int)TOOLS.SHOVEL * (int)TOOLTYPE.IRON;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.SILVER:
+                        //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                        if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                            strength = (int)TOOLS.SHOVEL * (int)TOOLTYPE.SILVER;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
+                        break;
+                    case TOOLTYPE.GOLD:
+                        //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
+                        if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
+                            strength = (int)TOOLS.SHOVEL * (int)TOOLTYPE.GOLD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     default:
+                        strength = (int)TOOLS.NOTOOL;
                         break;
                 }
-                //  GRASS,DIRT,SAND,GRAVEL, DIRTFORFARMING
-                if (idBlock == 2 || idBlock == 3 || idBlock == 12 || idBlock == 13 || idBlock == 105)
-                    strength = (int)TOOLS.SHOVEL;
-                else
-                    strength = (int)TOOLS.NOTOOL;
                 break;
             case TOOLS.PICKAXE:
                 switch (toolType)
                 {
                     case TOOLTYPE.WOOD:
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.WOOD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.STONE:
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.STONE;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.IRON:
-                        break;
-                    case TOOLTYPE.GOLD:
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.IRON;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.SILVER:
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.SILVER;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
+                        break;
+                    case TOOLTYPE.GOLD:
+                        //STONE , COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.GOLD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     default:
                         break;
                 }
-                //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
-                    strength = (int)TOOLS.PICKAXE;
-                else
-                    strength = (int)TOOLS.NOTOOL;
                 break;
             case TOOLS.AXE:
                 switch (toolType)
                 {
                     case TOOLTYPE.WOOD:
+                        //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                        if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                            strength = (int)TOOLS.AXE * (int)TOOLTYPE.WOOD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.STONE:
+                        //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                        if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                            strength = (int)TOOLS.AXE * (int)TOOLTYPE.STONE;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.IRON:
+                        //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                        if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                            strength = (int)TOOLS.AXE * (int)TOOLTYPE.IRON;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.GOLD:
+                        //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                        if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                            strength = (int)TOOLS.AXE * (int)TOOLTYPE.GOLD;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.SILVER:
+                        //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
+                        if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
+                            strength = (int)TOOLS.AXE * (int)TOOLTYPE.SILVER;
+                        else
+                            strength = (int)TOOLS.NOTOOL;
                         break;
                     default:
                         break;
                 }
-                //WOOD, TREETRUNCK, DOUBLESTAIR, STAIR, BOOKCASE, CHEST, CRAFTINGTABLE1, CRAFTINGTABLE, FAKEBOOKCASE, WOODDESK, FENCE, LADDER
-                if (idBlock == 5 || idBlock == 17 || idBlock == 43 || idBlock == 44 || idBlock == 47 || idBlock == 54 || idBlock == 58 || idBlock == 112 || idBlock == 143 || idBlock == 144 || idBlock == 150 || idBlock == 152)
-                    strength = (int)TOOLS.AXE;
-                else
-                    strength = (int)TOOLS.NOTOOL;
                 break;
             default:
                 strength = (int)TOOLS.NOTOOL;
@@ -5349,7 +5412,7 @@ public class Game
                                 for (int z = startz; z <= endz; z++)
                                 {
                                     // if creative mode is off and player run out of blocks
-                                    if (blockCount == 0)
+                                    if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 174))
                                     {
                                         return;
                                     }
@@ -7063,8 +7126,8 @@ public class Game
             }
             if (eKey == GetKey(GlKeys.O))
             {
-                Log( "Respawn.");
-               
+                Log("Respawn.");
+
                 Respawn();
             }
             if (eKey == GetKey(GlKeys.L))
@@ -8746,83 +8809,83 @@ public class Game
                 Packet_Item item = d_Inventory.RightHand[ActiveMaterial];
                 switch (item.GetBlockId())
                 {
-                    case 255: //Silver Pickaxe
+                    case 155: //Silver Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 256: //Iron Pickaxe
+                    case 156: //Iron Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 257: //Golden Pickaxe
+                    case 157: //Golden Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 258: //Stone Pickaxe
+                    case 158: //Stone Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 259: //Wooden Pickaxe
+                    case 159: //Wooden Pickaxe
                         playerTool = TOOLS.PICKAXE;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 260: //Silver Axe
+                    case 160: //Silver Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 261: //Iron Axe
+                    case 161: //Iron Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 262: //Goldeen Axe
+                    case 162: //Goldeen Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 263: //Stone Axe
+                    case 163: //Stone Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 264: //Wooden Axe
+                    case 164: //Wooden Axe
                         playerTool = TOOLS.AXE;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 265: //Silver Hoe
+                    case 165: //Silver Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 266: //Iron Hoe
+                    case 166: //Iron Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 267: //Goldeen Hoe
+                    case 167: //Goldeen Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 268: //Stone Hoe
+                    case 168: //Stone Hoe
                         playerTool = TOOLS.HOE;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 269: //Wooden Hoe
+                    case 169: //Wooden Hoe
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.WOOD;
                         break;
-                    case 270: //Silver Shovel
+                    case 170: //Silver Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.SILVER;
                         break;
-                    case 271: //Iron Shovel
+                    case 171: //Iron Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.IRON;
                         break;
-                    case 272: //Goldeen Shovel
+                    case 172: //Goldeen Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.GOLD;
                         break;
-                    case 273: //Stone Shovel
+                    case 173: //Stone Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.STONE;
                         break;
-                    case 274: //Wooden Shovel
+                    case 174: //Wooden Shovel
                         playerTool = TOOLS.SHOVEL;
                         toolType = TOOLTYPE.WOOD;
                         break;
@@ -8858,10 +8921,10 @@ public class Game
                             platform.BitmapDelete(bmp);
                         }
                     }
-                    
 
-                    GLTranslate(Width()* 2 / 3, Height() * 11/10,0);
-                    GLRotate(ManicDiggerLib.Client.Data.ToolRotation, 0,0,90);
+
+                    GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
+                    GLRotate(ManicDiggerLib.Client.Data.ToolRotation, 0, 0, 90);
 
                     if (mouseLeft)
                     {
@@ -8880,8 +8943,8 @@ public class Game
                         ManicDiggerLib.Client.Data.ToolRotation = -125f;
                         ManicDiggerLib.Client.Data.up = false;
                     }
-                    
-                    Draw2dTexture(handTexture, 0, 0, 750/2, 750/2, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
+
+                    Draw2dTexture(handTexture, 0, 0, 750 / 2, 750 / 2, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
                     PerspectiveMode();
                 }
             }
@@ -12310,7 +12373,7 @@ public class GameData
     int mBlockIdLava;
     int mBlockIdStationaryLava;
     int mBlockIdFillStart;
-    
+
     int mBlockIdCuboid;
     int mBlockIdFillArea;
     int mBlockIdMinecart;
@@ -12624,6 +12687,7 @@ public class ServerPackets
 
     internal static Packet_Server SetBlock(int x, int y, int z, int block)
     {
+
         Packet_Server p = new Packet_Server();
         p.Id = Packet_ServerIdEnum.SetBlock;
         p.SetBlock = new Packet_ServerSetBlock();
