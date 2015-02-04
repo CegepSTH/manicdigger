@@ -3370,6 +3370,10 @@ namespace ManicDiggerServer
                 switch (item.ItemClass)
                 {
                     case ItemClass.Block:
+                        if (item.BlockId >= 154 && item.BlockId <= 174)
+                        {
+                            return false;
+                        }
                         item.BlockCount--;
                         if (item.BlockCount == 0)
                         {
