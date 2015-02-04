@@ -51,6 +51,8 @@ package Packet;
         optional int32 blockType = 5; // obsolete
         optional int32 materialSlot = 6;
 		optional int32 Durability = 7;
+optional int32 DurabilityHand = 8;
+optional bool HarvestHand = 9;
     }
     
     message ClientFillArea
@@ -334,6 +336,8 @@ package Packet;
         optional int32 damageToPlayer = 43;
         optional int32 whenPlacedGetsConvertedTo = 44;
 		optional int32 Durability = 45;
+optional int32 DurabilityHand = 46;
+optional bool HarvestHand = 47;
     }
     
     enum DrawType
