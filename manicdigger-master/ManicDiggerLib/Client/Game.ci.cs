@@ -405,6 +405,8 @@ public class Game
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
+        if (tileType >= 154 && tileType <= 174)
+            return;
         SetBlockInChunk(chunk, pos, tileType);
     }
 
@@ -5410,7 +5412,7 @@ public class Game
                                 for (int z = startz; z <= endz; z++)
                                 {
                                     // if creative mode is off and player run out of blocks
-                                    if (blockCount == 0)
+                                    if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 174))
                                     {
                                         return;
                                     }
@@ -12685,6 +12687,7 @@ public class ServerPackets
 
     internal static Packet_Server SetBlock(int x, int y, int z, int block)
     {
+
         Packet_Server p = new Packet_Server();
         p.Id = Packet_ServerIdEnum.SetBlock;
         p.SetBlock = new Packet_ServerSetBlock();
