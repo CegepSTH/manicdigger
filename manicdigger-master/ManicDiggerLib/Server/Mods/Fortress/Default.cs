@@ -962,7 +962,6 @@ namespace ManicDigger.Mods
                 TextureIdLeft = "Empty",
                 TextureIdRight = "Empty",
                 TextureIdForInventory = "Stick",
-                //AllTextures = "Stick",
                 DrawType = DrawType.Torch,
                 WalkableType = WalkableType.Empty,
                 Sounds = noSound,
@@ -970,8 +969,8 @@ namespace ManicDigger.Mods
 
             m.SetBlockType(155, "Silver pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Silver_Pickaxe",
-                DrawType = DrawType.Solid,
+                TextureIdForInventory = "Grid_Silver_Pickaxe",
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Pickaxe.png",
@@ -979,8 +978,8 @@ namespace ManicDigger.Mods
             });
             m.SetBlockType(156, "Iron pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Iron_Pickaxe",
-                DrawType = DrawType.Solid,
+                TextureIdForInventory = "Grid_Iron_Pickaxe",
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Pickaxe.png",
@@ -988,8 +987,8 @@ namespace ManicDigger.Mods
             });
             m.SetBlockType(157, "Golden pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Golden_Pickaxe",
-                DrawType = DrawType.Solid,
+                TextureIdForInventory = "Grid_Golden_Pickaxe",
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Pickaxe.png",
@@ -997,8 +996,8 @@ namespace ManicDigger.Mods
             });
             m.SetBlockType(158, "Stone pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Stone_Pickaxe",
-                DrawType = DrawType.Solid,
+                TextureIdForInventory = "Grid_Stone_Pickaxe",
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Pickaxe.png",
@@ -1006,8 +1005,8 @@ namespace ManicDigger.Mods
             });
             m.SetBlockType(159, "Wooden pickaxe", new BlockType()
             {
-                AllTextures = "Grid_Wooden_Pickaxe",
-                DrawType = DrawType.Solid,
+                TextureIdForInventory = "Grid_Wooden_Pickaxe",
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Pickaxe.png",
@@ -1018,7 +1017,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(160, "Silver axe", new BlockType()
             {
                 AllTextures = "Grid_Silver_Axe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Axe.png",
@@ -1027,7 +1026,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(161, "Iron axe", new BlockType()
             {
                 AllTextures = "Grid_Iron_Axe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1036,7 +1035,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(162, "Golden axe", new BlockType()
             {
                 AllTextures = "Grid_Golden_Axe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Axe.png",
@@ -1045,7 +1044,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(163, "Stone axe", new BlockType()
             {
                 AllTextures = "Grid_Stone_Axe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Axe.png",
@@ -1054,7 +1053,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(164, "Wooden axe", new BlockType()
             {
                 AllTextures = "Grid_Wooden_Axe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Axe.png",
@@ -1065,7 +1064,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(165, "Silver hoe", new BlockType()
             {
                 AllTextures = "Grid_Silver_Hoe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1074,7 +1073,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(166, "Iron hoe", new BlockType()
             {
                 AllTextures = "Grid_Iron_Hoe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1083,7 +1082,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(167, "Golden hoe", new BlockType()
             {
                 AllTextures = "Grid_Golden_Hoe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1092,7 +1091,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(168, "Stone hoe", new BlockType()
             {
                 AllTextures = "Grid_Stone_Hoe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1101,7 +1100,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(169, "Wooden hoe", new BlockType()
             {
                 AllTextures = "Grid_Wooden_Hoe",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
@@ -1111,7 +1110,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(170, "Silver shovel", new BlockType()
             {
                 AllTextures = "Grid_Silver_Shovel",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Shovel.png",
@@ -1120,7 +1119,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(171, "Iron shovel", new BlockType()
             {
                 AllTextures = "Grid_Iron_Shovel",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Shovel.png",
@@ -1129,7 +1128,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(172, "Golden shovel", new BlockType()
             {
                 AllTextures = "Grid_Golden_Shovel",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Shovel.png",
@@ -1138,7 +1137,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(173, "Stone shovel", new BlockType()
             {
                 AllTextures = "Grid_Stone_Shovel",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Shovel.png",
@@ -1147,7 +1146,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(174, "Wooden shovel", new BlockType()
             {
                 AllTextures = "Grid_Wooden_Shovel",
-                DrawType = DrawType.Solid,
+                DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Shovel.png",

@@ -757,24 +757,79 @@ namespace ManicDigger
 
         public Inventory()
         {
-            InitialiseRecipes();
+            InitializeRecipes();
         }
 
         //Create all of the game's recipe for crafting in the inventory
-        public void InitialiseRecipes()
+        public void InitializeRecipes()
         {
-            List<CraftIngredient> ings = new List<CraftIngredient>();
-
             //Recipe 2 tree -> 4 planche
-            ings.Add(new CraftIngredient(17,1,1,2));
+            List<CraftIngredient> ings = new List<CraftIngredient>();
+            ings.Add(new CraftIngredient(17, 1, 1, 2));
             AddCraftRecipe(ings, new CraftIngredient(5, 4, 4, 2));
+
+            //Recipe 2 plank -> stick
+            ings.Clear();
+            ings.Add(new CraftIngredient(5,1,1,2));
+            ings.Add(new CraftIngredient(5, 1, 1, 3));
+            AddCraftRecipe(ings, new CraftIngredient(154, 4, 4, 2));
+
+            //Recipe coal + stick -> torch
+            ings.Clear();
+            ings.Add(new CraftIngredient(16, 1, 1, 2));
+            ings.Add(new CraftIngredient(154, 1, 1, 3));
+            AddCraftRecipe(ings, new CraftIngredient(50, 4, 4, 2));
+
+            //Recipe 8 plank -> chest
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 1));
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 1, 1));
+            ings.Add(new CraftIngredient(5, 1, 1, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(54, 1, 4, 2));
+
+            //Recipe 7 stick -> ladder
+            ings.Clear();
+            ings.Add(new CraftIngredient(154, 1, 0, 1));
+            ings.Add(new CraftIngredient(154, 1, 0, 2));
+            ings.Add(new CraftIngredient(154, 1, 0, 3));
+            ings.Add(new CraftIngredient(154, 1, 1, 2));
+            ings.Add(new CraftIngredient(154, 1, 2, 1));
+            ings.Add(new CraftIngredient(154, 1, 2, 2));
+            ings.Add(new CraftIngredient(154, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(152, 3, 4, 2));
+
+            //Recipe planks + stick -> fence
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(154, 1, 1, 2));
+            ings.Add(new CraftIngredient(154, 1, 1, 3));
+            AddCraftRecipe(ings, new CraftIngredient(150, 4, 4, 2));
+
+            //Recipe planks  -> doorBottom
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 1));
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 1, 1));
+            ings.Add(new CraftIngredient(5, 1, 1, 2));
+            ings.Add(new CraftIngredient(5, 1, 1, 3));
+            AddCraftRecipe(ings, new CraftIngredient(126, 3, 4, 2));
+
         }
 
         //Add a recipe to the game
         public void AddCraftRecipe(List<CraftIngredient> ingredients, CraftIngredient output)
         {
             Recipe r = new Recipe();
-            r.ingredients = ingredients;
+            r.ingredients = new List<CraftIngredient>(ingredients);
             r.output = output;
             lstCraftingRecipe.Add(r);
             
