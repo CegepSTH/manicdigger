@@ -1000,7 +1000,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = ".png",
+                handimage = "Toolhand_Silver_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(261, "Iron axe", new BlockType()
@@ -1047,7 +1047,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(266, "Iron hoe", new BlockType()
@@ -1056,7 +1056,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(267, "Golden hoe", new BlockType()
@@ -1065,7 +1065,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(268, "Stone hoe", new BlockType()
@@ -1074,7 +1074,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(269, "Wooden hoe", new BlockType()
@@ -1083,7 +1083,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Axe.png",
                 WalkSpeedWhenUsed = 1f
             });
 
@@ -1093,7 +1093,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Silver_Shovel.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(271, "Iron shovel", new BlockType()
@@ -1102,7 +1102,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Iron_Shovel.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(272, "Golden shovel", new BlockType()
@@ -1111,7 +1111,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Golden_Shovel.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(273, "Stone shovel", new BlockType()
@@ -1120,7 +1120,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Stone_Shovel.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(274, "Wooden shovel", new BlockType()
@@ -1129,7 +1129,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Test.png",
+                handimage = "Toolhand_Wooden_Shovel.png",
                 WalkSpeedWhenUsed = 1f
             });
 
