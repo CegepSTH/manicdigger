@@ -1383,7 +1383,10 @@ public class Mat4
         float b10; float b11; float b12;
         float b20; float b21; float b22;
 
-        if (GlMatrixMath.Abs(len) < GlMatrixMath.GLMAT_EPSILON()) { return null; }
+        if (GlMatrixMath.Abs(len) < GlMatrixMath.GLMAT_EPSILON()) 
+        { 
+            return null; 
+        }
 
         len = 1 / len;
         x *= len;

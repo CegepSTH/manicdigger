@@ -971,6 +971,13 @@ namespace ManicDigger
         HalfHeight,
     }
 
+    public enum ObjectType
+    {
+        CUBE,
+        PISTOL,
+        TOOL
+    }
+
     public enum WalkableType
     {
         Empty,
@@ -1000,7 +1007,10 @@ namespace ManicDigger
     [ProtoContract]
     public class BlockType
     {
-        public BlockType() {}
+        public BlockType()
+        {
+            ObjectType = ObjectType.CUBE;
+        }
         [ProtoMember(1)]
         public string TextureIdTop = "Unknown";
         [ProtoMember(2)]
@@ -1044,7 +1054,7 @@ namespace ManicDigger
         [ProtoMember(21)]
         public string handimage;
         [ProtoMember(22)]
-        public bool IsPistol;
+        public ObjectType ObjectType;
         [ProtoMember(23)]
         public int AimRadius;
         [ProtoMember(24)]

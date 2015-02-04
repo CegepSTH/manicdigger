@@ -953,7 +953,193 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Empty,
                     Sounds = noSound,
                 });
-            
+
+            m.SetBlockType(255, "Silver pickaxe", new BlockType()
+            {
+                AllTextures = "Grid_Silver_Pickaxe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Silver_Pickaxe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(256, "Iron pickaxe", new BlockType()
+            {
+                AllTextures = "Grid_Iron_Pickaxe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Pickaxe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(257, "Golden pickaxe", new BlockType()
+            {
+                AllTextures = "Grid_Golden_Pickaxe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Golden_Pickaxe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(258, "Stone pickaxe", new BlockType()
+            {
+                AllTextures = "Grid_Stone_Pickaxe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Stone_Pickaxe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(259, "Wooden pickaxe", new BlockType()
+            {
+                AllTextures = "Grid_Wooden_Pickaxe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Wooden_Pickaxe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+
+
+            m.SetBlockType(260, "Silver axe", new BlockType()
+            {
+                AllTextures = "Grid_Silver_Axe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Silver_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(261, "Iron axe", new BlockType()
+            {
+                AllTextures = "Grid_Iron_Axe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(262, "Golden axe", new BlockType()
+            {
+                AllTextures = "Grid_Golden_Axe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Golden_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(263, "Stone axe", new BlockType()
+            {
+                AllTextures = "Grid_Stone_Axe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Stone_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(264, "Wooden axe", new BlockType()
+            {
+                AllTextures = "Grid_Wooden_Axe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Wooden_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+
+
+            m.SetBlockType(265, "Silver hoe", new BlockType()
+            {
+                AllTextures = "Grid_Silver_Hoe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(266, "Iron hoe", new BlockType()
+            {
+                AllTextures = "Grid_Iron_Hoe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(267, "Golden hoe", new BlockType()
+            {
+                AllTextures = "Grid_Golden_Hoe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(268, "Stone hoe", new BlockType()
+            {
+                AllTextures = "Grid_Stone_Hoe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(269, "Wooden hoe", new BlockType()
+            {
+                AllTextures = "Grid_Wooden_Hoe",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(270, "Silver shovel", new BlockType()
+            {
+                AllTextures = "Grid_Silver_Shovel",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Silver_Shovel.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(271, "Iron shovel", new BlockType()
+            {
+                AllTextures = "Grid_Iron_Shovel",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Shovel.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(272, "Golden shovel", new BlockType()
+            {
+                AllTextures = "Grid_Golden_Shovel",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Golden_Shovel.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(273, "Stone shovel", new BlockType()
+            {
+                AllTextures = "Grid_Stone_Shovel",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Stone_Shovel.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(274, "Wooden shovel", new BlockType()
+            {
+                AllTextures = "Grid_Wooden_Shovel",
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Wooden_Shovel.png",
+                WalkSpeedWhenUsed = 1f
+            });
+
             m.RegisterTimer(UpdateSeasons, 1);
             
             m.SetGameDayRealHours(1);
@@ -1048,8 +1234,31 @@ namespace ManicDigger.Mods
             //m.AddToStartInventory("GoldBar", 5);
             //m.AddToStartInventory("SilverCoin", 1);
             //m.AddToStartInventory("Compass", 1);
+            m.AddToStartInventory("Wooden pickaxe", 1);
+            m.AddToStartInventory("Stone pickaxe", 1);
+            m.AddToStartInventory("Iron pickaxe", 1);
+            m.AddToStartInventory("Golden pickaxe", 1);
+            m.AddToStartInventory("Silver pickaxe", 1);
             
+            m.AddToStartInventory("Wooden axe", 1);
+            m.AddToStartInventory("Stone axe", 1);
+            m.AddToStartInventory("Iron axe", 1);
+            m.AddToStartInventory("Golden axe", 1);
+            m.AddToStartInventory("Silver axe", 1);
+
+            m.AddToStartInventory("Wooden hoe", 1);
+            m.AddToStartInventory("Stone hoe", 1);
+            m.AddToStartInventory("Iron hoe", 1);
+            m.AddToStartInventory("Golden hoe", 1);
+            m.AddToStartInventory("Silver hoe", 1);
             
+            m.AddToStartInventory("Wooden shovel", 1);
+            m.AddToStartInventory("Stone shovel", 1);
+            m.AddToStartInventory("Iron shovel", 1);
+            m.AddToStartInventory("Golden shovel", 1);
+            m.AddToStartInventory("Silver shovel", 1);
+            
+
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
             m.AddCraftingRecipe("Stone", 2, "Cobblestone", 1);
             m.AddCraftingRecipe("Wood", 2, "TreeTrunk", 1);

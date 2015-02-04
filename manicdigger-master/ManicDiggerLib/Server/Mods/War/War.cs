@@ -466,7 +466,7 @@ namespace ManicDigger.Mods
                 if (item != null && item.ItemClass == ItemClass.Block)
                 {
                     BlockType block = m.GetBlockType(item.BlockId);
-                    if (block.IsPistol)
+                    if (block.ObjectType == ObjectType.PISTOL)
                     {
                         players[playerid].totalAmmo[item.BlockId] = block.AmmoTotal;
                     }
