@@ -356,7 +356,6 @@ namespace ManicDigger
 
         public override void InventoryClick(Packet_InventoryPosition pos)
         {
-
             if (pos.Type == Packet_InventoryPositionTypeEnum.MainArea)
             {
                 Point? selected = null;
@@ -418,6 +417,7 @@ namespace ManicDigger
             }
             else if (pos.Type == Packet_InventoryPositionTypeEnum.Ground)
             {
+                
                 int test = 0;
                 /*
                 if (d_Inventory.DragDropItem != null)
@@ -481,8 +481,13 @@ namespace ManicDigger
                 //drag
                 if (selected != null && d_Inventory.DragDropItem == null)
                 {
+                    if(selected.Value.X == 4 && selected.Value.Y == 2)
+                    {
+                        ApplyRecipe(d_Inventory.currentRecipe);
+                    }
                     d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
                     d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                    CheckRecipes();
                     SendInventory();
                 }
                 //drop
@@ -499,8 +504,11 @@ namespace ManicDigger
                     }
                     if (itemsAtAreaCount.value == 0)
                     {
+                        if (pos.AreaX == 4 && pos.AreaY == 2)
+                            return;
                         d_Inventory.CraftInv.Add(new ProtoPoint(pos.AreaX, pos.AreaY), d_Inventory.DragDropItem);
                         d_Inventory.DragDropItem = null;
+                        CheckRecipes();
                     }
                     else //1
                     {
@@ -509,17 +517,23 @@ namespace ManicDigger
                         Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
                         if (stackResult != null)
                         {
+                            if (pos.AreaX == 4 && pos.AreaY == 2)
+                                return;
                             d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)] = stackResult;
                             d_Inventory.DragDropItem = null;
+                            CheckRecipes();
                         }
                         else
                         {
                             //try to swap
                             //swap (swapWith, dragdropitem)
+                            if (pos.AreaX == 4 && pos.AreaY == 2)
+                                return;
                             Item z = d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)];
                             d_Inventory.CraftInv.Remove(new ProtoPoint(swapWith.X, swapWith.Y));
                             d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)] = d_Inventory.DragDropItem;
                             d_Inventory.DragDropItem = z;
+                            CheckRecipes();
                         }
                     }
                 }
@@ -593,6 +607,7 @@ namespace ManicDigger
                             i.ItemId = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].ItemId;
                             d_Inventory.DragDropItem = i;
                             d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount = d_Inventory.CraftInv[new ProtoPoint(pos.AreaX, pos.AreaY)].BlockCount / 2;
+                            CheckRecipes();
                         }
                     }
                 }
@@ -662,6 +677,65 @@ namespace ManicDigger
                     }
                 }
             }
+        }
+
+        //Check if a recipe is complete and add the output to the crafting result
+        public void CheckRecipes()
+        {
+            int IngCountok = 0;
+
+            foreach(Recipe r in d_Inventory.lstCraftingRecipe)
+            {
+                IngCountok = 0;
+                int Count = d_Inventory.CraftInv.Count;
+                if (d_Inventory.CraftInv.ContainsKey(new ProtoPoint(4, 2)))
+                    Count--;
+                if (r.ingredients.Count == Count)
+                {
+                    for (int i = 0; i < r.ingredients.Count; i++)
+                    {
+                        //Item at the good position
+                        ProtoPoint p = new ProtoPoint(r.ingredients[i].PosX, r.ingredients[i].PosY);
+                        if (d_Inventory.CraftInv.ContainsKey(p))
+                        {
+                            Item item = d_Inventory.CraftInv[p];
+                            if (item.BlockId == r.ingredients[i].Type && item.BlockCount >= r.ingredients[i].Amount)
+                                IngCountok++;
+
+                            if(IngCountok == r.ingredients.Count)
+                            {
+                                Item output = new Item();
+                                output.BlockId = r.output.Type;
+                                output.BlockCount = r.output.Amount;
+                                if (d_Inventory.CraftInv.ContainsKey(new ProtoPoint(4, 2)))
+                                    return;
+                                d_Inventory.CraftInv.Add(new ProtoPoint(r.output.PosX, r.output.PosY), output);
+                                d_Inventory.currentRecipe = r;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            d_Inventory.CraftInv.Remove(new ProtoPoint(4, 2));
+        }
+
+        //Apply the current recipe when output is taken
+        public void ApplyRecipe(Recipe r)
+        {
+            if (r == null)
+                return;
+
+           for(int i = 0 ; i < r.ingredients.Count ; i++)
+           {
+               ProtoPoint p = new ProtoPoint(r.ingredients[i].PosX,r.ingredients[i].PosY);
+               if (d_Inventory.CraftInv[p].BlockCount == r.ingredients[i].Amount)
+                   d_Inventory.CraftInv.Remove(p);
+               else
+                   d_Inventory.CraftInv[p].BlockCount -= r.ingredients[i].Amount;
+               
+           }
+            
         }
     }
     public class GameDataItemsBlocks : IGameDataItems
