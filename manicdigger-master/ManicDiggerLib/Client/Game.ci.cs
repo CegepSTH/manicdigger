@@ -1376,7 +1376,7 @@ public class Game
     {
 
         CREATIVE = creative;
-      //  System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+        //  System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
 
         AllowFreemove = creative;
 
@@ -1798,7 +1798,7 @@ public class Game
         int blocktype = GetBlock(x, yz, z);
         float health = GetCurrentBlockHealth(x, yz, z);
         float pro = health / d_Data.Durability()[blocktype];
-      //  System.Console.WriteLine(pro);
+        //  System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
         if (!AllowFreemove)
@@ -12316,6 +12316,12 @@ public class GameData
 
         mDefaultMaterialSlots = new int[10];
         mDurability = new int[count];
+        mDurabilityHand = new int[count];
+        mHarvestWood = new bool[count];
+        mHarvestStone = new bool[count];
+        mHarvestIron = new bool[count];
+        mHarvestSilver = new bool[count];
+        mHarvestGold = new bool[count];
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
@@ -12339,6 +12345,13 @@ public class GameData
 
     public int[] Durability() { return mDurability; }
 
+    public int[] DurabilityHand() { return mDurabilityHand; }
+    public bool[] HarvestWood() { return mHarvestWood; }
+    public bool[] HarvestStone() { return mHarvestStone; }
+    public bool[] HarvestIron() { return mHarvestIron; }
+    public bool[] HarvestSilver() { return mHarvestSilver; }
+    public bool[] HarvestGold() { return mHarvestGold; }
+
     public int[] DefaultMaterialSlots() { return mDefaultMaterialSlots; }
 
     int[] mWhenPlayerPlacesGetsConvertedTo;
@@ -12356,6 +12369,12 @@ public class GameData
     int[] mDamageToPlayer;
     int[] mWalkableType;
     int[] mDurability;
+    int[] mDurabilityHand;
+    bool[] mHarvestWood;
+    bool[] mHarvestStone;
+    bool[] mHarvestIron;
+    bool[] mHarvestSilver;
+    bool[] mHarvestGold;
 
     int[] mDefaultMaterialSlots;
 
@@ -12522,6 +12541,12 @@ public class GameData
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
         Durability()[id] = b.Durability;
+        DurabilityHand()[id] = b.DurabilityHand;
+        HarvestWood()[id] = b.HarvestWood;
+        HarvestStone()[id] = b.HarvestStone;
+        HarvestIron()[id] = b.HarvestIron;
+        HarvestSilver()[id] = b.HarvestSilver;
+        HarvestGold()[id] = b.HarvestGold;
     }
     private int[] _startInventoryAmont;
     public int[] GetStartInventoryAmount()
