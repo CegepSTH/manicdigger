@@ -714,7 +714,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(119, "Water1", new BlockType()
                 {
                     AllTextures = "Water",
-                    DrawType = DrawType.Fluid,
+                    DrawType = DrawType.HalfHeight,
                     WalkableType = WalkableType.Fluid,
                     Sounds = solidSounds,
                 });
