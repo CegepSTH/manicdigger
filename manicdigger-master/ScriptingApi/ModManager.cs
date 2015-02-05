@@ -808,7 +808,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 0, 2));
             ings.Add(new CraftIngredient(5, 1, 0, 3));
             ings.Add(new CraftIngredient(5, 1, 2, 2));
-            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
             AddCraftRecipe(ings, new CraftIngredient(150, 4, 4, 2));
@@ -821,7 +821,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(5, 1, 1, 2));
             ings.Add(new CraftIngredient(5, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(126, 3, 4, 2));
+            AddCraftRecipe(ings, new CraftIngredient(126, 1, 4, 2));
 
             #region Pickaxe
             //Recipe pickaxe wood

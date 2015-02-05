@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace ManicDigger.Server.Mods.Fortress
 {
@@ -34,13 +35,13 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void Delete(int player, int x, int y, int z, int blockid)
         {
-            Update(x, y, z);
+            Update(x, y, z - 1);
         }
 
         void Update(int x, int y, int z)
         {
             int waterId = m.GetBlockId("Water");
-            int[, ,] area = new int[3, 3, 3];
+           // int[, ,] area = new int[3, 3, 3];
             // au delete x,y,z est toujours empty
             // au build x,y,z est du type du block que l'on vient de construire
 
@@ -48,45 +49,96 @@ namespace ManicDigger.Server.Mods.Fortress
 
             int currentBlockId = m.GetBlock(x, y, z);
             //  area[1, 1, 1] = currentBlockId;
+            int tempZ = z;
+            //for (int i = -1; i < 2; i++)
+            //{
+            //    Console.WriteLine();
+            //    for (int j = -1; j < 2; j++)
+            //    {
+                    //for (int k = -1; k != 2; k++)
+                  //  {
+                          //Console.Write((i + 1).ToString() + " " + (j + 1).ToString() + "  " + (k + 1).ToString());
+                        int bId = m.GetBlock(x , y , z );
+
+                          Console.WriteLine(m.GetBlockName(bId));
+
+
+                        // Premiere loi, fill vers le bas 
+                        
+                        int cpt = 0;
+                        bool drop = false;
+                        do
+                        {
+                            drop = FillDown(waterId, x , y, ref tempZ);
+                            Console.WriteLine("tempZ: " + tempZ.ToString());
+                            cpt++;
+                        }
+                        while (drop);
+
+                        Console.WriteLine("OUT tempZ: " + tempZ.ToString());
+                   
+                        FillPlaneArea(waterId, ref x, ref y, ++tempZ);
+                    
+                        
+                        // verifie la pente
+                  //  }
+               // }
+           // }
+        }
+
+        /// <summary>
+        /// Rempli le cube sous l'eau s'il est vide
+        /// </summary>
+        private bool FillDown(int waterId, int x, int y, ref int z)
+        {
+            Console.WriteLine("tempZ: " + z.ToString());
+            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Water")
+            {
+                z--;
+                Thread.Sleep(500);
+                return SetEmptyBlock(waterId, x, y, z);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// retourne false si le block n'a pas été setter car n'était pas vide
+        /// </summary>
+        private bool SetEmptyBlock(int tileId, int x, int y, int z)
+        {
+            Console.WriteLine(m.GetBlockName(m.GetBlock(x, y, z)));
+
+            if (m.GetBlockName(m.GetBlock(x, y, z)) != "Empty")
+                return false;
+
+            
+            m.SetBlock(x, y, z, tileId);
+            return true;
+        }
+
+        private void FillPlaneArea(int tileId, ref int x, ref int y, int z)
+        {
+            Console.WriteLine("FillPlaneArea");
 
             for (int i = -1; i < 2; i++)
             {
-                Console.WriteLine();
                 for (int j = -1; j < 2; j++)
                 {
-                    for (int k = -1; k < 2; k++)
+                    SetEmptyBlock(tileId, x + i, y + j, z);
+                    int tempZ = z;
+                    bool drop = false;
+                    int cpt = 0;
+                    do
                     {
-                        Console.Write((i + 1).ToString() + " " + (j + 1).ToString() + "  " + (k + 1).ToString());
-                        int bId = m.GetBlock(x + k, y + j, z + i);
-                        Console.WriteLine(m.GetBlockName(bId));
-                        area[i + 1, j + 1, k + 1] = bId;
+                        cpt++;
+                        drop = FillDown(tileId, x, y, ref tempZ);
                     }
+                    while (drop);
+
+                    if (cpt > 1)
+                        return;
                 }
             }
-
-            FillDown(ref area, waterId, x, y, z);
-            //if (toFillDown)
-            //{
-            //    m.SetBlock(x, y, z, waterId);
-            //    Update(x, y, z - 1);
-            //}
         }
-
-        private void FillDown(ref int[, ,] area, int waterId, int x, int y, int z)
-        {
-            Console.WriteLine("FillDown");
-            for (int i = -1; i < 2; i++)
-                for (int j = -1; j < 2; j++)
-                {
-                    Console.WriteLine("\n\n" + m.GetBlockName(area[i + 1, j + 1, 0]));
-                    if (area[i + 1, j + 1, 2] == waterId && m.GetBlockName(area[i + 1, j + 1, 0]) == "Empty")
-                    {
-                        m.SetBlock(x + i, y + j, z + 1, waterId);
-                        area[i + 1, j + 1, 1] = waterId;
-                    }
-                }
-        }
-
-
     }
 }
