@@ -1386,6 +1386,7 @@ public class Game
         if (!creative)
         {
             ENABLE_FREEMOVE = false;
+            movespeed = basemovespeed;
             ENABLE_NOCLIP = false;
         }
     }
@@ -2758,37 +2759,45 @@ public class Game
                 switch (toolType)
                 {
                     case TOOLTYPE.WOOD:
-                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                        //STONE, COBLESTONE, COALORE, BRICK, MOSSYCOBBLESTONE, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4  || idBlock == 16   || idBlock == 45 || idBlock == 48 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 140 || idBlock == 142 || idBlock == 147)
                             strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.WOOD;
+                        else if (/*OBSIDIAN*/ idBlock == 49 || /*IRONORE*/ idBlock == 15 || /*GOLDORE*/ idBlock == 14 || /*SIILVERORE*/ idBlock == 133 || /*IRONBLOCK*/ idBlock == 41 || /*GOLDBLOCK*/ idBlock == 42  || /*GOLBAR*/ idBlock == 132)
+                        strength = (int)TOOLS.NOTOOL * (int)TOOLTYPE.WOOD;
                         else
                             strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.STONE:
-                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                        //STONE, COBLESTONE, GOLDORE, COALORE, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 15 || idBlock == 16 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 140 || idBlock == 142 || idBlock == 147)
                             strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.STONE;
+                            else if (/*OBSIDIAN*/ idBlock == 49  || /*GOLDORE*/ idBlock == 14|| /*SIILVERORE*/ idBlock == 133 || /*GOLDBLOCK*/ idBlock == 42)
+                        strength = (int)TOOLS.NOTOOL * (int)TOOLTYPE.STONE;
                         else
                             strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.IRON:
-                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
                             strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.IRON;
+                            else if (/*OBSIDIAN*/ idBlock == 49)
+                        strength = (int)TOOLS.NOTOOL * (int)TOOLTYPE.IRON;
                         else
                             strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.SILVER:
-                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                        //STONE, COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
                             strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.SILVER;
                         else
                             strength = (int)TOOLS.NOTOOL;
                         break;
                     case TOOLTYPE.GOLD:
-                        //STONE , COBLESTONE, GOLDORE, IRONORE, CORALORE, GOLDBLOCK, IRONBLOCK, BRICK, MOSSYCOBBLESTONE, OBSIDIEN, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, GOLDBAR, SILVERORE, DIRTBRICK, SANDBRICK, ASPHALT
-                        if (idBlock == 1 || idBlock == 4 || idBlock == 14 || idBlock == 15 || idBlock == 16 || idBlock == 41 || idBlock == 42 || idBlock == 45 || idBlock == 48 || idBlock == 49 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 132 || idBlock == 133 || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                        //STONE , COBLESTONE, CORALORE, BRICK, MOSSYCOBBLESTONE, DIAMONDPRE, DIAMONDBLOCK, FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL, MINECART, DIRTBRICK, SANDBRICK, ASPHALT
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 16 || idBlock == 45 || idBlock == 48 || idBlock == 56 || idBlock == 57 || idBlock == 61 || idBlock == 62 || idBlock == 100 || idBlock == 113 || idBlock == 140 || idBlock == 142 || idBlock == 147)
                             strength = (int)TOOLS.PICKAXE * (int)TOOLTYPE.GOLD;
+                            else if (/*OBSIDIAN*/ idBlock == 49 || /*IRONORE*/ idBlock == 15 || /*GOLDORE*/ idBlock == 1 || /*SIILVERORE*/ idBlock == 133 || /*IRONBLOCK*/ idBlock == 41 || /*GOLDBLOCK*/ idBlock == 42 || /*GOLBAR*/ idBlock == 132)
+                        strength = (int)TOOLS.NOTOOL * (int)TOOLTYPE.GOLD;
                         else
                             strength = (int)TOOLS.NOTOOL;
                         break;
