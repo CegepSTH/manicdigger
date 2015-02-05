@@ -57,6 +57,7 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
                     Durability = 75,
+                    DurabilityHand = 75,
                 });
             m.SetBlockType(2, "Grass", new BlockType()
                 {
@@ -714,7 +715,7 @@ namespace ManicDigger.Mods
             m.SetBlockType(119, "Water1", new BlockType()
                 {
                     AllTextures = "Water",
-                    DrawType = DrawType.Fluid,
+                    DrawType = DrawType.HalfHeight,
                     WalkableType = WalkableType.Fluid,
                     Sounds = solidSounds,
                 });
@@ -817,7 +818,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
-                    Durability = 250,
+                    Durability = 150,
                 });
             m.SetBlockType(135, "SilverCoin", new BlockType()
                 {
