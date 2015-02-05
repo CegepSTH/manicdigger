@@ -20,7 +20,7 @@ namespace ManicDigger.Mods
         }
         ModManager m;
         
-        int treeCount = 20;
+        int treeCount = 100;
         
         // ##### TREE GEN #####
         Billow treenoise = new Billow();
@@ -37,7 +37,7 @@ namespace ManicDigger.Mods
             //###### TREE GEN #####
             treenoise.Seed = (Seed + 2);
             treenoise.OctaveCount = (6);
-            treenoise.Frequency = (1.0 / 180.0);
+            treenoise.Frequency = (1.0);
             treenoise.Lacunarity = ((treeCount / 20.0) * (treeCount / 20.0) * 2.0);
             //###### END TREE GEN #######
         }
@@ -84,7 +84,7 @@ namespace ManicDigger.Mods
         
         void MakeTreeType1(int x, int y, int z, Random rnd)
         {
-            int treeHeight = rnd.Next(8, 12);
+            int treeHeight = rnd.Next(8, 22);
             int xx = 0;
             int yy = 0;
             int dir = 0;
