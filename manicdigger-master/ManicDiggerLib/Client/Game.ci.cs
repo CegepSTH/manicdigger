@@ -1386,6 +1386,7 @@ public class Game
         if (!creative)
         {
             ENABLE_FREEMOVE = false;
+            movespeed = basemovespeed;
             ENABLE_NOCLIP = false;
         }
     }
