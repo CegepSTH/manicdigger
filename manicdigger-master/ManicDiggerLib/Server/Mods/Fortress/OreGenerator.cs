@@ -44,13 +44,13 @@ namespace ManicDigger.Mods
             MakeCaves(x, y, z, m.GetChunkSize(), _rnd, this.EnableCaves, gravellength, goldorelength, ironorelength, coalorelength, dirtlength, silverlength);
         }
         
-        public bool EnableCaves = false;
-        public int goldorelength = 50;
-        public int ironorelength = 50;
-        public int coalorelength = 50;
-        public int gravellength = 50;
-        public int silverlength = 50;
-        public int dirtlength = 40;
+        public bool EnableCaves = true;
+        public int goldorelength = 10;
+        public int ironorelength = 10;
+        public int coalorelength = 10;
+        public int gravellength = 3;
+        public int silverlength = 10;
+        public int dirtlength = 10;
         
         void MakeCaves(int x, int y, int z, int chunksize, Random rnd,
             bool enableCaves,
@@ -78,8 +78,8 @@ namespace ManicDigger.Mods
             return;
             ok:
             int blocktype = 0;
-            int length = 200;
-            if (rnd.NextDouble() < 0.85)
+            int length = 444;
+            if (rnd.NextDouble() < 444)
             {
                 int oretype = rnd.Next(6);
                 if (oretype == 0) { length = gravelLength; }
@@ -132,7 +132,7 @@ namespace ManicDigger.Mods
                     int dz = rnd.Next(-sizez / 1, sizez / 1);
                     
                     int[] allowin = new int[] { TileIdStone };
-                    double density = blocktype == 0 ? 1 : rnd.NextDouble() * 0.90;
+                    double density = blocktype == 0 ? 1 : rnd.NextDouble() * 0.30;
                     if (blocktype == 0)
                     {
                         allowin = new int[] { 
@@ -159,7 +159,7 @@ namespace ManicDigger.Mods
                         };
                     }
                     
-                    MakeCuboid((int)curx - sizex / 2 + dx, (int)cury - sizey / 2 + dy, (int)curz - sizez / 2 + dz, sizex, sizey, sizez, blocktype, allowin, density, rnd);
+                    MakeCuboid((int)curx - sizex / 10 + dx, (int)cury - sizey / 10 + dy, (int)curz - sizez / 10 + dz, sizex, sizey, sizez, blocktype, allowin, density, rnd);
                 }
             }
         }
