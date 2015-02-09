@@ -510,7 +510,13 @@ namespace ManicDigger.Mods
                 });
             m.SetBlockType(54, "Chest", new BlockType()
                 {
-                    AllTextures = "Unknown",
+                    TextureIdTop = "chest_top",
+                    TextureIdBack = "chest_side",
+                    TextureIdFront = "chest_side",
+                    TextureIdLeft = "chest_front",
+                    TextureIdRight = "chest_side",
+                    TextureIdForInventory = "chest_front",
+                    TextureIdBottom = "chest_top",
                     DrawType = DrawType.Solid,
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
@@ -1062,51 +1068,51 @@ namespace ManicDigger.Mods
             });
 
 
-            m.SetBlockType(165, "Silver hoe", new BlockType()
-            {
-                AllTextures = "Grid_Silver_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
-            });
-            m.SetBlockType(166, "Iron hoe", new BlockType()
-            {
-                AllTextures = "Grid_Iron_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
-            });
-            m.SetBlockType(167, "Golden hoe", new BlockType()
-            {
-                AllTextures = "Grid_Golden_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
-            });
-            m.SetBlockType(168, "Stone hoe", new BlockType()
-            {
-                AllTextures = "Grid_Stone_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
-            });
-            m.SetBlockType(169, "Wooden hoe", new BlockType()
-            {
-                AllTextures = "Grid_Wooden_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
-            });
+            //m.SetBlockType(165, "Silver hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Silver_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f
+            //});
+            //m.SetBlockType(166, "Iron hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Iron_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f
+            //});
+            //m.SetBlockType(167, "Golden hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Golden_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f
+            //});
+            //m.SetBlockType(168, "Stone hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Stone_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f
+            //});
+            //m.SetBlockType(169, "Wooden hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Wooden_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f
+            //});
 
             m.SetBlockType(170, "Silver shovel", new BlockType()
             {
@@ -1262,11 +1268,11 @@ namespace ManicDigger.Mods
             m.AddToStartInventory("Golden axe", 1);
             m.AddToStartInventory("Silver axe", 1);
 
-            m.AddToStartInventory("Wooden hoe", 1);
-            m.AddToStartInventory("Stone hoe", 1);
-            m.AddToStartInventory("Iron hoe", 1);
-            m.AddToStartInventory("Golden hoe", 1);
-            m.AddToStartInventory("Silver hoe", 1);
+            //m.AddToStartInventory("Wooden hoe", 1);
+            //m.AddToStartInventory("Stone hoe", 1);
+            //m.AddToStartInventory("Iron hoe", 1);
+            //m.AddToStartInventory("Golden hoe", 1);
+            //m.AddToStartInventory("Silver hoe", 1);
             
             m.AddToStartInventory("Wooden shovel", 1);
             m.AddToStartInventory("Stone shovel", 1);
