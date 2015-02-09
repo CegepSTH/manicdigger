@@ -118,27 +118,27 @@ namespace ManicDigger.Server.Mods.Fortress
 
         private void FillPlaneArea(int tileId, ref int x, ref int y, int z)
         {
-            Console.WriteLine("FillPlaneArea");
+            //Console.WriteLine("FillPlaneArea");
 
-            for (int i = -1; i < 2; i++)
-            {
-                for (int j = -1; j < 2; j++)
-                {
-                    SetEmptyBlock(tileId, x + i, y + j, z);
-                    int tempZ = z;
-                    bool drop = false;
-                    int cpt = 0;
-                    do
-                    {
-                        cpt++;
-                        drop = FillDown(tileId, x, y, ref tempZ);
-                    }
-                    while (drop);
+            //for (int i = -1; i < 2; i++)
+            //{
+            //    for (int j = -1; j < 2; j++)
+            //    {
+            //        SetEmptyBlock(tileId, x + i, y + j, z);
+            //        int tempZ = z;
+            //        bool drop = false;
+            //        int cpt = 0;
+            //        do
+            //        {
+            //            cpt++;
+            //            drop = FillDown(tileId, x, y, ref tempZ);
+            //        }
+            //        while (drop);
 
-                    if (cpt > 1)
-                        return;
-                }
-            }
+            //        if (cpt > 1)
+            //            return;
+            //    }
+            //}
         }
     }
 }
