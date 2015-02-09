@@ -1273,7 +1273,8 @@ namespace ManicDigger.Mods
             m.AddToStartInventory("Iron shovel", 1);
             m.AddToStartInventory("Golden shovel", 1);
             m.AddToStartInventory("Silver shovel", 1);
-            
+
+            m.AddToStartInventory("Water", 1000);
 
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
             m.AddCraftingRecipe("Stone", 2, "Cobblestone", 1);
