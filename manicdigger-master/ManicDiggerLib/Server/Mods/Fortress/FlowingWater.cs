@@ -7,14 +7,133 @@ namespace ManicDigger.Server.Mods.Fortress
 {
     class FlowingWater : IMod
     {
+
+        private class WaterBox
+        {
+            // force de l'eau (distance max de la source)
+            private const int MAX_STRENGH = 6;
+
+            private int _x, _y, _z, _s;
+            public int X { get { return _x; } }
+            public int Y { get { return _y; } }
+            public int Z { get { return _z; } }
+            private ModManager _mod;
+
+            private List<WaterBox> _water = new List<WaterBox>();
+
+            public WaterBox(int x, int y, int z, int strength, ModManager mod)
+            {
+                _x = x;
+                _y = y;
+                _z = z;
+                _s = strength;
+                _mod = mod;
+
+                if (_s < 0)
+                    _s = 0;
+
+                if (_s > MAX_STRENGH)
+                    _s = MAX_STRENGH;
+
+                mod.SetBlock(x, y, z, _mod.GetBlockId("Water"));
+                if (canFlow())
+                    new Thread(FlowWater).Start();
+            }
+
+            private bool canFlow()
+            {
+                Console.WriteLine("canFlow");
+
+                //regarde vers le bas
+                if (canFlowDown())
+                    return true;
+
+                // regarde si la force de l'eau est asser forte
+                if (_s < 1)
+                    return false;
+
+                // regarde dans toute les direction
+                bool canX = canFlowX();
+                bool canY = canFlowY();
+
+                // retourne le resultat final (l'eau ira dans tous les sens possible)
+                return canX || canY;
+
+                //// retourne le une direction possible
+                //return canFlowX() || canFlowY();
+            }
+
+            private bool canFlowDown()
+            {
+                Console.WriteLine("canFlowDown");
+                if (_mod.GetBlockName(_mod.GetBlock(_x, _y, _z - 1)) == "Empty")
+                {
+                    _water.Add(new WaterBox(_x, _y, _z - 1, _s, _mod));
+                    return true;
+                }
+                
+                return false;
+            }
+
+            private bool canFlowX()
+            {
+                Console.WriteLine("canFlowX");
+                bool can = false;
+
+                if (_mod.GetBlockName(_mod.GetBlock(_x - 1, _y, _z)) == "Empty")
+                {
+                    _water.Add(new WaterBox(_x -1, _y, _z, _s - 1, _mod));
+                    can = true;
+                }
+                
+                if (_mod.GetBlockName(_mod.GetBlock(_x + 1, _y, _z)) == "Empty")
+                {
+                    _water.Add(new WaterBox(_x + 1, _y, _z, _s - 1, _mod));
+                    can = true;
+                }
+
+                return can;
+            }
+
+            private bool canFlowY()
+            {
+                Console.WriteLine("canFlowY");
+                bool can = false;
+
+                if (_mod.GetBlockName(_mod.GetBlock(_x, _y - 1, _z)) == "Empty")
+                {
+                    _water.Add(new WaterBox(_x, _y - 1, _z, _s - 1, _mod));
+                    can = true;
+                }
+
+                if (_mod.GetBlockName(_mod.GetBlock(_x, _y + 1, _z)) == "Empty")
+                {
+                    _water.Add(new WaterBox(_x, _y + 1, _z, _s - 1, _mod));
+                    can = true;
+                }
+
+                return can;
+            }
+
+            private void FlowWater()
+            {
+                Thread.Sleep(200);
+
+                Console.WriteLine("FlowWater");
+                for (int i = 0; i < _water.Count; i++)
+                {
+                    WaterBox w = _water[i];
+                    _mod.SetBlock(w.X, w.Y, w.Z, _mod.GetBlockId("Water"));
+                    
+                }
+            }
+        }
         ModManager m;
 
 
         public void PreStart(ModManager manager)
         {
             m = manager;
-
-
 
             // s'abonne au event Build et Delete
             m.RegisterOnBlockBuild(Build);
@@ -41,49 +160,16 @@ namespace ManicDigger.Server.Mods.Fortress
         void Update(int x, int y, int z)
         {
             int waterId = m.GetBlockId("Water");
-           // int[, ,] area = new int[3, 3, 3];
-            // au delete x,y,z est toujours empty
-            // au build x,y,z est du type du block que l'on vient de construire
-
-            // set le block centre avec les coordonner du block envoyer par l'action...
-
             int currentBlockId = m.GetBlock(x, y, z);
             //  area[1, 1, 1] = currentBlockId;
             int tempZ = z;
-            //for (int i = -1; i < 2; i++)
-            //{
-            //    Console.WriteLine();
-            //    for (int j = -1; j < 2; j++)
-            //    {
-                    //for (int k = -1; k != 2; k++)
-                  //  {
-                          //Console.Write((i + 1).ToString() + " " + (j + 1).ToString() + "  " + (k + 1).ToString());
-                        int bId = m.GetBlock(x , y , z );
+            int bId = m.GetBlock(x, y, z);
 
-                          Console.WriteLine(m.GetBlockName(bId));
+            Console.WriteLine(m.GetBlockName(bId));
 
 
-                        // Premiere loi, fill vers le bas 
-                        
-                        int cpt = 0;
-                        bool drop = false;
-                        do
-                        {
-                            drop = FillDown(waterId, x , y, ref tempZ);
-                            Console.WriteLine("tempZ: " + tempZ.ToString());
-                            cpt++;
-                        }
-                        while (drop);
-
-                        Console.WriteLine("OUT tempZ: " + tempZ.ToString());
-                   
-                        FillPlaneArea(waterId, ref x, ref y, ++tempZ);
-                    
-                        
-                        // verifie la pente
-                  //  }
-               // }
-           // }
+            // Premiere loi, fill vers le bas 
+            FillDown(waterId, x, y, ref tempZ);
         }
 
         /// <summary>
@@ -94,9 +180,10 @@ namespace ManicDigger.Server.Mods.Fortress
             Console.WriteLine("tempZ: " + z.ToString());
             if (m.GetBlockName(m.GetBlock(x, y, z)) == "Water")
             {
-                z--;
-                Thread.Sleep(500);
-                return SetEmptyBlock(waterId, x, y, z);
+                WaterBox w = new WaterBox(x, y, z - 1, 20, m);
+                //z--;
+                //Thread.Sleep(500);
+               // return SetEmptyBlock(waterId, x, y, z);
             }
             return false;
         }
