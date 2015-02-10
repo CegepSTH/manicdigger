@@ -123,6 +123,13 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Fluid,
                     Sounds = noSound,
                 });
+            m.SetBlockType(80, "WaterSource", new BlockType()
+            {
+                AllTextures = "Water",
+                DrawType = DrawType.Fluid,
+                WalkableType = WalkableType.Fluid,
+                Sounds = noSound,
+            });
             m.SetBlockType(9, "StationaryWater", new BlockType()
                 {
                     AllTextures = "Water",
