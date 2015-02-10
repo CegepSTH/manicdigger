@@ -12,9 +12,13 @@ namespace ManicDigger.Server.Mods.Fortress
         private class WaterBox
         {
             // force de l'eau (distance max de la source)
-            private const int MAX_STRENGH = 3;
+            private const int MAX_STRENGH = 7;
 
+            // position du block
             private int _x, _y, _z, _s;
+
+            // position de la source
+            private int _sx, _sy, _sz;
 
             private bool _isSource;
             public int X { get { return _x; } }
@@ -25,6 +29,13 @@ namespace ManicDigger.Server.Mods.Fortress
             private ModManager _mod;
 
             private List<WaterBox> _water = new List<WaterBox>();
+
+            public void SetSource(int x, int y, int z)
+            {
+                _sx = x;
+                _sy = y;
+                _sz = z;
+            }
 
             public WaterBox(int x, int y, int z, int strength, ModManager mod, bool isSource)
             {
@@ -112,7 +123,9 @@ namespace ManicDigger.Server.Mods.Fortress
                 }
                 if (canFill)
                 {
-                    _water.Add(new WaterBox(x, y, z, s, _mod, false));
+                    WaterBox w = new WaterBox(x, y, z, s, _mod, false);
+                    w.SetSource(_x, _y, _z);
+                    _water.Add(w);
                     canFill = true;
                 }
 
@@ -143,6 +156,7 @@ namespace ManicDigger.Server.Mods.Fortress
             // s'abonne au event Build et Delete
             m.RegisterOnBlockBuild(Build);
             m.RegisterOnBlockDelete(Delete);
+            m.RegisterOnBlockUseWithTool(UseWithTool);
         }
 
         public void Start(ModManager m)
@@ -165,6 +179,11 @@ namespace ManicDigger.Server.Mods.Fortress
             {
                 WaterBox w = new WaterBox(x, y, z, 500, m, true);
             }
+        }
+
+        void UseWithTool(int player, int x, int y, int z, int blockid)
+        {
+            // TODO
         }
 
         private bool WaterAround(int x, int y, int z)
