@@ -4692,14 +4692,14 @@ public class Game
 
         //Added by Alexandre
 
-        Packet_Client p = new Packet_Client();
-        {
-            p.Id = Packet_ClientIdEnum.SpecialKey;
-            p.SpecialKey_ = new Packet_ClientSpecialKey();
-            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
-        }
-        SendPacketClient(p);
-        player.movedz = 0;
+        //Packet_Client p = new Packet_Client();
+        //{
+        //    p.Id = Packet_ClientIdEnum.SpecialKey;
+        //    p.SpecialKey_ = new Packet_ClientSpecialKey();
+        //    p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        //}
+        //SendPacketClient(p);
+        //player.movedz = 0;
     }
     internal int[] materialSlots;
 
@@ -5513,6 +5513,7 @@ public class Game
                     //    MyStream.ReadAllLines(d_GetFile.GetFile("lightlevels.csv")));
                     //d_CraftingRecipes.Load(MyStream.ReadAllLines(d_GetFile.GetFile("craftingrecipes.csv")));
 
+                    System.Threading.Thread.Sleep(2000);
                     MapLoaded();
                 }
                 break;
