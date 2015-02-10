@@ -123,13 +123,6 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Fluid,
                     Sounds = noSound,
                 });
-            m.SetBlockType(80, "WaterSource", new BlockType()
-            {
-                AllTextures = "Water",
-                DrawType = DrawType.Fluid,
-                WalkableType = WalkableType.Fluid,
-                Sounds = noSound,
-            });
             m.SetBlockType(9, "StationaryWater", new BlockType()
                 {
                     AllTextures = "Water",
@@ -585,6 +578,188 @@ namespace ManicDigger.Mods
                     WalkableType = WalkableType.Solid,
                     Sounds = solidSounds,
                 });
+
+            m.SetBlockType(63, "WoodHelm", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(64, "IronHelm", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(65, "SilverHelm", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(66, "GoldHelm", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(67, "WoodGlove", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(68, "IronGlove", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(69, "SilverGlove", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(70, "GoldGlove", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(71, "WoodPants", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(72, "IronPants", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(73, "SilverPants", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(74, "GoldPants", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(75, "WoodChestArmor", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(76, "IronChestArmor", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(77, "SilverChestArmor", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(78, "GoldChestArmor", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(79, "WoodBoots", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(80, "IronBoots", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(81, "SilverBoots", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+            m.SetBlockType(82, "GoldBoots", new BlockType()
+            {
+                AllTextures = "Unknown",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f
+            });
+
+
             m.SetBlockType(100, "BrushedMetal", new BlockType()
                 {
                     AllTextures = "BrushedMetal",
@@ -1075,51 +1250,51 @@ namespace ManicDigger.Mods
             });
 
 
-            //m.SetBlockType(165, "Silver hoe", new BlockType()
-            //{
-            //    AllTextures = "Grid_Silver_Hoe",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    handimage = "Toolhand_Iron_Axe.png",
-            //    WalkSpeedWhenUsed = 1f
-            //});
-            //m.SetBlockType(166, "Iron hoe", new BlockType()
-            //{
-            //    AllTextures = "Grid_Iron_Hoe",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    handimage = "Toolhand_Iron_Axe.png",
-            //    WalkSpeedWhenUsed = 1f
-            //});
-            //m.SetBlockType(167, "Golden hoe", new BlockType()
-            //{
-            //    AllTextures = "Grid_Golden_Hoe",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    handimage = "Toolhand_Iron_Axe.png",
-            //    WalkSpeedWhenUsed = 1f
-            //});
-            //m.SetBlockType(168, "Stone hoe", new BlockType()
-            //{
-            //    AllTextures = "Grid_Stone_Hoe",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    handimage = "Toolhand_Iron_Axe.png",
-            //    WalkSpeedWhenUsed = 1f
-            //});
-            //m.SetBlockType(169, "Wooden hoe", new BlockType()
-            //{
-            //    AllTextures = "Grid_Wooden_Hoe",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    handimage = "Toolhand_Iron_Axe.png",
-            //    WalkSpeedWhenUsed = 1f
-            //});
+            m.SetBlockType(165, "Silver hoe", new BlockType()
+            {
+                AllTextures = "Grid_Silver_Hoe",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(166, "Iron hoe", new BlockType()
+            {
+                AllTextures = "Grid_Iron_Hoe",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(167, "Golden hoe", new BlockType()
+            {
+                AllTextures = "Grid_Golden_Hoe",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(168, "Stone hoe", new BlockType()
+            {
+                AllTextures = "Grid_Stone_Hoe",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(169, "Wooden hoe", new BlockType()
+            {
+                AllTextures = "Grid_Wooden_Hoe",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Toolhand_Iron_Axe.png",
+                WalkSpeedWhenUsed = 1f
+            });
 
             m.SetBlockType(170, "Silver shovel", new BlockType()
             {
