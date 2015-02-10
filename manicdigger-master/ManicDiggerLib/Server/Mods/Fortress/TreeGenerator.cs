@@ -19,18 +19,18 @@ namespace ManicDigger.Mods
             m.RegisterPopulateChunk(PopulateChunk);
         }
         ModManager m;
-        
+
         int treeCount = 100;
-        
+
         // ##### TREE GEN #####
         Billow treenoise = new Billow();
         // ##### END TREE GEN ####
-        
+
         int TileIdGrass;
         int TileIdTreeTrunk;
         int TileIdLeaves;
         int TileIdApples;
-        
+
         void Init()
         {
             int Seed = m.GetSeed();
@@ -41,9 +41,9 @@ namespace ManicDigger.Mods
             treenoise.Lacunarity = ((treeCount / 20.0) * (treeCount / 20.0) * 2.0);
             //###### END TREE GEN #######
         }
-        
+
         Random _rnd = new Random();
-        
+
         void PopulateChunk(int x, int y, int z)
         {
             x *= m.GetChunkSize();
@@ -59,7 +59,7 @@ namespace ManicDigger.Mods
             //random trees
             MakeSmallTrees(x, y, z, m.GetChunkSize(), _rnd, treeCount + 10 - (10 - treeCount / 10));
         }
-        
+
         void MakeSmallTrees(int cx, int cy, int cz, int chunksize, Random rnd, int count)
         {
             int chooseTreeType;
@@ -72,23 +72,68 @@ namespace ManicDigger.Mods
                 {
                     continue;
                 }
-                chooseTreeType = rnd.Next(0, 3);
+                chooseTreeType = rnd.Next(0, 4);
                 switch (chooseTreeType)
                 {
                     case 0: MakeTreeType1(x, y, z, rnd); break;
                     case 1: MakeTreeType2(x, y, z, rnd); break;
                     case 2: MakeTreeType3(x, y, z, rnd); break;
-            };
+                    case 3: MakeTreeTypeBig(x, y, z, rnd); break;
+                };
             }
         }
+
+        private void MakeTreeTypeBig(int x, int y, int z, Random rnd)
+        {
+            int treeHeight = rnd.Next(8, 12);
+            int xx = 0;
+            int yy = 0;
+            int dir = 0;
+            for (int i = 0; i < treeHeight; i++)
+            {
+                SetBlock(x, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x , y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x, y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x -1 , y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y , z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y + 1, z + i, TileIdTreeTrunk);
         
+                if (i == treeHeight - 1)
+                {
+                    for (int j = 1; j < 9; j++)
+                    {
+                        dir += 45;
+                        for (int k = 1; k < 5; k++)
+                        {
+                            int length = dir % 90 == 0 ? k : (int)(k / 2);
+                            xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
+                            yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
+
+                            SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
+
+
+                            SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx, y + yy - 1, z + i, TileIdLeaves);
+
+                        }
+                    }
+                }
+            }
+        }
+
         void MakeTreeType1(int x, int y, int z, Random rnd)
         {
             int treeHeight = rnd.Next(8, 22);
             int xx = 0;
             int yy = 0;
             int dir = 0;
-            
+
             for (int i = 0; i < treeHeight; i++)
             {
                 SetBlock(x, y, z + i, TileIdTreeTrunk);
@@ -99,7 +144,7 @@ namespace ManicDigger.Mods
                     SetBlock(x, y + 1, z + i, TileIdTreeTrunk);
                     SetBlock(x, y - 1, z + i, TileIdTreeTrunk);
                 }
-                
+
                 if (i == treeHeight - 3)
                 {
                     for (int j = 1; j < 9; j++)
@@ -110,10 +155,10 @@ namespace ManicDigger.Mods
                             int length = dir % 90 == 0 ? k : (int)(k / 2);
                             xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
                             yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
-                            
+
                             SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
                             SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
-                            
+
                             SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
@@ -131,10 +176,10 @@ namespace ManicDigger.Mods
                             int length = dir % 90 == 0 ? k : (int)(k / 2);
                             xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
                             yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
-                            
+
                             SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
                             SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
-                            
+
                             SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
@@ -144,7 +189,7 @@ namespace ManicDigger.Mods
                 }
             }
         }
-        
+
         void MakeTreeType2(int x, int y, int z, Random rnd)
         {
             int treeHeight = rnd.Next(4, 6);
@@ -165,7 +210,7 @@ namespace ManicDigger.Mods
                             int length = dir % 90 == 0 ? k : (int)(k / 2);
                             xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
                             yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
-                            
+
                             SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
                             if (chanceToAppleTree < rnd.NextDouble())
                             {
@@ -190,7 +235,7 @@ namespace ManicDigger.Mods
                 }
             }
         }
-        
+
         void MakeTreeType3(int x, int y, int z, Random rnd)
         {
             int treeHeight = rnd.Next(6, 9);
@@ -210,10 +255,10 @@ namespace ManicDigger.Mods
                             int length = dir % 90 == 0 ? k : (int)(k / 2);
                             xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
                             yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
-                            
+
                             SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
                             SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
-                            
+
                             SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
@@ -232,10 +277,10 @@ namespace ManicDigger.Mods
                             int length = dir % 90 == 0 ? k : (int)(k / 2);
                             xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
                             yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
-                            
+
                             SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
                             SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
-                            
+
                             SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
                             SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
@@ -246,7 +291,7 @@ namespace ManicDigger.Mods
                 SetBlockIfEmpty(x, y, z + treeHeight, TileIdLeaves);
             }
         }
-        
+
         void SetBlock(int x, int y, int z, int blocktype)
         {
             if (m.IsValidPos(x, y, z))
@@ -254,7 +299,7 @@ namespace ManicDigger.Mods
                 m.SetBlock(x, y, z, blocktype);
             }
         }
-        
+
         void SetBlockIfEmpty(int x, int y, int z, int blocktype)
         {
             if (m.IsValidPos(x, y, z) && m.GetBlock(x, y, z) == 0)
