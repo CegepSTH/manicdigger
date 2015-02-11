@@ -269,17 +269,7 @@ package Packet;
         optional ClientServerQuery query = 19;
         optional ClientGameResolution gameResolution = 20;
 	}
-    
-    
-    
-    
-    
-    
-    
-
 	
-	
-
     message SoundSet
     {
         repeated string walk = 1;
@@ -291,7 +281,6 @@ package Packet;
         repeated string reload = 7;
     }
 
-
     message BlockType
     {
         optional string textureIdTop = 1;
@@ -301,7 +290,6 @@ package Packet;
         optional string textureIdLeft = 5;
         optional string textureIdRight = 6;
         optional string textureIdForInventory = 7;
-
         optional DrawType drawType = 8 [ default = Empty ];
         optional WalkableType walkableType = 9 [ default = Empty ];
         optional int32 rail = 10;
@@ -346,8 +334,29 @@ package Packet;
 		optional bool HarvestIron = 49;
 		optional bool HarvestSilver = 50;
 		optional bool HarvestGold = 51;
+		optional Tools tools = 52 [ default = NOTOOL ];
+		optional ToolType toolType = 53 [ default = NOTYPE ];
     }
     
+	enum Tools
+    {
+        SHOVEL = 4;
+        PICKAXE = 11;
+        AXE = 3;
+        HOE = 2;
+        NOTOOL = 2;
+    }
+	
+	enum ToolType
+    {
+        WOOD = 1;
+        STONE = 2;
+        IRON = 3;
+        SILVER = 4;
+        GOLD = 5;
+		NOTYPE = 6;
+    }
+	
     enum DrawType
     {
         Empty = 0;

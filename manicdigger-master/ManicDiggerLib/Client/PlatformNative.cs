@@ -20,9 +20,55 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
+    /// <summary>
+    /// Methode qui ajoute un cours spécifique au document xml entré en paramètre
+    /// </summary>
+    public override void UpdateServerConfig(bool isCreative)
+    {
+        XmlDocument doc = new XmlDocument();
+        string xmlFileName = Path.Combine(GameStorePath.gamepathconfig, "ServerConfig.txt");
+        //------Validation--------
+        if (!ValidateFile(xmlFileName, ".txt"))
+            return;
+        //------------------------
+        doc.Load(xmlFileName);
+
+
+        XmlNode node = doc.DocumentElement.FirstChild;
+
+        while (node.Name != "Creative")
+        {
+            node = node.NextSibling;
+        }
+
+        node.InnerText = (isCreative) ? "true" : "false";
+
+        doc.Save(xmlFileName);
+    }
+
+    /// <summary>
+    /// Permet de vérifier si un fichier existe et s'il comporte l'extension passé en paramètre
+    /// </summary>
+    public override bool ValidateFile(string fileName, string extension)
+    {
+        FileInfo file = new FileInfo(fileName);
+        if (!File.Exists(fileName))
+        {
+            Console.WriteLine("Le fichier {0} n'existe pas", fileName);
+            return false;
+        }
+        if (file.Extension != extension)
+        {
+            Console.WriteLine("Le fichier {0} n'est pas un fichier \"{1}\"", fileName, extension);
+            return false;
+        }
+
+        return true;
+    }
     public GamePlatformNative()
     {
         System.Threading.ThreadPool.SetMinThreads(32, 32);

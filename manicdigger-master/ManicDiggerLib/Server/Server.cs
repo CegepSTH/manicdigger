@@ -365,7 +365,7 @@ namespace ManicDiggerServer
             d_GetFile = getfile;
             
             //Initialize game components
-            var data = new GameData(this.ServerGame);
+            var data = new GameData();
             data.Start();
             d_Data = data;
             d_CraftingTableTool = new CraftingTableTool() { d_Map = map, d_Data = data };
@@ -2639,13 +2639,13 @@ namespace ManicDiggerServer
                             {
                                 try
                                 {
-                                    modEventHandlers.onweaponhit[i](clientid, k.Key, packet.Shot.WeaponBlock, false);
+                                    //modEventHandlers.onweaponhit[i](clientid, k.Key, packet.Shot.WeaponBlock, false);
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine("Mod exception: OnWeaponHit");
-                                    Console.WriteLine(ex.Message);
-                                    Console.WriteLine(ex.StackTrace);
+                                    platform.ConsoleWriteLine("Mod exception: OnWeaponHit");
+                                    platform.ConsoleWriteLine(ex.Message);
+                                    platform.ConsoleWriteLine(ex.StackTrace);
                                 }
                             }
                         }
