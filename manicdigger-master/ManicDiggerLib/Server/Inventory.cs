@@ -800,10 +800,38 @@ namespace ManicDigger
             {
                 //case WearPlace.LeftHand: return false;
                 case WearPlace_.RightHand: return item.ItemClass == ItemClass.Block;
-                case WearPlace_.MainArmor: return true;
-                case WearPlace_.Boots: return true;
-                case WearPlace_.Helmet: return true;
-                case WearPlace_.Gauntlet: return true;
+                case WearPlace_.MainArmor:
+                    {
+                        //These are the ids for the armors
+                        if (item.BlockId == 75 || item.BlockId == 76 || item.BlockId == 77 || item.BlockId == 78)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Boots:
+                    {
+                        //These are the ids for the boots
+                        if (item.BlockId == 79 || item.BlockId == 80 || item.BlockId == 81 || item.BlockId == 82)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Helmet:
+                    {
+                        //These are the ids for the helmet
+                        if (item.BlockId == 63 || item.BlockId == 64 || item.BlockId == 65 || item.BlockId == 66)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Gauntlet:
+                    {
+                        //These are the ids for the gloves
+                        if (item.BlockId == 67 || item.BlockId == 68 || item.BlockId == 69 || item.BlockId == 70)
+                            return true;
+                        else
+                            return false;
+                    } 
                 default: throw new Exception();
             }
         }
