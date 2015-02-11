@@ -993,6 +993,197 @@ namespace ManicDigger
             AddCraftRecipe(ings, new CraftIngredient(167, 1, 4, 2));
             #endregion
 
+            #region Helm
+            //Wood helm
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 1));
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 1, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(63, 1,4, 2));
+
+            //Iron helm
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 1));
+            ings.Add(new CraftIngredient(15, 1, 0, 2));
+            ings.Add(new CraftIngredient(15, 1, 1, 1));
+            ings.Add(new CraftIngredient(15, 1, 2, 1));
+            ings.Add(new CraftIngredient(15, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(64, 1, 4, 2));
+
+            //Silver helm
+            ings.Clear();
+            ings.Add(new CraftIngredient(133, 1, 0, 1));
+            ings.Add(new CraftIngredient(133, 1, 0, 2));
+            ings.Add(new CraftIngredient(133, 1, 1, 1));
+            ings.Add(new CraftIngredient(133, 1, 2, 1));
+            ings.Add(new CraftIngredient(133, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(65, 1, 4, 2));
+
+            //Gold helm
+            ings.Clear();
+            ings.Add(new CraftIngredient(14, 1, 0, 1));
+            ings.Add(new CraftIngredient(14, 1, 0, 2));
+            ings.Add(new CraftIngredient(14, 1, 1, 1));
+            ings.Add(new CraftIngredient(14, 1, 2, 1));
+            ings.Add(new CraftIngredient(14, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(66, 1, 4, 2));
+            #endregion 
+            #region Glove
+            //Wood glove
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(67, 1, 4, 2));
+
+            //Iron glove
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 3));
+            ings.Add(new CraftIngredient(15, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(68, 1, 4, 2));
+
+            //Silver glove
+            ings.Clear();
+            ings.Add(new CraftIngredient(133, 1, 0, 3));
+            ings.Add(new CraftIngredient(133, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(69, 1, 4, 2));
+
+            //Gold glove
+            ings.Clear();
+            ings.Add(new CraftIngredient(14, 1, 0, 3));
+            ings.Add(new CraftIngredient(14, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(70, 1, 4, 2));
+            #endregion 
+            #region Pants
+            //Wood pants
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 1));
+            ings.Add(new CraftIngredient(5, 1, 1, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(71, 1, 4, 2));
+
+            //Iron pants
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 3));
+            ings.Add(new CraftIngredient(15, 1, 0, 2));
+            ings.Add(new CraftIngredient(15, 1, 0, 1));
+            ings.Add(new CraftIngredient(15, 1, 1, 1));
+            ings.Add(new CraftIngredient(15, 1, 2, 1));
+            ings.Add(new CraftIngredient(15, 1, 2, 2));
+            ings.Add(new CraftIngredient(15, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(72, 1, 4, 2));
+
+            //Silver pants
+            ings.Clear();
+            ings.Add(new CraftIngredient(133, 1, 0, 3));
+            ings.Add(new CraftIngredient(133, 1, 0, 2));
+            ings.Add(new CraftIngredient(133, 1, 0, 1));
+            ings.Add(new CraftIngredient(133, 1, 1, 1));
+            ings.Add(new CraftIngredient(133, 1, 2, 1));
+            ings.Add(new CraftIngredient(133, 1, 2, 2));
+            ings.Add(new CraftIngredient(133, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(73, 1, 4, 2));
+
+            //Gold pants
+            ings.Clear();
+            ings.Add(new CraftIngredient(14, 1, 0, 3));
+            ings.Add(new CraftIngredient(14, 1, 0, 2));
+            ings.Add(new CraftIngredient(14, 1, 0, 1));
+            ings.Add(new CraftIngredient(14, 1, 1, 1));
+            ings.Add(new CraftIngredient(14, 1, 2, 1));
+            ings.Add(new CraftIngredient(14, 1, 2, 2));
+            ings.Add(new CraftIngredient(14, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(74, 1, 4, 2));
+            #endregion 
+            #region ChestArmor
+            //Wood Chest
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 0, 1));
+            ings.Add(new CraftIngredient(5, 1, 1, 2));
+            ings.Add(new CraftIngredient(5, 1, 1, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 1));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(75, 1, 4, 2));
+
+            //Iron Chest
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 3));
+            ings.Add(new CraftIngredient(15, 1, 0, 2));
+            ings.Add(new CraftIngredient(15, 1, 0, 1));
+            ings.Add(new CraftIngredient(15, 1, 1, 2));
+            ings.Add(new CraftIngredient(15, 1, 1, 3));
+            ings.Add(new CraftIngredient(15, 1, 2, 1));
+            ings.Add(new CraftIngredient(15, 1, 2, 2));
+            ings.Add(new CraftIngredient(15, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(76, 1, 4, 2));
+
+            //Silver Chest
+            ings.Clear();
+            ings.Add(new CraftIngredient(133, 1, 0, 3));
+            ings.Add(new CraftIngredient(133, 1, 0, 2));
+            ings.Add(new CraftIngredient(133, 1, 0, 1));
+            ings.Add(new CraftIngredient(133, 1, 1, 2));
+            ings.Add(new CraftIngredient(133, 1, 1, 3));
+            ings.Add(new CraftIngredient(133, 1, 2, 1));
+            ings.Add(new CraftIngredient(133, 1, 2, 2));
+            ings.Add(new CraftIngredient(133, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(77, 1, 4, 2));
+
+            //Gold Chest
+            ings.Clear();
+            ings.Add(new CraftIngredient(14, 1, 0, 3));
+            ings.Add(new CraftIngredient(14, 1, 0, 2));
+            ings.Add(new CraftIngredient(14, 1, 0, 1));
+            ings.Add(new CraftIngredient(14, 1, 1, 2));
+            ings.Add(new CraftIngredient(14, 1, 1, 3));
+            ings.Add(new CraftIngredient(14, 1, 2, 1));
+            ings.Add(new CraftIngredient(14, 1, 2, 2));
+            ings.Add(new CraftIngredient(14, 1, 2, 3));
+            AddCraftRecipe(ings, new CraftIngredient(78, 1, 4, 2));
+            #endregion
+            #region Boots
+            //Wood boots
+            ings.Clear();
+            ings.Add(new CraftIngredient(5, 1, 0, 3));
+            ings.Add(new CraftIngredient(5, 1, 2, 3));
+            ings.Add(new CraftIngredient(5, 1, 0, 2));
+            ings.Add(new CraftIngredient(5, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(79, 1, 4, 2));
+
+            //Iron boots
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 3));
+            ings.Add(new CraftIngredient(15, 1, 2, 3));
+            ings.Add(new CraftIngredient(15, 1, 0, 2));
+            ings.Add(new CraftIngredient(15, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(80, 1, 4, 2));
+
+            //Silver boots
+            ings.Clear();
+            ings.Add(new CraftIngredient(133, 1, 0, 3));
+            ings.Add(new CraftIngredient(133, 1, 2, 3));
+            ings.Add(new CraftIngredient(133, 1,0, 2));
+            ings.Add(new CraftIngredient(133, 1, 2, 2));
+
+            AddCraftRecipe(ings, new CraftIngredient(81, 1, 4, 2));
+
+            //Gold boots
+            ings.Clear();
+            ings.Add(new CraftIngredient(14, 1, 0, 3));
+            ings.Add(new CraftIngredient(14, 1, 2, 3));
+            ings.Add(new CraftIngredient(14, 1, 0, 2));
+            ings.Add(new CraftIngredient(14, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(82, 1, 4, 2));
+            #endregion
+
 
         }
 
