@@ -6,11 +6,11 @@
         wearPlaceStart = new PointRef[5];
         {
             //new Point(282,85), //LeftHand,
-            wearPlaceStart[0] = PointRef.Create(34, 100); //RightHand,
-            wearPlaceStart[1] = PointRef.Create(74, 100); //MainArmor,
-            wearPlaceStart[2] = PointRef.Create(194, 100); //Boots,
-            wearPlaceStart[3] = PointRef.Create(114, 100); //Helmet,
-            wearPlaceStart[4] = PointRef.Create(154, 100); //Gauntlet,
+            wearPlaceStart[0] = PointRef.Create(40, 110); //RightHand,
+            wearPlaceStart[1] = PointRef.Create(80, 110); //MainArmor,
+            wearPlaceStart[2] = PointRef.Create(200, 110); //Boots,
+            wearPlaceStart[3] = PointRef.Create(120, 110); //Helmet,
+            wearPlaceStart[4] = PointRef.Create(160, 110); //Gauntlet,
         }
 
         //indexed by enum WearPlace
@@ -38,7 +38,7 @@
     internal int CellDrawSize;
 
     //Position of crafting interface
-    int CraftingInterfaceStartX() { return InventoryStartX() + 600 ; }
+    int CraftingInterfaceStartX() { return InventoryStartX() + 580 ; }
     int CraftingInterfaceStartY() { return InventoryStartY() + 100; }
 
     public int InventoryStartX() { return game.Width() / 2 - 560 / 2; }
@@ -221,7 +221,8 @@
             ScrollingDownTimeMilliseconds = game.platform.TimeMillisecondsFromStart();
             return true;
         }
-        game.GuiStateBackToGame();
+        //Disabled this method, was kinda frustating to click some pixel on the side and get a closed inventory
+      //  game.GuiStateBackToGame();
         return false;
     }
 
@@ -436,7 +437,7 @@
         DrawItem(wearPlaceStart[WearPlace_.Boots].X + InventoryStartX(), wearPlaceStart[WearPlace_.Boots].Y + InventoryStartY(), game.d_Inventory.Boots, 0, 0);
         DrawItem(wearPlaceStart[WearPlace_.Helmet].X + InventoryStartX(), wearPlaceStart[WearPlace_.Helmet].Y + InventoryStartY(), game.d_Inventory.Helmet, 0, 0);
         DrawItem(wearPlaceStart[WearPlace_.Gauntlet].X + InventoryStartX(), wearPlaceStart[WearPlace_.Gauntlet].Y + InventoryStartY(), game.d_Inventory.Gauntlet, 0, 0);
-
+        
         //info
         if (SelectedCell(scaledMouse) != null)
         {
@@ -543,7 +544,11 @@
     {
         for (int i = 0; i < wearPlaceStartLength; i++)
         {
-            PointRef p = wearPlaceStart[i];
+            //Changes were made, reference was copied instead of  value
+            PointRef p = new PointRef();
+            p.X = wearPlaceStart[i].X;
+            p.Y = wearPlaceStart[i].Y;
+
             p.X += InventoryStartX();
             p.Y += InventoryStartY();
             PointRef cells = wearPlaceCells[i];

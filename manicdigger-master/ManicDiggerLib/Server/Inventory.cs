@@ -800,10 +800,10 @@ namespace ManicDigger
             {
                 //case WearPlace.LeftHand: return false;
                 case WearPlace_.RightHand: return item.ItemClass == ItemClass.Block;
-                case WearPlace_.MainArmor: return false;
-                case WearPlace_.Boots: return false;
-                case WearPlace_.Helmet: return false;
-                case WearPlace_.Gauntlet: return false;
+                case WearPlace_.MainArmor: return true;
+                case WearPlace_.Boots: return true;
+                case WearPlace_.Helmet: return true;
+                case WearPlace_.Gauntlet: return true;
                 default: throw new Exception();
             }
         }
