@@ -2321,6 +2321,19 @@ namespace ManicDiggerServer
                         	//Only log when building/destroying blocks. Prevents VandalFinder entries
                         	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                         		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
+                            if (Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot].BlockId >= 155 && Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot].BlockId <= 174)
+                            {
+                                //Alexis
+                                //To test
+                                //Inventory[c.playername].Inventory.Boots.Durability--;
+
+                                Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot].Durability--;
+                                Console.WriteLine(Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot].Durability.ToString());
+                                if (Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot].Durability == 0)
+                                {
+                                    Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                }
+                            }
                         }
                     }
                     break;

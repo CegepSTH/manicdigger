@@ -648,6 +648,8 @@ namespace ManicDigger
         public int BlockId;
         [ProtoMember(4, IsRequired = false)]
         public int BlockCount = 1;
+        [ProtoMember(5, IsRequired = false)]
+        public int Durability = 0;
     }
 
     [ProtoContract]
