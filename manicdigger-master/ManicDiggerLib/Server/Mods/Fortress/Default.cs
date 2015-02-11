@@ -758,6 +758,35 @@ namespace ManicDigger.Mods
                 Sounds = solidSounds,
                 WalkSpeedWhenUsed = 1f
             });
+            m.SetBlockType(90, "Lava Bucket", new BlockType()
+            {
+                AllTextures = "Gird_Lava_Bucket",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Gird_Lava_Bucket.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(91, "Water Bucket", new BlockType()
+            {
+                AllTextures = "Gird_Water_Bucket",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Gird_Water_Bucket.png",
+                WalkSpeedWhenUsed = 1f
+            });
+            m.SetBlockType(92, "Bucket", new BlockType()
+            {
+                AllTextures = "Bucket",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                handimage = "Gird_Bucket.png",
+                WalkSpeedWhenUsed = 1f,
+
+                IsUsable = true
+            });
 
 
             m.SetBlockType(100, "BrushedMetal", new BlockType()
@@ -1450,6 +1479,10 @@ namespace ManicDigger.Mods
             m.AddToStartInventory("Golden axe", 1);
             m.AddToStartInventory("Silver axe", 1);
 
+            m.AddToStartInventory("Silver axe", 1);
+            m.AddToStartInventory("Silver axe", 1);
+            m.AddToStartInventory("Silver axe", 1);
+
             //m.AddToStartInventory("Wooden hoe", 1);
             //m.AddToStartInventory("Stone hoe", 1);
             //m.AddToStartInventory("Iron hoe", 1);
@@ -1463,6 +1496,10 @@ namespace ManicDigger.Mods
             m.AddToStartInventory("Silver shovel", 1);
 
             m.AddToStartInventory("Water", 1000);
+            m.AddToStartInventory("Water Bucket", 1);
+            m.AddToStartInventory("Lava Bucket", 1);
+            m.AddToStartInventory("Bucket", 1);
+           
 
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
             m.AddCraftingRecipe("Stone", 2, "Cobblestone", 1);
