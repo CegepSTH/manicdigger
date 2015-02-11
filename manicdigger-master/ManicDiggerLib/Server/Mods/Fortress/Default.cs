@@ -1165,7 +1165,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Pickaxe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 1562
             });
             m.SetBlockType(156, "Iron pickaxe", new BlockType()
             {
@@ -1174,7 +1175,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Pickaxe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 251
             });
             m.SetBlockType(157, "Golden pickaxe", new BlockType()
             {
@@ -1183,7 +1185,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Pickaxe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 33
             });
             m.SetBlockType(158, "Stone pickaxe", new BlockType()
             {
@@ -1192,7 +1195,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Pickaxe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 132
             });
             m.SetBlockType(159, "Wooden pickaxe", new BlockType()
             {
@@ -1201,7 +1205,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Pickaxe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 60
             });
 
 
@@ -1212,7 +1217,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 1562
             });
             m.SetBlockType(161, "Iron axe", new BlockType()
             {
@@ -1221,7 +1227,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 251
             });
             m.SetBlockType(162, "Golden axe", new BlockType()
             {
@@ -1230,7 +1237,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 33
             });
             m.SetBlockType(163, "Stone axe", new BlockType()
             {
@@ -1239,7 +1247,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 132
             });
             m.SetBlockType(164, "Wooden axe", new BlockType()
             {
@@ -1248,7 +1257,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 60
             });
 
 
@@ -1259,7 +1269,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 1562
             });
             m.SetBlockType(166, "Iron hoe", new BlockType()
             {
@@ -1268,7 +1279,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 251
             });
             m.SetBlockType(167, "Golden hoe", new BlockType()
             {
@@ -1277,7 +1289,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 33
             });
             m.SetBlockType(168, "Stone hoe", new BlockType()
             {
@@ -1286,7 +1299,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 132
             });
             m.SetBlockType(169, "Wooden hoe", new BlockType()
             {
@@ -1295,7 +1309,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 60
             });
 
             m.SetBlockType(170, "Silver shovel", new BlockType()
@@ -1305,7 +1320,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Silver_Shovel.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 1562
             });
             m.SetBlockType(171, "Iron shovel", new BlockType()
             {
@@ -1314,7 +1330,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Iron_Shovel.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 251
             });
             m.SetBlockType(172, "Golden shovel", new BlockType()
             {
@@ -1323,7 +1340,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Golden_Shovel.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 33
             });
             m.SetBlockType(173, "Stone shovel", new BlockType()
             {
@@ -1332,7 +1350,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Stone_Shovel.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 132
             });
             m.SetBlockType(174, "Wooden shovel", new BlockType()
             {
@@ -1341,7 +1360,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Toolhand_Wooden_Shovel.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 60
             });
             m.SetBlockType(175, "Lava Bucket", new BlockType()
             {
