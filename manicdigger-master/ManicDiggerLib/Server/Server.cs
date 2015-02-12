@@ -1957,7 +1957,7 @@ namespace ManicDiggerServer
         
         Inventory StartInventory()
         {
-            Inventory inv = ManicDigger.Inventory.Create();
+            Inventory inv = ManicDigger.Inventory.Create(BlockTypes);
             int x = 0;
             int y = 0;
             for (int i = 0; i < d_Data.StartInventoryAmount().Length; i++)
@@ -2331,7 +2331,17 @@ namespace ManicDiggerServer
                                 item.Durability--;
                                 Console.WriteLine(item.Durability.ToString());
                                 if (item.Durability == 0)
-                                    Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                {
+                                    if (item.BlockCount == 1)
+                                    {
+                                        Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                    }
+                                    else
+                                    {
+                                        item.BlockCount--;
+                                        item.Durability = BlockTypes[item.BlockId].Durability;
+                                    }
+                                }
                             }
                         }
                     }

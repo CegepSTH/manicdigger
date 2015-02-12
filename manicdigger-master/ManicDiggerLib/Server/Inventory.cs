@@ -486,7 +486,7 @@ namespace ManicDigger
                         ApplyRecipe(d_Inventory.currentRecipe);
                         d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
 
-                        
+                        d_Inventory.DragDropItem.Durability = d_Inventory.BlockTypes[d_Inventory.DragDropItem.BlockId].Durability;
 
                         d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
                         CheckRecipes();

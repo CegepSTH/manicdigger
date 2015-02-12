@@ -734,6 +734,7 @@ namespace ManicDigger
         public List<Recipe> lstCraftingRecipe = new List<Recipe>();
         //Recipe whos output is currently in the grid
         public Recipe currentRecipe;
+        public BlockType[] BlockTypes;
 
         public void CopyFrom(Inventory inventory)
         {
@@ -746,7 +747,7 @@ namespace ManicDigger
             this.Items = inventory.Items;
             this.DragDropItem = inventory.DragDropItem;
         }
-        public static Inventory Create()
+        public static Inventory Create(BlockType[] blockTypesRef)
         {
             Inventory i = new Inventory();
             //i.LeftHand = new Item[10];
@@ -754,6 +755,7 @@ namespace ManicDigger
             //Initialise craft inventory
             i.CraftInv = new Dictionary<ProtoPoint, Item>();
             i.RightHand = new Item[10];
+            i.BlockTypes = blockTypesRef;
             return i;
         }
 
