@@ -484,6 +484,14 @@ namespace ManicDigger
                     if(selected.Value.X == 4 && selected.Value.Y == 2)
                     {
                         ApplyRecipe(d_Inventory.currentRecipe);
+                        d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+
+                        //TODOFRANK
+
+                        d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                        CheckRecipes();
+                        SendInventory();
+                        return;
                     }
                     d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
                     d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
@@ -735,20 +743,26 @@ namespace ManicDigger
         }
 
         //Apply the current recipe when output is taken
-        public void ApplyRecipe(Recipe r)
+        public bool ApplyRecipe(Recipe r)
         {
             if (r == null)
-                return;
+                return false;
 
            for(int i = 0 ; i < r.ingredients.Count ; i++)
            {
                ProtoPoint p = new ProtoPoint(r.ingredients[i].PosX,r.ingredients[i].PosY);
                if (d_Inventory.CraftInv[p].BlockCount == r.ingredients[i].Amount)
+               {
                    d_Inventory.CraftInv.Remove(p);
+                   
+               }
                else
+               {
                    d_Inventory.CraftInv[p].BlockCount -= r.ingredients[i].Amount;
+               }
                
            }
+           return true;
             
         }
     }
