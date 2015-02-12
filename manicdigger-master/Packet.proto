@@ -857,6 +857,7 @@ package Packet;
         optional string itemId = 2;
         optional int32 blockId = 3;
         optional int32 blockCount = 4;
+        optional int32 Durability = 5;
     }
     
     enum ItemClass
