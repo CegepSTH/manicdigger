@@ -3,6 +3,7 @@
     internal bool IsRunning;
     public Game()
     {
+        CREATIVE = true;
         toolRotation = 125;
         up = true;
         one = 1;
@@ -4028,8 +4029,7 @@
         return key;
     }
 
-    internal float
- MoveSpeedNow()
+    internal float MoveSpeedNow()
     {
         float movespeednow = movespeed;
         {
@@ -4697,17 +4697,6 @@
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
-
-        //Added by Alexandre
-
-        //Packet_Client p = new Packet_Client();
-        //{
-        //    p.Id = Packet_ClientIdEnum.SpecialKey;
-        //    p.SpecialKey_ = new Packet_ClientSpecialKey();
-        //    p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
-        //}
-        //SendPacketClient(p);
-        //player.movedz = 0;
     }
     internal int[] materialSlots;
 
@@ -5593,8 +5582,6 @@
                 break;
             case Packet_ServerIdEnum.Freemove:
                 {
-                    // ne pas mettre le free mode
-                    //this.AllowFreemove = packet.Freemove.IsEnabled != 0;
                     if (!this.AllowFreemove)
                     {
                         ENABLE_FREEMOVE = false;
@@ -7098,7 +7085,6 @@
             }
 
             //Added by Francis
-            //TOUCHE PAS JULIEN! c comme sa qui faut!
             //ControlLeft --> crunch... slow speed!
             //ShiftLeft --> run... fast speed!
             if (AllowFreemove && movespeed > basemovespeed * 2)
@@ -12445,12 +12431,6 @@ public class GameData
 
         mDefaultMaterialSlots = new int[10];
         mDurability = new int[count];
-        mDurabilityHand = new int[count];
-        mHarvestWood = new bool[count];
-        mHarvestStone = new bool[count];
-        mHarvestIron = new bool[count];
-        mHarvestSilver = new bool[count];
-        mHarvestGold = new bool[count];
     }
 
     public int[] WhenPlayerPlacesGetsConvertedTo() { return mWhenPlayerPlacesGetsConvertedTo; }
@@ -12474,13 +12454,6 @@ public class GameData
 
     public int[] Durability() { return mDurability; }
 
-    public int[] DurabilityHand() { return mDurabilityHand; }
-    public bool[] HarvestWood() { return mHarvestWood; }
-    public bool[] HarvestStone() { return mHarvestStone; }
-    public bool[] HarvestIron() { return mHarvestIron; }
-    public bool[] HarvestSilver() { return mHarvestSilver; }
-    public bool[] HarvestGold() { return mHarvestGold; }
-
     public int[] DefaultMaterialSlots() { return mDefaultMaterialSlots; }
 
     int[] mWhenPlayerPlacesGetsConvertedTo;
@@ -12498,12 +12471,6 @@ public class GameData
     int[] mDamageToPlayer;
     int[] mWalkableType;
     int[] mDurability;
-    int[] mDurabilityHand;
-    bool[] mHarvestWood;
-    bool[] mHarvestStone;
-    bool[] mHarvestIron;
-    bool[] mHarvestSilver;
-    bool[] mHarvestGold;
 
     int[] mDefaultMaterialSlots;
 
@@ -12670,12 +12637,6 @@ public class GameData
         WalkableType1()[id] = b.WalkableType;
         SetSpecialBlock(b, id);
         Durability()[id] = b.Durability;
-        DurabilityHand()[id] = b.DurabilityHand;
-        HarvestWood()[id] = b.HarvestWood;
-        HarvestStone()[id] = b.HarvestStone;
-        HarvestIron()[id] = b.HarvestIron;
-        HarvestSilver()[id] = b.HarvestSilver;
-        HarvestGold()[id] = b.HarvestGold;
     }
 
     internal int[] _startInventoryAmont;

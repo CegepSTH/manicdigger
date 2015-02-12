@@ -1158,8 +1158,6 @@ public class ScreenWriteWorldName : Screen
     MenuWidget back;
     MenuWidget txtName;
     MenuWidget btnPlay;
-    internal GamePlatform platform;
-
     public ScreenWriteWorldName()
     {
         back = new MenuWidget();
@@ -1238,13 +1236,15 @@ public class ScreenWriteWorldName : Screen
             {
                 if (list[i].Replace(path1 + "\\", "").StartsWith(txtName.text))
                 {
-                    string s1 = platform.StringSplit(list[i], txtName.text, IntRef.Create(100))[1];
-                    s1 = platform.StringSplit(s1, ".", IntRef.Create(100))[0];
-                    //string str = list[i].Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
+                    //IntRef it = IntRef.Create(100);
+                    //string s1 = platform.StringSplit(list[i], txtName.text, it)[1];
+                    //s1 = platform.StringSplit(s1, ".", it)[0];
+                    string s1 = list[i].Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
                     if (s1 != "")
                     {
                         int number;
-                        number = platform.IntParse(s1);
+                        //number = platform.IntParse(s1);
+                        number = int.Parse(s1);
                         if (lastnumber < number)
                         {
                             lastnumber = number;

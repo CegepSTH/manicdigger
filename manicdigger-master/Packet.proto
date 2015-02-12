@@ -51,12 +51,6 @@ package Packet;
         optional int32 blockType = 5; // obsolete
         optional int32 materialSlot = 6;
 		optional int32 Durability = 7;
-		optional int32 DurabilityHand = 8;
-		optional bool HarvestWood = 9;
-		optional bool HarvestStone = 10;
-		optional bool HarvestIron = 11;
-		optional bool HarvestSilver = 12;
-		optional bool HarvestGold = 13;
     }
     
     message ClientFillArea
@@ -328,12 +322,6 @@ package Packet;
         optional int32 damageToPlayer = 43;
         optional int32 whenPlacedGetsConvertedTo = 44;
 		optional int32 Durability = 45;
-		optional int32 DurabilityHand = 46;
-		optional bool HarvestWood = 47;
-		optional bool HarvestStone = 48;
-		optional bool HarvestIron = 49;
-		optional bool HarvestSilver = 50;
-		optional bool HarvestGold = 51;
 		optional Tools tools = 52 [ default = NOTOOL ];
 		optional ToolType toolType = 53 [ default = NOTYPE ];
     }
