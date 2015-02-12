@@ -7818,10 +7818,11 @@
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
         
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
-        if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
-        {
-            d_Inventory.RightHand[ActiveMaterial] = new Packet_Item();
-        }
+        //TOREDO FRANK
+        //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
+        //{
+        //    d_Inventory.RightHand[ActiveMaterial] = new Packet_Item();
+        //}
         int activeblock = 0;
         if (activeitem != null) { activeblock = activeitem.BlockId; }
         if (activeblock != PreviousActiveMaterialBlock)
