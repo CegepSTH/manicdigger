@@ -2466,8 +2466,7 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
-                       //if( stats.CurrentArmor != packet.Armor.CurrentArmor)
-                        if (stats.CurrentHealth != packet.Health.CurrentHealth)
+                       if( stats.CurrentArmor != packet.Armor.CurrentArmor)
                         {
                             
                             //Alexis
