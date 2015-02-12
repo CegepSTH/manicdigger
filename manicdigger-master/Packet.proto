@@ -790,6 +790,7 @@ package Packet;
         optional int32 maxHealth = 2;
         optional int32 currentOxygen = 3;
         optional int32 maxOxygen = 4;
+		optional int32 currentArmor = 5;
     }
     
     message ServerMonsters

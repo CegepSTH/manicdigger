@@ -1967,7 +1967,7 @@ namespace ManicDiggerServer
                 {
                     if (amount > 0 || BlockTypes[i].IsBuildable) 
                     {
-                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0});
+                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0, Durability = BlockTypes[i].Durability });
                         x++;
                         if (x >= GetInventoryUtil(inv).CellCountX)
                         {
@@ -2329,6 +2329,7 @@ namespace ManicDiggerServer
                                 
 
                                 item.Durability--;
+                                Console.WriteLine(item.Durability.ToString());
                                 if (item.Durability == 0)
                                     Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
                             }
@@ -3212,6 +3213,7 @@ namespace ManicDiggerServer
 
             Inventory inventory = GetPlayerInventory(clients[player_id].playername).Inventory;
             var item = inventory.RightHand[fill.MaterialSlot];
+            
             if (item == null)
             {
                 return false;
