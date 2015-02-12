@@ -2331,6 +2331,7 @@ namespace ManicDiggerServer
                                 //Inventory[c.playername].Inventory.Boots.Durability--;
 
                                 item.Durability--;
+                                Console.WriteLine(item.Durability.ToString());
                                 if (item.Durability == 0)
                                     Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
                             }

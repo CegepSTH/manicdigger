@@ -7816,7 +7816,7 @@
         float orientationY = 0;
         float orientationZ = -platform.MathCos(player.playerorientation.Y);
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
-
+        
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
         if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
         {
