@@ -1675,8 +1675,8 @@
         //364 529 496 430
         if (PlayerStats != null)
         {
-            //if(d_Inventory.Boots
-            //if (PlayerStats.CurrentArmor > 0)
+            if(d_Inventory.Boots != null)
+            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor)
             {
                 float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
                 int posX = barDistanceToMargin + barOffset;
