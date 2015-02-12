@@ -1670,6 +1670,29 @@
         }
     }
 
+    public void DrawArmorHealth()
+    {
+        //364 529 496 430
+        if (PlayerStats != null)
+        {
+            //if(d_Inventory.Boots
+            //if (PlayerStats.CurrentArmor > 0)
+            {
+                float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
+                int posX = barDistanceToMargin + barOffset;
+                int posY = Height() - barDistanceToMargin;
+                Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
+                Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
+                //Added by Alexandre
+                FontCi c = FontCi.Create("Arial", 8, 0);
+                IntRef d = IntRef.Create(20);
+                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                //
+            }
+        }
+    }
+
+
     internal int[] TotalAmmo;
     internal int[] LoadedAmmo;
 
