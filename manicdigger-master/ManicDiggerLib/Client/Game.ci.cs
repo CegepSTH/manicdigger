@@ -8915,6 +8915,7 @@ public class Game
             d_SunMoonRenderer.Draw(deltaTime);
 
             InterpolatePositions(deltaTime);
+            //TODOMATHEW
             DrawPlayers(deltaTime);
             DrawTestModel(deltaTime);
             terrainRenderer.DrawTerrain();
@@ -8928,6 +8929,14 @@ public class Game
             DrawSprites();
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
+
+            if(d_Inventory.MainArmor != null)
+            {
+                //TODOMATHEW
+                
+            }
+
+
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
             {
                 Packet_Item item = d_Inventory.RightHand[ActiveMaterial];
@@ -9094,7 +9103,15 @@ public class Game
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        testmodel.Render(deltaTime);
+        byte[] Pixels;
+        Pixels = new byte[64*32*4];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D,0,OpenTK.Graphics.OpenGL.PixelFormat.Rgba,OpenTK.Graphics.OpenGL.PixelType.UnsignedByte,Pixels);
+        for (int i = 0; i < Pixels.Length; i++ )
+        {
+            Pixels[i] = 255;
+        }
+        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
+            testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;

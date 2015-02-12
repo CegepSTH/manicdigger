@@ -54,6 +54,10 @@
     public abstract BitmapCi BitmapCreate(int width, int height);
     public abstract void BitmapSetPixelsArgb(BitmapCi bmp, int[] pixels);
     public abstract int LoadTextureFromBitmap(BitmapCi bmp);
+
+    public abstract void GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget target, int lvl, OpenTK.Graphics.OpenGL.PixelFormat pixel, OpenTK.Graphics.OpenGL.PixelType type, byte[] pixels);
+
+    public abstract void Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget target, int level, int xoffset, int yoffset, int width, int height, OpenTK.Graphics.OpenGL.PixelFormat pixel, OpenTK.Graphics.OpenGL.PixelType type, byte[] pixels);
     public abstract void GLLineWidth(int width);
     public abstract void GLDisableAlphaTest();
     public abstract void GLEnableAlphaTest();

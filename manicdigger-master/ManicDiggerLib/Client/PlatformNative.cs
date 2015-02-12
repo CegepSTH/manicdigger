@@ -488,11 +488,13 @@ public class GamePlatformNative : GamePlatform
     public override void GlDisableDepthTest()
     {
         GL.Disable(EnableCap.DepthTest);
+        
     }
 
     public override void BindTexture2d(int texture)
     {
         GL.BindTexture(TextureTarget.Texture2D, texture);
+        
     }
 
     float[] xyz = new float[65536 * 3];
@@ -654,7 +656,7 @@ public class GamePlatformNative : GamePlatform
             bmp = bmp2;
         }
         GL.Enable(EnableCap.Texture2D);
-        int id = GL.GenTexture();
+        int id = GL.GenTexture();    
         GL.BindTexture(TextureTarget.Texture2D, id);
         if (!ENABLE_MIPMAPS)
         {
@@ -2124,6 +2126,16 @@ public class GamePlatformNative : GamePlatform
         }
         //Return true if all checks have been passed
         return true;
+    }
+    public override void GLtextimage(TextureTarget target,int lvl,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type,byte[] pixels)
+    {
+        GL.GetTexImage(target, lvl, pixel, type, pixels);
+        
+    }
+
+    public override void Gltextsubimage(TextureTarget target,int level, int xoffset, int yoffset, int width, int height,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type, byte[] pixels)
+    {
+        GL.TexSubImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
     }
 }
 
