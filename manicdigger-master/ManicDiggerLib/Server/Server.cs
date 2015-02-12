@@ -2322,29 +2322,34 @@ namespace ManicDiggerServer
                         	//Only log when building/destroying blocks. Prevents VandalFinder entries
                         	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                         		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
-                            
-                            Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
-                            if (item.BlockId >= 155 && item.BlockId <= 174)
-                            {
-                                //Alexis
-                                //To test
-                                //Inventory[c.playername].Inventory.Boots.Durability--;
 
-                                item.Durability--;
-                                Console.WriteLine(item.Durability.ToString());
-                                if (item.Durability == 0)
+                            try
+                            {
+                                Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                                if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
                                 {
-                                    if (item.BlockCount == 1)
+                                    item.Durability--;
+                                    Console.WriteLine(item.Durability.ToString());
+                                    if (item.Durability == 0)
                                     {
-                                        Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
-                                    }
-                                    else
-                                    {
-                                        item.BlockCount--;
-                                        item.Durability = BlockTypes[item.BlockId].Durability;
+                                        if (item.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                        }
+                                        else
+                                        {
+                                            item.BlockCount--;
+                                            item.Durability = BlockTypes[item.BlockId].Durability;
+                                        }
                                     }
                                 }
                             }
+                            catch (Exception)
+                            {
+                                
+                                throw;
+                            }
+                            
                         }
                     }
                     break;
