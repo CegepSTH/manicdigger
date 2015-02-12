@@ -2322,6 +2322,14 @@ namespace ManicDiggerServer
                         	//Only log when building/destroying blocks. Prevents VandalFinder entries
                         	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                         		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
+<<<<<<< HEAD
+=======
+                            
+                            Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                            if (item.BlockId >= 155 && item.BlockId <= 174)
+                            {
+                                
+>>>>>>> origin/master
 
                             try
                             {
@@ -2483,7 +2491,19 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
+                       if( stats.CurrentArmor != packet.Armor.CurrentArmor)
+                        {
+                            
+                            //Alexis
+                            //To test
+                            Inventory[c.playername].Inventory.Boots.Durability--;
+                            Inventory[c.playername].Inventory.Helmet.Durability--;
+                            Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                            Inventory[c.playername].Inventory.MainArmor.Durability--;
+                        }
+
                         stats.CurrentHealth = packet.Health.CurrentHealth;
+
                         if (stats.CurrentHealth < 1)
                         {
                             //death - reset health. More stuff done in Death packet handling
