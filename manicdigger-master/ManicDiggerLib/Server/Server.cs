@@ -2326,9 +2326,7 @@ namespace ManicDiggerServer
                             Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
                             if (item.BlockId >= 155 && item.BlockId <= 174)
                             {
-                                //Alexis
-                                //To test
-                                //Inventory[c.playername].Inventory.Boots.Durability--;
+                                
 
                                 item.Durability--;
                                 if (item.Durability == 0)
@@ -2467,7 +2465,20 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
+
+                        if (stats.CurrentHealth != packet.Health.CurrentHealth)
+                        {
+                            
+                            //Alexis
+                            //To test
+                            Inventory[c.playername].Inventory.Boots.Durability--;
+                            Inventory[c.playername].Inventory.Helmet.Durability--;
+                            Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                            Inventory[c.playername].Inventory.MainArmor.Durability--;
+                        }
+
                         stats.CurrentHealth = packet.Health.CurrentHealth;
+
                         if (stats.CurrentHealth < 1)
                         {
                             //death - reset health. More stuff done in Death packet handling
