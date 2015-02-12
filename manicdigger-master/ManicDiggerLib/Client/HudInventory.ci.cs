@@ -130,7 +130,7 @@
 
         //main inventory
         PointRef cellInPage = SelectedCell(scaledMouse);
-#region grab from inventory
+// grab from inventory
         if (cellInPage != null)
         {
             if (args.GetButton() == MouseButtonEnum.Right)
@@ -181,7 +181,6 @@
                 return true;
             }
         }
-#endregion
 
         // //drop items on ground
         //if (scaledMouse.X < CellsStartX() && scaledMouse.Y < MaterialSelectorStartY())

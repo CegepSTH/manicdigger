@@ -1,5 +1,6 @@
 ﻿public class MainMenu
 {
+
     public MainMenu()
     {
         one = 1;
@@ -151,7 +152,7 @@
     internal void DrawButton(string text, float fontSize, float dx, float dy, float dw, float dh, bool pressed)
     {
         Draw2dQuad(pressed ? GetTexture("button_sel.png") : GetTexture("button.png"), dx, dy, dw, dh);
-        
+
         if ((text != null) && (text != ""))
         {
             DrawText(text, fontSize, dx + dw / 2, dy + dh / 2, TextAlign.Center, TextBaseline.Middle);
@@ -189,10 +190,10 @@
         Draw2dQuad(GetTexture(image), x, y, height, height);
 
         //       value          size    x position              y position              text alignment      text baseline
-        DrawText(name,          14,     x + 70,                 y + 5,                  TextAlign.Left,     TextBaseline.Top);
-        DrawText(gamemode,      12,     x + width - 10,         y + height - 5,         TextAlign.Right,    TextBaseline.Bottom);
-        DrawText(playercount,   12,     x + width - 10,         y + 5,                  TextAlign.Right,    TextBaseline.Top);
-        DrawText(motd,          12,     x + 70,                 y + height - 5,         TextAlign.Left,     TextBaseline.Bottom);
+        DrawText(name, 14, x + 70, y + 5, TextAlign.Left, TextBaseline.Top);
+        DrawText(gamemode, 12, x + width - 10, y + height - 5, TextAlign.Right, TextBaseline.Bottom);
+        DrawText(playercount, 12, x + width - 10, y + 5, TextAlign.Right, TextBaseline.Top);
+        DrawText(motd, 12, x + 70, y + height - 5, TextAlign.Left, TextBaseline.Bottom);
     }
 
     TextTexture GetTextTexture(string text, float fontSize)
@@ -219,7 +220,7 @@
         BitmapCi textBitmap = textColorRenderer.CreateTextTexture(text_);
 
         int texture = p.LoadTextureFromBitmap(textBitmap);
-        
+
         IntRef textWidth = new IntRef();
         IntRef textHeight = new IntRef();
         p.TextSize(text, fontSize, textWidth, textHeight);
@@ -233,7 +234,7 @@
         textTexture.textheight = textHeight.value;
 
         p.BitmapDelete(textBitmap);
-        
+
         textTextures[textTexturesCount++] = textTexture;
         return textTexture;
     }
@@ -574,7 +575,7 @@
         int count = 0;
         for (int i = 0; i < length.value; i++)
         {
-            if(StringEndsWith(files[i], ".mddbs"))
+            if (StringEndsWith(files[i], ".mddbs"))
             {
                 savegames[count++] = files[i];
             }
@@ -611,7 +612,7 @@
         }
         return p.CharArrayToString(charArray, length);
     }
-    
+
     public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData)
     {
         ScreenGame screenGame = new ScreenGame();
@@ -671,7 +672,7 @@ public class Screen
     }
     internal MainMenu menu;
     public virtual void Render(float dt) { }
-    public virtual void OnKeyDown(KeyEventArgs e) {  }
+    public virtual void OnKeyDown(KeyEventArgs e) { }
     public virtual void OnKeyPress(KeyPressEventArgs e) { KeyPress(e); }
     public virtual void OnKeyUp(KeyEventArgs e) { }
     public virtual void OnTouchStart(TouchEventArgs e) { MouseDown(e.GetX(), e.GetY()); }
@@ -775,7 +776,7 @@ public class Screen
             }
         }
     }
-    
+
     void AllLoseFocus()
     {
         for (int i = 0; i < WidgetCount; i++)
@@ -787,7 +788,7 @@ public class Screen
             }
         }
     }
-    
+
     void MouseUp(int x, int y)
     {
         for (int i = 0; i < WidgetCount; i++)
@@ -947,7 +948,7 @@ public class ScreenMain : Screen
     {
         windowX = menu.p.GetCanvasWidth();
         windowY = menu.p.GetCanvasHeight();
-        
+
         float scale = menu.GetScale();
 
         if (menu.assetsLoadProgress.value != 1)
@@ -1123,7 +1124,7 @@ public class ScreenSingleplayer : Screen
                 worldButtons[i].selected = true;
             }
         }
-        
+
         if (w == newWorld)
         {
             menu.StartWriteWorldName();
@@ -1157,7 +1158,6 @@ public class ScreenWriteWorldName : Screen
     MenuWidget back;
     MenuWidget txtName;
     MenuWidget btnPlay;
-
     public ScreenWriteWorldName()
     {
         back = new MenuWidget();
@@ -1231,21 +1231,23 @@ public class ScreenWriteWorldName : Screen
             int lastnumber = 0;
             string path1 = menu.p.PathSavegames();
             string[] list = menu.p.DirectoryGetFiles(path1, IntRef.Create(100));
-            
-            foreach (string item in list)
+
+            for (int i = 0; i < list.Length; i++)
             {
-                if (item.Replace(path1 + "\\", "").StartsWith(txtName.text))
+                if (list[i].Replace(path1 + "\\", "").StartsWith(txtName.text))
                 {
-                    string str = item.Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
-                    if (str != "")
+                    //IntRef it = IntRef.Create(100);
+                    //string s1 = platform.StringSplit(list[i], txtName.text, it)[1];
+                    //s1 = platform.StringSplit(s1, ".", it)[0];
+                    string s1 = list[i].Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
+                    if (s1 != "")
                     {
                         int number;
-                        if (int.TryParse(str, out number))
+                        //number = platform.IntParse(s1);
+                        number = int.Parse(s1);
+                        if (lastnumber < number)
                         {
-                            if (lastnumber < number)
-                            {
-                                lastnumber = number;
-                            }
+                            lastnumber = number;
                         }
                     }
                 }
@@ -1336,9 +1338,9 @@ public class ScreenGameMode : Screen
             return;
         }
 
-        string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", ManicDiggerLib.Client.Data.GameName, ".", 
-            menu.p.SinglePlayerServerAvailable() ? "mddbs": "mdss");
-        
+        string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", ManicDiggerLib.Client.Data.GameName, ".",
+            menu.p.SinglePlayerServerAvailable() ? "mddbs" : "mdss");
+
         if (w == btnCreative)
         {
             menu.ConnectToSingleplayer(result);
@@ -1452,7 +1454,7 @@ public class ScreenLogin : Screen
         widgets[6] = createAccountPassword;
         widgets[7] = createAccountRememberMe;
         widgets[9] = back;
-        
+
         loginUsername.GetFocus();
 
         loginResult = new LoginResultRef();
@@ -1462,7 +1464,7 @@ public class ScreenLogin : Screen
     MenuWidget loginUsername;
     MenuWidget loginPassword;
     MenuWidget loginRememberMe;
-    
+
     MenuWidget createAccount;
     MenuWidget createAccountUsername;
     MenuWidget createAccountPassword;
@@ -1737,7 +1739,7 @@ public class ScreenGame : Screen
     ConnectData connectData;
     bool singleplayer;
     string singleplayerSavePath;
-    
+
     public override void Render(float dt)
     {
         if (game.reconnect)
@@ -1984,7 +1986,7 @@ public class ScreenMultiplayer : Screen
                 thumbResponses[i] = null;
             }
             IntRef serversCount = new IntRef();
-            string[] servers = menu.p.StringSplit(serverListCsv.GetString(menu.p) , "\n", serversCount);
+            string[] servers = menu.p.StringSplit(serverListCsv.GetString(menu.p), "\n", serversCount);
             for (int i = 0; i < serversCount.value; i++)
             {
                 IntRef ssCount = new IntRef();
@@ -2297,7 +2299,7 @@ public class ScreenConnectToIp : Screen
         widgets[1] = textboxIp;
         widgets[2] = textboxPort;
         widgets[3] = back;
-        
+
         textboxIp.GetFocus();
     }
 

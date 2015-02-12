@@ -585,7 +585,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 56
             });
 
             m.SetBlockType(64, "IronHelm", new BlockType()
@@ -594,7 +595,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 166
             });
 
             m.SetBlockType(65, "SilverHelm", new BlockType()
@@ -603,7 +605,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 364
             });
 
             m.SetBlockType(66, "GoldHelm", new BlockType()
@@ -612,7 +615,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 78
             });
 
             m.SetBlockType(67, "WoodGlove", new BlockType()
@@ -621,7 +625,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 38
             });
 
             m.SetBlockType(68, "IronGlove", new BlockType()
@@ -630,7 +635,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 113
             });
 
             m.SetBlockType(69, "SilverGlove", new BlockType()
@@ -639,7 +645,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 248
             });
 
             m.SetBlockType(70, "GoldGlove", new BlockType()
@@ -648,7 +655,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 53
             });
 
             //m.SetBlockType(71, "WoodPants", new BlockType()
@@ -693,7 +701,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 119
             });
 
             m.SetBlockType(76, "IronChestArmor", new BlockType()
@@ -702,7 +711,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 354
             });
 
             m.SetBlockType(77, "SilverChestArmor", new BlockType()
@@ -711,7 +721,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 777
             });
 
             m.SetBlockType(78, "GoldChestArmor", new BlockType()
@@ -720,7 +731,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 166
             });
 
             m.SetBlockType(79, "WoodBoots", new BlockType()
@@ -729,7 +741,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 66
             });
 
             m.SetBlockType(80, "IronBoots", new BlockType()
@@ -738,7 +751,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 196
             });
 
             m.SetBlockType(81, "SilverBoots", new BlockType()
@@ -747,7 +761,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 430
             });
 
             m.SetBlockType(82, "GoldBoots", new BlockType()
@@ -756,7 +771,8 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                Durability = 92
             });
           
          

@@ -1,5 +1,7 @@
 ﻿public abstract class GamePlatform
 {
+    public abstract void UpdateServerConfig(bool isCreative);
+    public abstract bool ValidateFile(string fileName, string extension);
     public abstract int FloatToInt(float value);
     public abstract string[] StringSplit(string value, string separator, IntRef returnLength);
     public abstract int IntParse(string value);

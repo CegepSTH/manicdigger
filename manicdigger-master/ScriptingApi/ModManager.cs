@@ -734,6 +734,7 @@ namespace ManicDigger
         public List<Recipe> lstCraftingRecipe = new List<Recipe>();
         //Recipe whos output is currently in the grid
         public Recipe currentRecipe;
+        public BlockType[] BlockTypes;
 
         public void CopyFrom(Inventory inventory)
         {
@@ -746,7 +747,7 @@ namespace ManicDigger
             this.Items = inventory.Items;
             this.DragDropItem = inventory.DragDropItem;
         }
-        public static Inventory Create()
+        public static Inventory Create(BlockType[] blockTypesRef)
         {
             Inventory i = new Inventory();
             //i.LeftHand = new Item[10];
@@ -754,6 +755,7 @@ namespace ManicDigger
             //Initialise craft inventory
             i.CraftInv = new Dictionary<ProtoPoint, Item>();
             i.RightHand = new Item[10];
+            i.BlockTypes = blockTypesRef;
             return i;
         }
 
@@ -833,7 +835,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(159, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(159, 1, 4, 2),60);
 
             //Recipe pickaxe stone
             ings.Clear();
@@ -842,7 +844,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(1, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(158, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(158, 1, 4, 2), 132);
 
             //Recipe pickaxe iron
             ings.Clear();
@@ -851,7 +853,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(156, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(156, 1, 4, 2), 251);
 
             //Recipe pickaxe silver
             ings.Clear();
@@ -860,7 +862,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(155, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(155, 1, 4, 2),1562);
 
             //Recipe pickaxe gold
             ings.Clear();
@@ -869,7 +871,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(157, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(157, 1, 4, 2),33);
             #endregion
             #region Axe
             //Recipe axe wood
@@ -879,7 +881,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(164, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(164, 1, 4, 2),60);
 
             //Recipe axe stone
             ings.Clear();
@@ -888,7 +890,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(1, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(163, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(163, 1, 4, 2), 132);
 
             //Recipe axe silver
             ings.Clear();
@@ -897,7 +899,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(160, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(160, 1, 4, 2), 1562);
 
             //Recipe axe iron
             ings.Clear();
@@ -906,7 +908,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(161, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(161, 1, 4, 2), 251);
 
             //Recipe axe gold
             ings.Clear();
@@ -915,7 +917,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(162, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(162, 1, 4, 2),33);
             #endregion
             #region Shovel
             //Recipe shovel wood
@@ -923,35 +925,35 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(174, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(174, 1, 4, 2),60);
 
             //Recipe shovel stone
             ings.Clear();
             ings.Add(new CraftIngredient(1, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(173, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(173, 1, 4, 2), 132);
 
             //Recipe shovel iron
             ings.Clear();
             ings.Add(new CraftIngredient(15, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(171, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(171, 1, 4, 2), 251);
 
             //Recipe shovel silver
             ings.Clear();
             ings.Add(new CraftIngredient(133, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(170, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(170, 1, 4, 2), 1562);
 
             //Recipe shovel gold
             ings.Clear();
             ings.Add(new CraftIngredient(14, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(172, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(172, 1, 4, 2),33);
             #endregion
             #region Hoe
             //Recipe Hoe wood
@@ -960,7 +962,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(169, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(169, 1, 4, 2),60);
 
             //Recipe Hoe stone
             ings.Clear();
@@ -968,7 +970,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(1, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(168, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(168, 1, 4, 2), 132);
 
             //Recipe Hoe iron
             ings.Clear();
@@ -976,7 +978,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(166, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(166, 1, 4, 2), 251);
 
             //Recipe Hoe silver
             ings.Clear();
@@ -984,7 +986,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(165, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(165, 1, 4, 2), 1562);
 
             //Recipe Hoe gold
             ings.Clear();
@@ -992,7 +994,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 1, 1));
             ings.Add(new CraftIngredient(154, 1, 1, 2));
             ings.Add(new CraftIngredient(154, 1, 1, 3));
-            AddCraftRecipe(ings, new CraftIngredient(167, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(167, 1, 4, 2),33);
             #endregion
 
             #region Helm
@@ -1003,7 +1005,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 1, 1));
             ings.Add(new CraftIngredient(5, 1, 2, 1));
             ings.Add(new CraftIngredient(5, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(63, 1,4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(63, 1,4, 2),56);
 
             //Iron helm
             ings.Clear();
@@ -1012,7 +1014,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 1, 1));
             ings.Add(new CraftIngredient(15, 1, 2, 1));
             ings.Add(new CraftIngredient(15, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(64, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(64, 1, 4, 2),166);
 
             //Silver helm
             ings.Clear();
@@ -1021,7 +1023,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1, 1, 1));
             ings.Add(new CraftIngredient(133, 1, 2, 1));
             ings.Add(new CraftIngredient(133, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(65, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(65, 1, 4, 2),364);
 
             //Gold helm
             ings.Clear();
@@ -1030,77 +1032,32 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 1, 1));
             ings.Add(new CraftIngredient(14, 1, 2, 1));
             ings.Add(new CraftIngredient(14, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(66, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(66, 1, 4, 2),78);
             #endregion 
             #region Glove
             //Wood glove
             ings.Clear();
             ings.Add(new CraftIngredient(5, 1, 0, 3));
             ings.Add(new CraftIngredient(5, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(67, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(67, 1, 4, 2),38);
 
             //Iron glove
             ings.Clear();
             ings.Add(new CraftIngredient(15, 1, 0, 3));
             ings.Add(new CraftIngredient(15, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(68, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(68, 1, 4, 2),113);
 
             //Silver glove
             ings.Clear();
             ings.Add(new CraftIngredient(133, 1, 0, 3));
             ings.Add(new CraftIngredient(133, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(69, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(69, 1, 4, 2),248);
 
             //Gold glove
             ings.Clear();
             ings.Add(new CraftIngredient(14, 1, 0, 3));
             ings.Add(new CraftIngredient(14, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(70, 1, 4, 2),0);
-            #endregion 
-            #region Pants
-            //Wood pants
-            ings.Clear();
-            ings.Add(new CraftIngredient(5, 1, 0, 3));
-            ings.Add(new CraftIngredient(5, 1, 0, 2));
-            ings.Add(new CraftIngredient(5, 1, 0, 1));
-            ings.Add(new CraftIngredient(5, 1, 1, 1));
-            ings.Add(new CraftIngredient(5, 1, 2, 1));
-            ings.Add(new CraftIngredient(5, 1, 2, 2));
-            ings.Add(new CraftIngredient(5, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(71, 1, 4, 2),0);
-
-            //Iron pants
-            ings.Clear();
-            ings.Add(new CraftIngredient(15, 1, 0, 3));
-            ings.Add(new CraftIngredient(15, 1, 0, 2));
-            ings.Add(new CraftIngredient(15, 1, 0, 1));
-            ings.Add(new CraftIngredient(15, 1, 1, 1));
-            ings.Add(new CraftIngredient(15, 1, 2, 1));
-            ings.Add(new CraftIngredient(15, 1, 2, 2));
-            ings.Add(new CraftIngredient(15, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(72, 1, 4, 2),0);
-
-            //Silver pants
-            ings.Clear();
-            ings.Add(new CraftIngredient(133, 1, 0, 3));
-            ings.Add(new CraftIngredient(133, 1, 0, 2));
-            ings.Add(new CraftIngredient(133, 1, 0, 1));
-            ings.Add(new CraftIngredient(133, 1, 1, 1));
-            ings.Add(new CraftIngredient(133, 1, 2, 1));
-            ings.Add(new CraftIngredient(133, 1, 2, 2));
-            ings.Add(new CraftIngredient(133, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(73, 1, 4, 2),0);
-
-            //Gold pants
-            ings.Clear();
-            ings.Add(new CraftIngredient(14, 1, 0, 3));
-            ings.Add(new CraftIngredient(14, 1, 0, 2));
-            ings.Add(new CraftIngredient(14, 1, 0, 1));
-            ings.Add(new CraftIngredient(14, 1, 1, 1));
-            ings.Add(new CraftIngredient(14, 1, 2, 1));
-            ings.Add(new CraftIngredient(14, 1, 2, 2));
-            ings.Add(new CraftIngredient(14, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(74, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(70, 1, 4, 2),53);
             #endregion 
             #region ChestArmor
             //Wood Chest
@@ -1113,7 +1070,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 2, 1));
             ings.Add(new CraftIngredient(5, 1, 2, 2));
             ings.Add(new CraftIngredient(5, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(75, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(75, 1, 4, 2),119);
 
             //Iron Chest
             ings.Clear();
@@ -1125,7 +1082,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 2, 1));
             ings.Add(new CraftIngredient(15, 1, 2, 2));
             ings.Add(new CraftIngredient(15, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(76, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(76, 1, 4, 2),354);
 
             //Silver Chest
             ings.Clear();
@@ -1137,7 +1094,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1, 2, 1));
             ings.Add(new CraftIngredient(133, 1, 2, 2));
             ings.Add(new CraftIngredient(133, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(77, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(77, 1, 4, 2),777);
 
             //Gold Chest
             ings.Clear();
@@ -1149,7 +1106,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 2, 1));
             ings.Add(new CraftIngredient(14, 1, 2, 2));
             ings.Add(new CraftIngredient(14, 1, 2, 3));
-            AddCraftRecipe(ings, new CraftIngredient(78, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(78, 1, 4, 2),166);
             #endregion
             #region Boots
             //Wood boots
@@ -1158,7 +1115,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 2, 3));
             ings.Add(new CraftIngredient(5, 1, 0, 2));
             ings.Add(new CraftIngredient(5, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(79, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(79, 1, 4, 2),66);
 
             //Iron boots
             ings.Clear();
@@ -1166,7 +1123,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 2, 3));
             ings.Add(new CraftIngredient(15, 1, 0, 2));
             ings.Add(new CraftIngredient(15, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(80, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(80, 1, 4, 2),196);
 
             //Silver boots
             ings.Clear();
@@ -1175,7 +1132,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1,0, 2));
             ings.Add(new CraftIngredient(133, 1, 2, 2));
 
-            AddCraftRecipe(ings, new CraftIngredient(81, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(81, 1, 4, 2),430);
 
             //Gold boots
             ings.Clear();
@@ -1183,7 +1140,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 2, 3));
             ings.Add(new CraftIngredient(14, 1, 0, 2));
             ings.Add(new CraftIngredient(14, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(82, 1, 4, 2),0);
+            AddCraftRecipe(ings, new CraftIngredient(82, 1, 4, 2),92);
             #endregion
 
 

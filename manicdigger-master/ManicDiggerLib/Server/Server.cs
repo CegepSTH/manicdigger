@@ -365,7 +365,7 @@ namespace ManicDiggerServer
             d_GetFile = getfile;
             
             //Initialize game components
-            var data = new GameData(this.ServerGame);
+            var data = new GameData();
             data.Start();
             d_Data = data;
             d_CraftingTableTool = new CraftingTableTool() { d_Map = map, d_Data = data };
@@ -1957,7 +1957,7 @@ namespace ManicDiggerServer
         
         Inventory StartInventory()
         {
-            Inventory inv = ManicDigger.Inventory.Create();
+            Inventory inv = ManicDigger.Inventory.Create(BlockTypes);
             int x = 0;
             int y = 0;
             for (int i = 0; i < d_Data.StartInventoryAmount().Length; i++)
@@ -1967,7 +1967,7 @@ namespace ManicDiggerServer
                 {
                     if (amount > 0 || BlockTypes[i].IsBuildable) 
                     {
-                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0});
+                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0, Durability = BlockTypes[i].Durability });
                         x++;
                         if (x >= GetInventoryUtil(inv).CellCountX)
                         {
@@ -2322,18 +2322,42 @@ namespace ManicDiggerServer
                         	//Only log when building/destroying blocks. Prevents VandalFinder entries
                         	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                         		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
+<<<<<<< HEAD
+=======
                             
                             Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
                             if (item.BlockId >= 155 && item.BlockId <= 174)
                             {
-                                //Alexis
-                                //To test
-                                //Inventory[c.playername].Inventory.Boots.Durability--;
+                                
+>>>>>>> origin/master
 
-                                item.Durability--;
-                                if (item.Durability == 0)
-                                    Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                            try
+                            {
+                                Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                                if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
+                                {
+                                    item.Durability--;
+                                    Console.WriteLine(item.Durability.ToString());
+                                    if (item.Durability == 0)
+                                    {
+                                        if (item.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                        }
+                                        else
+                                        {
+                                            item.BlockCount--;
+                                            item.Durability = BlockTypes[item.BlockId].Durability;
+                                        }
+                                    }
+                                }
                             }
+                            catch (Exception)
+                            {
+                                
+                                throw;
+                            }
+                            
                         }
                     }
                     break;
@@ -2467,7 +2491,19 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
+                       if( stats.CurrentArmor != packet.Armor.CurrentArmor)
+                        {
+                            
+                            //Alexis
+                            //To test
+                            Inventory[c.playername].Inventory.Boots.Durability--;
+                            Inventory[c.playername].Inventory.Helmet.Durability--;
+                            Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                            Inventory[c.playername].Inventory.MainArmor.Durability--;
+                        }
+
                         stats.CurrentHealth = packet.Health.CurrentHealth;
+
                         if (stats.CurrentHealth < 1)
                         {
                             //death - reset health. More stuff done in Death packet handling
@@ -2652,13 +2688,13 @@ namespace ManicDiggerServer
                             {
                                 try
                                 {
-                                    modEventHandlers.onweaponhit[i](clientid, k.Key, packet.Shot.WeaponBlock, false);
+                                    //modEventHandlers.onweaponhit[i](clientid, k.Key, packet.Shot.WeaponBlock, false);
                                 }
                                 catch (Exception ex)
                                 {
-                                    Console.WriteLine("Mod exception: OnWeaponHit");
-                                    Console.WriteLine(ex.Message);
-                                    Console.WriteLine(ex.StackTrace);
+                                    platform.ConsoleWriteLine("Mod exception: OnWeaponHit");
+                                    platform.ConsoleWriteLine(ex.Message);
+                                    platform.ConsoleWriteLine(ex.StackTrace);
                                 }
                             }
                         }
@@ -3201,6 +3237,7 @@ namespace ManicDiggerServer
 
             Inventory inventory = GetPlayerInventory(clients[player_id].playername).Inventory;
             var item = inventory.RightHand[fill.MaterialSlot];
+            
             if (item == null)
             {
                 return false;
