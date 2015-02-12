@@ -1681,6 +1681,7 @@ namespace ManicDiggerServer
             p.BlockId = item.BlockId;
             p.ItemClass = (int)item.ItemClass;
             p.ItemId = item.ItemId;
+            p.Durability = item.Durability;
             return p;
         }
 
@@ -1964,9 +1965,9 @@ namespace ManicDiggerServer
                 int amount = d_Data.StartInventoryAmount()[i];
                 if (config.IsCreative)
                 {
-                    if (amount > 0 || BlockTypes[i].IsBuildable)
+                    if (amount > 0 || BlockTypes[i].IsBuildable) 
                     {
-                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0 });
+                        inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0});
                         x++;
                         if (x >= GetInventoryUtil(inv).CellCountX)
                         {
@@ -1977,7 +1978,7 @@ namespace ManicDiggerServer
                 }
                 else if (amount > 0)
                 {
-                    inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = amount });
+                    inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = amount, Durability = BlockTypes[i].Durability });
                     x++;
                     if (x >= GetInventoryUtil(inv).CellCountX)
                     {
@@ -2321,6 +2322,18 @@ namespace ManicDiggerServer
                         	//Only log when building/destroying blocks. Prevents VandalFinder entries
                         	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                         		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
+                            
+                            Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                            if (item.BlockId >= 155 && item.BlockId <= 174)
+                            {
+                                //Alexis
+                                //To test
+                                //Inventory[c.playername].Inventory.Boots.Durability--;
+
+                                item.Durability--;
+                                if (item.Durability == 0)
+                                    Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                            }
                         }
                     }
                     break;
@@ -3370,7 +3383,7 @@ namespace ManicDiggerServer
                 switch (item.ItemClass)
                 {
                     case ItemClass.Block:
-                        if (item.BlockId >= 154 && item.BlockId <= 174)
+                        if (item.BlockId >= 154 && item.BlockId <= 177) 
                         {
                             return false;
                         }

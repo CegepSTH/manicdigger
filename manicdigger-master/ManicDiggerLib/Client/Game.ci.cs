@@ -401,7 +401,7 @@
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
-        if (tileType >= 154 && tileType <= 174)
+        if (tileType >= 154 && tileType <= 177)
             return;
         SetBlockInChunk(chunk, pos, tileType);
     }
@@ -5552,7 +5552,7 @@
                                 for (int z = startz; z <= endz; z++)
                                 {
                                     // if creative mode is off and player run out of blocks
-                                    if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 174))
+                                    if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 177))
                                     {
                                         return;
                                     }
@@ -7818,6 +7818,10 @@
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
 
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
+        if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
+        {
+            d_Inventory.RightHand[ActiveMaterial] = new Packet_Item();
+        }
         int activeblock = 0;
         if (activeitem != null) { activeblock = activeitem.BlockId; }
         if (activeblock != PreviousActiveMaterialBlock)

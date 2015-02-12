@@ -484,6 +484,14 @@ namespace ManicDigger
                     if(selected.Value.X == 4 && selected.Value.Y == 2)
                     {
                         ApplyRecipe(d_Inventory.currentRecipe);
+                        d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+
+                        //TODOFRANK
+
+                        d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                        CheckRecipes();
+                        SendInventory();
+                        return;
                     }
                     d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
                     d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
@@ -735,20 +743,26 @@ namespace ManicDigger
         }
 
         //Apply the current recipe when output is taken
-        public void ApplyRecipe(Recipe r)
+        public bool ApplyRecipe(Recipe r)
         {
             if (r == null)
-                return;
+                return false;
 
            for(int i = 0 ; i < r.ingredients.Count ; i++)
            {
                ProtoPoint p = new ProtoPoint(r.ingredients[i].PosX,r.ingredients[i].PosY);
                if (d_Inventory.CraftInv[p].BlockCount == r.ingredients[i].Amount)
+               {
                    d_Inventory.CraftInv.Remove(p);
+                   
+               }
                else
+               {
                    d_Inventory.CraftInv[p].BlockCount -= r.ingredients[i].Amount;
+               }
                
            }
+           return true;
             
         }
     }
@@ -800,10 +814,38 @@ namespace ManicDigger
             {
                 //case WearPlace.LeftHand: return false;
                 case WearPlace_.RightHand: return item.ItemClass == ItemClass.Block;
-                case WearPlace_.MainArmor: return false;
-                case WearPlace_.Boots: return false;
-                case WearPlace_.Helmet: return false;
-                case WearPlace_.Gauntlet: return false;
+                case WearPlace_.MainArmor:
+                    {
+                        //These are the ids for the armors
+                        if (item.BlockId == 75 || item.BlockId == 76 || item.BlockId == 77 || item.BlockId == 78)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Boots:
+                    {
+                        //These are the ids for the boots
+                        if (item.BlockId == 79 || item.BlockId == 80 || item.BlockId == 81 || item.BlockId == 82)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Helmet:
+                    {
+                        //These are the ids for the helmet
+                        if (item.BlockId == 63 || item.BlockId == 64 || item.BlockId == 65 || item.BlockId == 66)
+                            return true;
+                        else
+                            return false;
+                    } 
+                case WearPlace_.Gauntlet:
+                    {
+                        //These are the ids for the gloves
+                        if (item.BlockId == 67 || item.BlockId == 68 || item.BlockId == 69 || item.BlockId == 70)
+                            return true;
+                        else
+                            return false;
+                    } 
                 default: throw new Exception();
             }
         }
