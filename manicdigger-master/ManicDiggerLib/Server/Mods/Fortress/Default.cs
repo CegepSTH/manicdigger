@@ -49,6 +49,7 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Empty,
                     WalkableType = WalkableType.Empty,
                     Sounds = noSound,
+                    IsTool = true
                 });
             m.SetBlockType(1, "Stone", new BlockType()
                 {
@@ -1379,7 +1380,7 @@ namespace ManicDigger.Mods
                 WalkSpeedWhenUsed = 1f,
                 Durability = 60
             });
-            m.SetBlockType(175, "Lava Bucket", new BlockType()
+            m.SetBlockType(175, "LavaBucket", new BlockType()
             {
                 AllTextures = "Gird_Lava_Bucket",
                 DrawType = DrawType.Transparent,
@@ -1388,16 +1389,17 @@ namespace ManicDigger.Mods
                 handimage = "Gird_Lava_Bucket.png",
                 WalkSpeedWhenUsed = 1f
             });
-            m.SetBlockType(176, "Water Bucket", new BlockType()
+            m.SetBlockType(176, "WBucket", new BlockType()
             {
                 AllTextures = "Grid_Water_Bucket",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
+                DrawType = DrawType.Solid,
+                WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
                 handimage = "Grid_Water_Bucket.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                IsBuildable=true
             });
-            m.SetBlockType(177, "Empty Bucket", new BlockType()
+            m.SetBlockType(177, "EmptyBucket", new BlockType()
             {
                 AllTextures = "Grid_Empty_Bucket",
                 DrawType = DrawType.Transparent,
@@ -1405,8 +1407,16 @@ namespace ManicDigger.Mods
                 Sounds = solidSounds,
                 handimage = "Grid_Empty_Bucket.png",
                 WalkSpeedWhenUsed = 1f,
-
+                IsTool = true,
                 IsUsable = true
+            });
+            m.SetBlockType(178, "Source", new BlockType()
+            {
+                AllTextures = "Water",
+                DrawType = DrawType.Fluid,
+                WalkableType = WalkableType.Fluid,
+                handimage = "Water.png",
+                Sounds = noSound,
             });
 
             m.RegisterTimer(UpdateSeasons, 1);
@@ -1495,11 +1505,14 @@ namespace ManicDigger.Mods
             m.AddToCreativeInventory("Ladder");
             m.AddToCreativeInventory("Rail3");
             m.AddToCreativeInventory("Rail60");
-            m.AddToCreativeInventory("Empty Bucket");
-            m.AddToCreativeInventory("Lava Bucket");
-            m.AddToCreativeInventory("Water Bucket");
+            m.AddToCreativeInventory("EmptyBucket");
+            m.AddToCreativeInventory("LavaBucket");
+            m.AddToCreativeInventory("WBucket");
             
             m.AddToStartInventory("Torch", 6);
+            m.AddToStartInventory("Source", 6);
+            m.AddToStartInventory("EmptyBucket", 6);
+            m.AddToStartInventory("WBucket", 6);
             //m.AddToStartInventory("Crops1", 1);
             //m.AddToStartInventory("CraftingTable", 6);
             //m.AddToStartInventory("GoldCoin", 2);
@@ -1560,9 +1573,6 @@ namespace ManicDigger.Mods
             m.AddToStartInventory("Silver shovel", 1);
 
             m.AddToStartInventory("Water", 1000);
-            m.AddToStartInventory("Water Bucket", 1);
-            m.AddToStartInventory("Lava Bucket", 1);
-            m.AddToStartInventory("Empty Bucket", 1);
            
 
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
