@@ -2282,70 +2282,82 @@ namespace ManicDiggerServer
                         int z = packet.SetBlock.Z;
                         if (packet.SetBlock.Mode == Packet_BlockSetModeEnum.Use)	//Check if player only uses block
                         {
-                        	if (!PlayerHasPrivilege(clientid, ServerClientMisc.Privilege.use))
-                        	{
-                        		SendMessage(clientid, colorError + language.ServerNoUsePrivilege());
-                        		break;
-                        	}
-                        	if (clients[clientid].IsSpectator && !config.AllowSpectatorUse)
-                        	{
-                        		SendMessage(clientid, colorError + language.ServerNoSpectatorUse());
-                        		break;
-                        	}
-                        	DoCommandBuild(clientid, true, packet.SetBlock);
+                            if (!PlayerHasPrivilege(clientid, ServerClientMisc.Privilege.use))
+                            {
+                                SendMessage(clientid, colorError + language.ServerNoUsePrivilege());
+                                break;
+                            }
+                            if (clients[clientid].IsSpectator && !config.AllowSpectatorUse)
+                            {
+                                SendMessage(clientid, colorError + language.ServerNoSpectatorUse());
+                                break;
+                            }
+                            DoCommandBuild(clientid, true, packet.SetBlock);
                         }
                         else	//Player builds, deletes or uses block with tool
                         {
-                        	if (!PlayerHasPrivilege(clientid, ServerClientMisc.Privilege.build))
-                        	{
-                        		SendMessage(clientid, colorError + language.ServerNoBuildPrivilege());
-                            	SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
-                            	break;
-                        	}
-                        	if (clients[clientid].IsSpectator && !config.AllowSpectatorBuild)
-                        	{
-                        		SendMessage(clientid, colorError + language.ServerNoSpectatorBuild());
-                            	SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
-                            	break;
-                        	}
-                        	if (!config.CanUserBuild(clients[clientid], x, y, z) && (packet.SetBlock.Mode == Packet_BlockSetModeEnum.Create || packet.SetBlock.Mode == Packet_BlockSetModeEnum.Destroy)
-                            	&& !extraPrivileges.ContainsKey(ServerClientMisc.Privilege.build))
-                        	{
-                        		SendMessage(clientid, colorError + language.ServerNoBuildPermissionHere());
-                            	SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
-                            	break;
-                        	}
-                        	if (!DoCommandBuild(clientid, true, packet.SetBlock))
-                        	{
-                            	SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
-                        	}
-                        	//Only log when building/destroying blocks. Prevents VandalFinder entries
-                        	if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
-                        		BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
-                            
-                            Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
-                            if (item.BlockId >= 155 && item.BlockId <= 174)
+                            if (!PlayerHasPrivilege(clientid, ServerClientMisc.Privilege.build))
                             {
-                                
+                                SendMessage(clientid, colorError + language.ServerNoBuildPrivilege());
+                                SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
+                                break;
+                            }
+                            if (clients[clientid].IsSpectator && !config.AllowSpectatorBuild)
+                            {
+                                SendMessage(clientid, colorError + language.ServerNoSpectatorBuild());
+                                SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
+                                break;
+                            }
+                            if (!config.CanUserBuild(clients[clientid], x, y, z) && (packet.SetBlock.Mode == Packet_BlockSetModeEnum.Create || packet.SetBlock.Mode == Packet_BlockSetModeEnum.Destroy)
+                                && !extraPrivileges.ContainsKey(ServerClientMisc.Privilege.build))
+                            {
+                                SendMessage(clientid, colorError + language.ServerNoBuildPermissionHere());
+                                SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
+                                break;
+                            }
+                            if (!DoCommandBuild(clientid, true, packet.SetBlock))
+                            {
+                                SendSetBlock(clientid, x, y, z, d_Map.GetBlock(x, y, z)); //revert
+                            }
+                            //Only log when building/destroying blocks. Prevents VandalFinder entries
+                            if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
+                                BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
 
-                                item.Durability--;
-                                Console.WriteLine(item.Durability.ToString());
-                                if (item.Durability == 0)
+
+
+                            
+
+                                try
                                 {
-                                    if (item.BlockCount == 1)
+                                    Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                                    if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
                                     {
-                                        Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
-                                    }
-                                    else
-                                    {
-                                        item.BlockCount--;
-                                        item.Durability = BlockTypes[item.BlockId].Durability;
+                                        item.Durability--;
+                                        Console.WriteLine(item.Durability.ToString());
+                                        if (item.Durability == 0)
+                                        {
+                                            if (item.BlockCount == 1)
+                                            {
+                                                Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                            }
+                                            else
+                                            {
+                                                item.BlockCount--;
+                                                item.Durability = BlockTypes[item.BlockId].Durability;
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                                catch (Exception)
+                                {
+
+                                    throw;
+                                }
+
+                            
                         }
+                        break;
                     }
-                    break;
                 case Packet_ClientIdEnum.FillArea:
                     {
                         if (!clients[clientid].privileges.Contains(ServerClientMisc.Privilege.build))
@@ -2782,6 +2794,7 @@ namespace ManicDiggerServer
                     break;
             }
         }
+        
         
         public void SendServerRedirect(int clientid, string ip_, int port_)
         {
