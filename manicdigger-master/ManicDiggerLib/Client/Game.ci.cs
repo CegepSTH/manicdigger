@@ -9076,11 +9076,10 @@
                         }
                     }
 
-
                     GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
                     GLRotate(toolRotation, 0, 0, 90);
 
-                    if (mouseLeft)
+                    if (guistate == GuiState.Normal && mouseLeft)
                     {
                         if (up)
                             toolRotation += 4;
