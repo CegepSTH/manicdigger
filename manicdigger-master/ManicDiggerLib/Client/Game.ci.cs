@@ -1670,7 +1670,7 @@
         }
     }
 
-    public void DrawArmorHealth()
+    public void DrawPlayerArmor()
     {
         //364 529 496 430
         if (PlayerStats != null)
