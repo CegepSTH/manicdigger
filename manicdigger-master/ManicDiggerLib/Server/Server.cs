@@ -2488,16 +2488,16 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
-                       if( stats.CurrentArmor != packet.Armor.CurrentArmor)
-                        {
+                       //if( stats.CurrentArmor != packet.Armor.CurrentArmor)
+                       // {
                             
-                            //Alexis
-                            //To test
-                            Inventory[c.playername].Inventory.Boots.Durability--;
-                            Inventory[c.playername].Inventory.Helmet.Durability--;
-                            Inventory[c.playername].Inventory.Gauntlet.Durability--;
-                            Inventory[c.playername].Inventory.MainArmor.Durability--;
-                        }
+                       //     //Alexis
+                       //     //To test
+                       //     Inventory[c.playername].Inventory.Boots.Durability--;
+                       //     Inventory[c.playername].Inventory.Helmet.Durability--;
+                       //     Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                       //     Inventory[c.playername].Inventory.MainArmor.Durability--;
+                       // }
 
                         stats.CurrentHealth = packet.Health.CurrentHealth;
 

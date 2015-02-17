@@ -1664,7 +1664,10 @@
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1672,21 +1675,23 @@
 
     public void DrawArmorHealth()
     {
-        //364 529 496 430
+        platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
-            if(d_Inventory.Boots != null)
-            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor)
+            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
-                float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
-                int posX = barDistanceToMargin + barOffset;
+                float progress = one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor;
+                int posX = barDistanceToMargin + barOffset + barOffset;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -2208,14 +2213,14 @@
         if (!AllowFreemove)
         {
             //Added by <SwampGerman>
-            if (damage > PlayerStats.CurrentArmor)      
+            if (damage > PlayerStats.CurrentArmor)
             {
                 damage -= PlayerStats.CurrentArmor;
                 PlayerStats.CurrentArmor = 0;
 
                 PlayerStats.CurrentHealth -= damage;
             }
-            else 
+            else
             {
                 PlayerStats.CurrentArmor -= damage;
             }
@@ -7542,8 +7547,19 @@
                     //added by Alex
                     if (!AllowFreemove)
                     {
+                        int armor = 0;
+                        if (d_Inventory.Boots != null)
+                            armor += d_Inventory.Boots.Durability;
+                        if (d_Inventory.Gauntlet != null)
+                            armor += d_Inventory.Gauntlet.Durability;
+                        if (d_Inventory.Helmet != null)
+                            armor += d_Inventory.Helmet.Durability;
+                        if (d_Inventory.MainArmor != null)
+                            armor += d_Inventory.MainArmor.Durability;
+                        PlayerStats.SetCurrentArmor(armor);
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
+                        DrawArmorHealth();
                     }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
@@ -7851,7 +7867,7 @@
         float orientationY = 0;
         float orientationZ = -platform.MathCos(player.playerorientation.Y);
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
-        
+
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
         //TOREDO FRANK
         //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
@@ -12954,7 +12970,7 @@ public class ServerPackets
         return p;
     }
 
-    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen)
+    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen, int currentArmor, int maxArmor)
     {
         Packet_Server p = new Packet_Server();
         p.Id = Packet_ServerIdEnum.PlayerStats;
@@ -12963,6 +12979,8 @@ public class ServerPackets
         p.PlayerStats.MaxHealth = maxHealth;
         p.PlayerStats.CurrentOxygen = oxygen;
         p.PlayerStats.MaxOxygen = maxOxygen;
+        p.PlayerStats.CurrentArmor = currentArmor;
+        p.PlayerStats.MaxArmor = maxArmor;
         return p;
     }
 
