@@ -1361,7 +1361,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Water_Bucket.png",
+                handimage = "Water_Bucket copie.png",
                 WalkSpeedWhenUsed = 1f,
                 IsBuildable=true
             });
@@ -1371,7 +1371,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                handimage = "Empty_Bucket.png",
+                handimage = "Empty_Bucket copie.png",
                 WalkSpeedWhenUsed = 1f,
                 IsTool = true,
                 IsUsable = true
