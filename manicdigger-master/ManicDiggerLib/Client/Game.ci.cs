@@ -4735,6 +4735,16 @@
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
 
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
+
+
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
     }
