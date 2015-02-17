@@ -1236,15 +1236,21 @@ public class ScreenWriteWorldName : Screen
             {
                 if (list[i].Replace(path1 + "\\", "").StartsWith(txtName.text))
                 {
-                    //IntRef it = IntRef.Create(100);
-                    //string s1 = platform.StringSplit(list[i], txtName.text, it)[1];
-                    //s1 = platform.StringSplit(s1, ".", it)[0];
-                    string s1 = list[i].Split(new string[] { txtName.text }, System.StringSplitOptions.None)[1].Split('.')[0];
-                    if (s1 != "")
+                    string test = list[i];
+                    //test --> C:\\Users\\Francis\\Documents\\DefaultName1.mddbs
+                    test.Replace(path1 + "\\" + txtName.text,"");
+                    //test --> 1.mddbs
+                    string s = "";
+                    foreach (char c in test)
+                    {
+                        if (char.IsDigit(c))
+                            s += c;
+                    }
+
+                    if (s != "")
                     {
                         int number;
-                        //number = platform.IntParse(s1);
-                        number = int.Parse(s1);
+                        number = int.Parse(s);
                         if (lastnumber < number)
                         {
                             lastnumber = number;
