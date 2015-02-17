@@ -1664,7 +1664,10 @@
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1672,21 +1675,23 @@
 
     public void DrawPlayerArmor()
     {
-        //364 529 496 430
+        //platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
-            if(d_Inventory.Boots != null)
-            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor)
+            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
-                float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
-                int posX = barDistanceToMargin + barOffset;
+                float progress = one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor;
+                int posX = barDistanceToMargin + barOffset + barOffset;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1723,6 +1728,16 @@
             return false;
         }
         return platform.StringContains(name, "Water"); // todo
+    }
+
+    internal bool IsSource(int blockType)
+    {
+        string name = blocktypes[blockType].Name;
+        if (name == null)
+        {
+            return false;
+        }
+        return platform.StringContains(name, "Source"); // todo
     }
 
     internal int mouseCurrentX;
@@ -2181,9 +2196,11 @@
             return ENABLE_FREEMOVE;
         }
         int block = GetBlockValid(x, y, z);
+
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
-            || IsWater(block);
+            || IsWater(block)
+            || !IsSource(block);
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2208,14 +2225,14 @@
         if (!AllowFreemove)
         {
             //Added by <SwampGerman>
-            if (damage > PlayerStats.CurrentArmor)      
+            if (damage > PlayerStats.CurrentArmor)
             {
                 damage -= PlayerStats.CurrentArmor;
                 PlayerStats.CurrentArmor = 0;
 
                 PlayerStats.CurrentHealth -= damage;
             }
-            else 
+            else
             {
                 PlayerStats.CurrentArmor -= damage;
             }
@@ -2307,7 +2324,7 @@
         if (IsValidPos(posX, posY, posZ - 3))
         {
             int blockBelow = GetBlock(posX, posY, posZ - 3);
-            if ((blockBelow != 0) && (!IsWater(blockBelow)))
+            if ((blockBelow != 0) && (!IsWater(blockBelow) || !IsSource(blockBelow)))
             {
                 float severity = 0;
                 if (fallspeed < 4) { return; }
@@ -3989,7 +4006,8 @@
     internal bool WaterSwimming()
     {
         if (GetPlayerEyesBlock() == -1) { return true; }
-        return IsWater(GetPlayerEyesBlock());
+
+        return IsWater(GetPlayerEyesBlock()) || IsSource(GetPlayerEyesBlock());
     }
 
     internal bool LavaSwimming()
@@ -4729,6 +4747,16 @@
         RedrawAllBlocks();
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
+
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
+
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
@@ -7542,8 +7570,19 @@
                     //added by Alex
                     if (!AllowFreemove)
                     {
+                        int armor = 0;
+                        if (d_Inventory.Boots != null)
+                            armor += d_Inventory.Boots.Durability;
+                        if (d_Inventory.Gauntlet != null)
+                            armor += d_Inventory.Gauntlet.Durability;
+                        if (d_Inventory.Helmet != null)
+                            armor += d_Inventory.Helmet.Durability;
+                        if (d_Inventory.MainArmor != null)
+                            armor += d_Inventory.MainArmor.Durability;
+                        PlayerStats.SetCurrentArmor(armor);
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
+                        DrawArmorHealth();
                     }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
@@ -7851,7 +7890,7 @@
         float orientationY = 0;
         float orientationZ = -platform.MathCos(player.playerorientation.Y);
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
-        
+
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
         //TOREDO FRANK
         //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
@@ -8948,7 +8987,12 @@
             d_SunMoonRenderer.Draw(deltaTime);
 
             InterpolatePositions(deltaTime);
-            //TODOMATHEW
+
+            //ModifyPlayerSkin();
+
+            
+
+
             DrawPlayers(deltaTime);
             DrawTestModel(deltaTime);
             terrainRenderer.DrawTerrain();
@@ -8963,11 +9007,7 @@
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
 
-            if(d_Inventory.MainArmor != null)
-            {
-                //TODOMATHEW
-                
-            }
+            
 
 
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
@@ -9088,11 +9128,10 @@
                         }
                     }
 
-
                     GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
                     GLRotate(toolRotation, 0, 0, 90);
 
-                    if (mouseLeft)
+                    if (guistate == GuiState.Normal && mouseLeft)
                     {
                         if (up)
                             toolRotation += 4;
@@ -9118,6 +9157,95 @@
         GotoDraw2d(deltaTime);
     }
 
+    internal void ModifyPlayerSkin()
+    {
+        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        byte[] PixelsCurrent;
+        //Get default player skin in pixelscurrent array
+        PixelsCurrent = new byte[64 * 32 * 3];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
+
+
+        //defaultplayerskin
+        EquipArmor("noarmor.png",PixelsCurrent);
+
+        //For each armor, get the skin and modify pixels
+        if (d_Inventory.Helmet != null)
+        {
+            if (d_Inventory.Helmet.BlockId == 63)
+                EquipArmor("HelmArmorWood.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 64)
+                EquipArmor("HelmArmorIron.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 65)
+                EquipArmor("HelmArmorSilver.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 66)
+                EquipArmor("HelmArmorGold.png", PixelsCurrent);
+
+        }
+
+        if(d_Inventory.MainArmor != null)
+        {
+            if (d_Inventory.MainArmor.BlockId == 75)
+                EquipArmor("MainArmorWood.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 76)
+                EquipArmor("MainArmorIron.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 77)
+                EquipArmor("MainArmorSilver.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 78)
+                EquipArmor("MainArmorGold.png", PixelsCurrent);
+        }
+
+        if (d_Inventory.Gauntlet != null)
+        {
+            if (d_Inventory.Gauntlet.BlockId == 67)
+                EquipArmor("GauntletWood.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 68)
+                EquipArmor("GauntletIron.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 69)
+                EquipArmor("GauntletSilver.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 70)
+                EquipArmor("GauntletGold.png", PixelsCurrent);
+        }
+
+        if (d_Inventory.Boots != null)
+        {
+            if (d_Inventory.Boots.BlockId == 79)
+                EquipArmor("BootsWood.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 80)
+                EquipArmor("BootsIron.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 81)
+                EquipArmor("BootsSilver.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 82)
+                EquipArmor("BootsGold.png", PixelsCurrent);
+        }
+
+
+
+        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
+
+
+    }
+
+    internal void EquipArmor(string image, byte[] PixelsCurrent)
+    {
+        platform.BindTexture2d(GetTexture(image));
+        byte[] PixelsArmor;
+        PixelsArmor = new byte[64 * 32 * 3];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsArmor);
+
+        for (int i = 0; i < PixelsCurrent.Length; i+=3)
+        {
+            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i+2] == 110) || (PixelsArmor[i+2] == 109)))))
+            {
+                PixelsCurrent[i] = PixelsArmor[i];
+                PixelsCurrent[i+1] = PixelsArmor[i+1];
+                PixelsCurrent[i+2] = PixelsArmor[i+2];
+            }
+        }
+
+    }
+
     void DrawTestModel(float deltaTime)
     {
         if (!ENABLE_DRAW_TEST_CHARACTER)
@@ -9136,14 +9264,8 @@
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        byte[] Pixels;
-        Pixels = new byte[64*32*4];
-        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D,0,OpenTK.Graphics.OpenGL.PixelFormat.Rgba,OpenTK.Graphics.OpenGL.PixelType.UnsignedByte,Pixels);
-        for (int i = 0; i < Pixels.Length; i++ )
-        {
-            Pixels[i] = 255;
-        }
-        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
+        ModifyPlayerSkin();
+        
             testmodel.Render(deltaTime);
         GLPopMatrix();
     }
@@ -12871,7 +12993,7 @@ public class ServerPackets
         return p;
     }
 
-    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen)
+    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen, int currentArmor, int maxArmor)
     {
         Packet_Server p = new Packet_Server();
         p.Id = Packet_ServerIdEnum.PlayerStats;
@@ -12880,6 +13002,8 @@ public class ServerPackets
         p.PlayerStats.MaxHealth = maxHealth;
         p.PlayerStats.CurrentOxygen = oxygen;
         p.PlayerStats.MaxOxygen = maxOxygen;
+        p.PlayerStats.CurrentArmor = currentArmor;
+        p.PlayerStats.MaxArmor = maxArmor;
         return p;
     }
 

@@ -372,7 +372,7 @@
                 continue;
             }
             
-                DrawItem(CraftingInterfaceStartX() + k.X * CellDrawSize, CraftingInterfaceStartY() + k.Y* CellDrawSize, k.Value_, 0, 0);
+            DrawItem(CraftingInterfaceStartX() + k.X * CellDrawSize, CraftingInterfaceStartY() + k.Y* CellDrawSize, k.Value_, 0, 0);
         }
 
             //draw area selection
@@ -595,6 +595,19 @@
                 font.family = "Arial";
                 game.Draw2dText(game.platform.IntToString(item.BlockCount), font, screenposX, screenposY, null, false);
             }
+            if (item.Durability != game.blocktypes[item.BlockId].Durability &&
+                item.BlockId >= 155 && item.BlockId <= 174 ||
+                item.BlockId >= 63 &&  item.BlockId <= 70 ||
+                item.BlockId >= 74 && item.BlockId <= 82)
+                game.Draw2dTexture(game.WhiteTexture(),
+                    screenposX + 5,
+                    screenposY + CellDrawSize - 5,
+                    (CellDrawSize - 10) * item.Durability / game.blocktypes[item.BlockId].Durability,
+                    5, 
+                    null, 
+                    0, 
+                    Game.ColorFromArgb(255, 0, 255, 0), 
+                    false);
         }
         else
         {

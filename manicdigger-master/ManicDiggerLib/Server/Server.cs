@@ -2322,39 +2322,32 @@ namespace ManicDiggerServer
                             //Only log when building/destroying blocks. Prevents VandalFinder entries
                             if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                                 BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
-
-
-
-                            
-
-                                try
+                            //Set durability
+                            try
+                            {
+                                Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                                if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
                                 {
-                                    Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
-                                    if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
+                                    item.Durability--;
+                                    Console.WriteLine(item.Durability.ToString());
+                                    if (item.Durability == 0)
                                     {
-                                        item.Durability--;
-                                        Console.WriteLine(item.Durability.ToString());
-                                        if (item.Durability == 0)
+                                        if (item.BlockCount == 1)
                                         {
-                                            if (item.BlockCount == 1)
-                                            {
-                                                Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
-                                            }
-                                            else
-                                            {
-                                                item.BlockCount--;
-                                                item.Durability = BlockTypes[item.BlockId].Durability;
-                                            }
+                                            Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                        }
+                                        else
+                                        {
+                                            item.BlockCount--;
+                                            item.Durability = BlockTypes[item.BlockId].Durability;
                                         }
                                     }
                                 }
-                                catch (Exception)
-                                {
-
-                                    throw;
-                                }
-
-                            
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
                         }
                         break;
                     }
@@ -2488,16 +2481,16 @@ namespace ManicDiggerServer
                     {
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
-                       if( stats.CurrentArmor != packet.Armor.CurrentArmor)
-                        {
+                       //if( stats.CurrentArmor != packet.Armor.CurrentArmor)
+                       // {
                             
-                            //Alexis
-                            //To test
-                            Inventory[c.playername].Inventory.Boots.Durability--;
-                            Inventory[c.playername].Inventory.Helmet.Durability--;
-                            Inventory[c.playername].Inventory.Gauntlet.Durability--;
-                            Inventory[c.playername].Inventory.MainArmor.Durability--;
-                        }
+                       //     //Alexis
+                       //     //To test
+                       //     Inventory[c.playername].Inventory.Boots.Durability--;
+                       //     Inventory[c.playername].Inventory.Helmet.Durability--;
+                       //     Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                       //     Inventory[c.playername].Inventory.MainArmor.Durability--;
+                       // }
 
                         stats.CurrentHealth = packet.Health.CurrentHealth;
 

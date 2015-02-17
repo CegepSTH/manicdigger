@@ -9,10 +9,81 @@ namespace ManicDigger.Server.Mods.Fortress
     {
 
         //###################################################
+        private class WaterRemover
+        {
+            private int _x, _y, _z, _s;
+            private ModManager _m;
+
+
+            public WaterRemover(int x, int y, int z, int s, ModManager m)
+            {
+                if (m == null)
+                    return;
+
+                string bName = m.GetBlockName(m.GetBlock(x, y, z));
+                _x = x;
+                _y = y;
+                _z = z;
+                _s = s;
+                _m = m;
+               
+
+                if (bName == "Source" || bName == "Water")
+                {
+                    if (_s > 0)
+                        m.SetBlock(_x, _y, _z, _m.GetBlockId("Empty"));
+                }
+
+                if (bName == "Source")
+                    _s = WaterBox.MAX_STRENGH;
+
+                RemoveZ();
+                RemoveXY();
+            }
+
+            private void RemoveXY()
+            {
+                Console.WriteLine("ici");
+                _s--;
+                Remove(_x - 1, _y, _z, _s);
+                Remove(_x + 1, _y, _z, _s);
+                Remove(_x, _y - 1, _z, _s);
+                Remove(_x, _y + 1, _z, _s);
+            }
+
+            private void Remove(int x, int y, int z, int s)
+            {
+                string bName = _m.GetBlockName(_m.GetBlock(x, y, z));
+                Console.WriteLine("test " + bName);
+                if (bName == "Water")
+                {
+                    _m.SetBlock(x, y, z, _m.GetBlockId("Empty"));
+
+                    if (s > 0)
+                    {
+                        WaterRemover w = new WaterRemover(x, y, z, s, _m);
+                    }
+                }
+            }
+
+            private void RemoveZ()
+            {
+                string bName = "";
+                do
+                {
+                    int tempZ = _z-1;
+                    bName = _m.GetBlockName(_m.GetBlock(_x, _y, tempZ));
+                    if (bName == "Water" || bName == "Source")
+                        _m.SetBlock(_x,_y, tempZ, _m.GetBlockId("Empty"));
+                }
+                while(bName == "Water" || bName == "Source");
+            }
+        }
+
         private class WaterBox
         {
             // force de l'eau (distance max de la source)
-            private const int MAX_STRENGH = 7;
+            public const int MAX_STRENGH = 2;
 
             // position du block
             private int _x, _y, _z, _s;
@@ -52,7 +123,8 @@ namespace ManicDigger.Server.Mods.Fortress
                 if (_s > MAX_STRENGH)
                     _s = MAX_STRENGH;
 
-                mod.SetBlock(x, y, z, _mod.GetBlockId("Water"));
+                string name = _isSource ? "Source" : "Water";
+                mod.SetBlock(x, y, z, _mod.GetBlockId(name));
                 if (CanFlow())
                     new Thread(FlowWater).Start();
             }
@@ -70,6 +142,7 @@ namespace ManicDigger.Server.Mods.Fortress
                     return false;
 
                 // regarde dans toute les direction
+                _s--;
                 bool canX = CanFlowX();
                 bool canY = CanFlowY();
 
@@ -79,29 +152,32 @@ namespace ManicDigger.Server.Mods.Fortress
 
             private bool CanFlowZ()
             {
+                Console.WriteLine("x: {0}   y: {1}   z: {2}" , _x,_y,_z);
                 string name = _mod.GetBlockName(_mod.GetBlock(_x, _y, _z - 1));
+                Console.WriteLine(name);
                 bool canFill = false;
                 if (name == "Water" || name == "Empty")
                 {
                     _water.Add(new WaterBox(_x, _y, _z - 1, _s, _mod, false));
                     canFill = true;
                 }
+                Console.WriteLine(canFill.ToString());
                 return canFill;
             }
 
             private bool CanFlowX()
             {
-                string[] v = new string[] {"Empty", "Water"};
-                bool canP = FillPlaneSurfaceWithFluid(_x + 1, _y, _z, _s - 1, v);
-                bool canN = FillPlaneSurfaceWithFluid(_x - 1, _y, _z, _s - 1, v);
+                string[] v = new string[] { "Empty" };
+                bool canP = FillPlaneSurfaceWithFluid(_x + 1, _y, _z, _s, v);
+                bool canN = FillPlaneSurfaceWithFluid(_x - 1, _y, _z, _s, v);
                 return canP || canN;
             }
 
             private bool CanFlowY()
             {
-                string[] v = new string[] { "Empty", "Water" };
-                bool canP = FillPlaneSurfaceWithFluid(_x, _y - 1, _z, _s - 1, v);
-                bool canN = FillPlaneSurfaceWithFluid(_x, _y + 1, _z, _s - 1, v);
+                string[] v = new string[] { "Empty" };
+                bool canP = FillPlaneSurfaceWithFluid(_x, _y - 1, _z, _s, v);
+                bool canN = FillPlaneSurfaceWithFluid(_x, _y + 1, _z, _s, v);
                 return canP || canN;
             }
 
@@ -118,8 +194,8 @@ namespace ManicDigger.Server.Mods.Fortress
                         canFill = true;
                         break;
                     }
-                    if (textures[i] == bottom)
-                        return false;
+                    //if (textures[i] == bottom)
+                    //    return false;
                 }
                 if (canFill)
                 {
@@ -167,7 +243,8 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void Build(int player, int x, int y, int z)
         {
-            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Water")
+            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Source" ||
+                m.GetBlockName(m.GetBlock(x, y, z)) == "WaterBucket")
             {
                 WaterBox w = new WaterBox(x, y, z, 500, m, true);
             }
@@ -181,9 +258,16 @@ namespace ManicDigger.Server.Mods.Fortress
             }
         }
 
-        void UseWithTool(int player, int x, int y, int z, int blockid)
+        void UseWithTool(int player, int x, int y, int z, int toolId)
         {
-            // TODO
+            Console.WriteLine(m.GetBlockName(toolId));
+            if (toolId == m.GetBlockId("EmptyBucket"))
+            {
+                int actSlot = m.GetActiveMaterialSlot(player);
+                m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
+                WaterRemover w = new WaterRemover(x, y, z, 50, m);
+
+            }
         }
 
         private bool WaterAround(int x, int y, int z)
