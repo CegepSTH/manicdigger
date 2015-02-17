@@ -1672,10 +1672,9 @@
 
     public void DrawArmorHealth()
     {
-        //364 529 496 430
+        platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
-            if(d_Inventory.Boots != null)
             if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor)
             {
                 float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
@@ -7530,8 +7529,19 @@
                     //added by Alex
                     if (!AllowFreemove)
                     {
+                        int armor = 0;
+                        if (d_Inventory.Boots != null)
+                            armor += d_Inventory.Boots.Durability;
+                        if (d_Inventory.Gauntlet != null)
+                            armor += d_Inventory.Gauntlet.Durability;
+                        if (d_Inventory.Helmet != null)
+                            armor += d_Inventory.Helmet.Durability;
+                        if (d_Inventory.MainArmor != null)
+                            armor += d_Inventory.MainArmor.Durability;
+                        PlayerStats.SetCurrentArmor(armor);
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
+                        DrawArmorHealth();
                     }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
@@ -12842,7 +12852,7 @@ public class ServerPackets
         return p;
     }
 
-    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen)
+    internal static Packet_Server PlayerStats(int health, int maxHealth, int oxygen, int maxOxygen, int currentArmor, int maxArmor)
     {
         Packet_Server p = new Packet_Server();
         p.Id = Packet_ServerIdEnum.PlayerStats;
@@ -12851,6 +12861,8 @@ public class ServerPackets
         p.PlayerStats.MaxHealth = maxHealth;
         p.PlayerStats.CurrentOxygen = oxygen;
         p.PlayerStats.MaxOxygen = maxOxygen;
+        p.PlayerStats.CurrentArmor = currentArmor;
+        p.PlayerStats.MaxArmor = maxArmor;
         return p;
     }
 
