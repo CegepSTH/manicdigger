@@ -2263,6 +2263,7 @@
                 p1.Id = Packet_ClientIdEnum.Health;
                 p1.Health = new Packet_ClientHealth();
                 p1.Health.CurrentHealth = PlayerStats.CurrentHealth;
+                p1.Armor.CurrentArmor = PlayerStats.CurrentArmor; //Trouver pourquoi p1.Armor.CurrentArmor est null...
             }
             SendPacketClient(p1);
         }
@@ -7582,7 +7583,7 @@
                         PlayerStats.SetCurrentArmor(armor);
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
-                        DrawArmorHealth();
+                        DrawPlayerArmor();
                     }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
