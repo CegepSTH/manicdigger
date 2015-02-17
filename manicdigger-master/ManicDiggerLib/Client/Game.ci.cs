@@ -2207,7 +2207,19 @@
     {
         if (!AllowFreemove)
         {
-            PlayerStats.CurrentHealth -= damage;
+            //Added by <SwampGerman>
+            if (damage > PlayerStats.CurrentArmor)      
+            {
+                damage -= PlayerStats.CurrentArmor;
+                PlayerStats.CurrentArmor = 0;
+
+                PlayerStats.CurrentHealth -= damage;
+            }
+            else 
+            {
+                PlayerStats.CurrentArmor -= damage;
+            }
+            // </SwampGerman>
             if (PlayerStats.CurrentHealth <= 0)
             {
                 AudioPlay("death.wav");
