@@ -1386,7 +1386,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                handimage = "Gird_Lava_Bucket.png",
+                handimage = "Lava_Bucket.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(176, "WBucket", new BlockType()
@@ -1395,7 +1395,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Grid_Water_Bucket.png",
+                handimage = "Water_Bucket.png",
                 WalkSpeedWhenUsed = 1f,
                 IsBuildable=true
             });
@@ -1405,7 +1405,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                handimage = "Grid_Empty_Bucket.png",
+                handimage = "Empty_Bucket.png",
                 WalkSpeedWhenUsed = 1f,
                 IsTool = true,
                 IsUsable = true
@@ -1508,11 +1508,14 @@ namespace ManicDigger.Mods
             m.AddToCreativeInventory("EmptyBucket");
             m.AddToCreativeInventory("LavaBucket");
             m.AddToCreativeInventory("WBucket");
+    
+        
             
             m.AddToStartInventory("Torch", 6);
             m.AddToStartInventory("Source", 6);
             m.AddToStartInventory("EmptyBucket", 6);
             m.AddToStartInventory("WBucket", 6);
+            m.AddToStartInventory("LavaBucket", 6);
             //m.AddToStartInventory("Crops1", 1);
             //m.AddToStartInventory("CraftingTable", 6);
             //m.AddToStartInventory("GoldCoin", 2);
