@@ -826,7 +826,7 @@ namespace ManicDigger
                 case WearPlace_.Boots:
                     {
                         //These are the ids for the boots
-                        if (item.BlockId == 79 || item.BlockId == 80 || item.BlockId == 81 || item.BlockId == 82)
+                        if (item.BlockId == 71 || item.BlockId == 72 || item.BlockId == 74 || item.BlockId == 73)
                             return true;
                         else
                             return false;
