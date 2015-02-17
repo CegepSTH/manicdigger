@@ -260,14 +260,14 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
-            Console.WriteLine(m.GetBlockName(toolId));
-            if (toolId == m.GetBlockId("EmptyBucket"))
-            {
-                int actSlot = m.GetActiveMaterialSlot(player);
-                m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
-                WaterRemover w = new WaterRemover(x, y, z, 50, m);
+            //Console.WriteLine(m.GetBlockName(toolId));
+            //if (toolId == m.GetBlockId("EmptyBucket"))
+            //{
+            //    int actSlot = m.GetActiveMaterialSlot(player);
+            //    m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
+            //    WaterRemover w = new WaterRemover(x, y, z, 50, m);
 
-            }
+            //}
         }
 
         private bool WaterAround(int x, int y, int z)
