@@ -9209,13 +9209,13 @@
 
         if (d_Inventory.Boots != null)
         {
-            if (d_Inventory.Boots.BlockId == 79)
+            if (d_Inventory.Boots.BlockId == 71)
                 EquipArmor("BootsWood.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 80)
+            if (d_Inventory.Boots.BlockId == 72)
                 EquipArmor("BootsIron.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 81)
+            if (d_Inventory.Boots.BlockId == 73)
                 EquipArmor("BootsSilver.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 82)
+            if (d_Inventory.Boots.BlockId == 74)
                 EquipArmor("BootsGold.png", PixelsCurrent);
         }
 
