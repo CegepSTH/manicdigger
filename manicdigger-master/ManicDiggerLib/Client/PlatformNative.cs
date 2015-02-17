@@ -2181,7 +2181,8 @@ public class GamePlatformNative : GamePlatform
 
     public override void Gltextsubimage(TextureTarget target,int level, int xoffset, int yoffset, int width, int height,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type, byte[] pixels)
     {
-        GL.TexSubImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
+       // GL.TexImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
+        GL.TexImage2D(target, level, OpenTK.Graphics.OpenGL.PixelInternalFormat.Rgb8, width, height, 0, pixel, type, pixels);
     }
 }
 
