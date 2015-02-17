@@ -8977,7 +8977,12 @@
             d_SunMoonRenderer.Draw(deltaTime);
 
             InterpolatePositions(deltaTime);
-            //TODOMATHEW
+
+            //ModifyPlayerSkin();
+
+            
+
+
             DrawPlayers(deltaTime);
             DrawTestModel(deltaTime);
             terrainRenderer.DrawTerrain();
@@ -8992,11 +8997,7 @@
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
 
-            if (d_Inventory.MainArmor != null)
-            {
-                //TODOMATHEW
-
-            }
+            
 
 
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
@@ -9146,6 +9147,95 @@
         GotoDraw2d(deltaTime);
     }
 
+    internal void ModifyPlayerSkin()
+    {
+        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        byte[] PixelsCurrent;
+        //Get default player skin in pixelscurrent array
+        PixelsCurrent = new byte[64 * 32 * 3];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
+
+
+        //defaultplayerskin
+        EquipArmor("noarmor.png",PixelsCurrent);
+
+        //For each armor, get the skin and modify pixels
+        if (d_Inventory.Helmet != null)
+        {
+            if (d_Inventory.Helmet.BlockId == 63)
+                EquipArmor("HelmArmorWood.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 64)
+                EquipArmor("HelmArmorIron.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 65)
+                EquipArmor("HelmArmorSilver.png", PixelsCurrent);
+            if (d_Inventory.Helmet.BlockId == 66)
+                EquipArmor("HelmArmorGold.png", PixelsCurrent);
+
+        }
+
+        if(d_Inventory.MainArmor != null)
+        {
+            if (d_Inventory.MainArmor.BlockId == 75)
+                EquipArmor("MainArmorWood.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 76)
+                EquipArmor("MainArmorIron.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 77)
+                EquipArmor("MainArmorSilver.png", PixelsCurrent);
+            if (d_Inventory.MainArmor.BlockId == 78)
+                EquipArmor("MainArmorGold.png", PixelsCurrent);
+        }
+
+        if (d_Inventory.Gauntlet != null)
+        {
+            if (d_Inventory.Gauntlet.BlockId == 67)
+                EquipArmor("GauntletWood.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 68)
+                EquipArmor("GauntletIron.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 69)
+                EquipArmor("GauntletSilver.png", PixelsCurrent);
+            if (d_Inventory.Gauntlet.BlockId == 70)
+                EquipArmor("GauntletGold.png", PixelsCurrent);
+        }
+
+        if (d_Inventory.Boots != null)
+        {
+            if (d_Inventory.Boots.BlockId == 79)
+                EquipArmor("BootsWood.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 80)
+                EquipArmor("BootsIron.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 81)
+                EquipArmor("BootsSilver.png", PixelsCurrent);
+            if (d_Inventory.Boots.BlockId == 82)
+                EquipArmor("BootsGold.png", PixelsCurrent);
+        }
+
+
+
+        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
+
+
+    }
+
+    internal void EquipArmor(string image, byte[] PixelsCurrent)
+    {
+        platform.BindTexture2d(GetTexture(image));
+        byte[] PixelsArmor;
+        PixelsArmor = new byte[64 * 32 * 3];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsArmor);
+
+        for (int i = 0; i < PixelsCurrent.Length; i+=3)
+        {
+            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i+2] == 110) || (PixelsArmor[i+2] == 109)))))
+            {
+                PixelsCurrent[i] = PixelsArmor[i];
+                PixelsCurrent[i+1] = PixelsArmor[i+1];
+                PixelsCurrent[i+2] = PixelsArmor[i+2];
+            }
+        }
+
+    }
+
     void DrawTestModel(float deltaTime)
     {
         if (!ENABLE_DRAW_TEST_CHARACTER)
@@ -9164,15 +9254,9 @@
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        byte[] Pixels;
-        Pixels = new byte[64 * 32 * 4];
-        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
-        for (int i = 0; i < Pixels.Length; i++)
-        {
-            Pixels[i] = 255;
-        }
-        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
-        testmodel.Render(deltaTime);
+        ModifyPlayerSkin();
+        
+            testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;
