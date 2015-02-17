@@ -1730,6 +1730,16 @@
         return platform.StringContains(name, "Water"); // todo
     }
 
+    internal bool IsSource(int blockType)
+    {
+        string name = blocktypes[blockType].Name;
+        if (name == null)
+        {
+            return false;
+        }
+        return platform.StringContains(name, "Source"); // todo
+    }
+
     internal int mouseCurrentX;
     internal int mouseCurrentY;
     internal Packet_Inventory d_Inventory;
@@ -2186,9 +2196,11 @@
             return ENABLE_FREEMOVE;
         }
         int block = GetBlockValid(x, y, z);
+
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
             || IsWater(block);
+          //  || !IsSource(block);
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2312,7 +2324,7 @@
         if (IsValidPos(posX, posY, posZ - 3))
         {
             int blockBelow = GetBlock(posX, posY, posZ - 3);
-            if ((blockBelow != 0) && (!IsWater(blockBelow)))
+            if ((blockBelow != 0) && !IsWater(blockBelow))// || !IsSource(blockBelow)))
             {
                 float severity = 0;
                 if (fallspeed < 4) { return; }
@@ -3995,7 +4007,8 @@
     internal bool WaterSwimming()
     {
         if (GetPlayerEyesBlock() == -1) { return true; }
-        return IsWater(GetPlayerEyesBlock());
+
+        return IsWater(GetPlayerEyesBlock());// || IsSource(GetPlayerEyesBlock());
     }
 
     internal bool LavaSwimming()
@@ -4735,6 +4748,16 @@
         RedrawAllBlocks();
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
+
+        Packet_Client p = new Packet_Client();
+        {
+            p.Id = Packet_ClientIdEnum.SpecialKey;
+            p.SpecialKey_ = new Packet_ClientSpecialKey();
+            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+        }
+        SendPacketClient(p);
+        player.movedz = 0;
+
 
         int playerx = platform.FloatToInt(player.playerposition.X);
         int playery = platform.FloatToInt(player.playerposition.Z);
@@ -9180,13 +9203,13 @@
 
         if (d_Inventory.Boots != null)
         {
-            if (d_Inventory.Boots.BlockId == 79)
+            if (d_Inventory.Boots.BlockId == 71)
                 EquipArmor("BootsWood.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 80)
+            if (d_Inventory.Boots.BlockId == 72)
                 EquipArmor("BootsIron.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 81)
+            if (d_Inventory.Boots.BlockId == 73)
                 EquipArmor("BootsSilver.png", PixelsCurrent);
-            if (d_Inventory.Boots.BlockId == 82)
+            if (d_Inventory.Boots.BlockId == 74)
                 EquipArmor("BootsGold.png", PixelsCurrent);
         }
 

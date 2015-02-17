@@ -660,41 +660,7 @@ namespace ManicDigger.Mods
                 Durability = 53
             });
 
-            //m.SetBlockType(71, "WoodPants", new BlockType()
-            //{
-            //    AllTextures = "WoodPants",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    WalkSpeedWhenUsed = 1f
-            //});
-
-            //m.SetBlockType(72, "IronPants", new BlockType()
-            //{
-            //    AllTextures = "IronPants",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    WalkSpeedWhenUsed = 1f
-            //});
-
-            //m.SetBlockType(73, "SilverPants", new BlockType()
-            //{
-            //    AllTextures = "SilverPants",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    WalkSpeedWhenUsed = 1f
-            //});
-
-            //m.SetBlockType(74, "GoldPants", new BlockType()
-            //{
-            //    AllTextures = "GoldPants",
-            //    DrawType = DrawType.Transparent,
-            //    WalkableType = WalkableType.Empty,
-            //    Sounds = solidSounds,
-            //    WalkSpeedWhenUsed = 1f
-            //});
+            
 
             m.SetBlockType(75, "WoodChestArmor", new BlockType()
             {
@@ -736,7 +702,7 @@ namespace ManicDigger.Mods
                 Durability = 166
             });
 
-            m.SetBlockType(79, "WoodBoots", new BlockType()
+            m.SetBlockType(71, "WoodBoots", new BlockType()
             {
                 AllTextures = "WoodBoots",
                 DrawType = DrawType.Transparent,
@@ -746,7 +712,7 @@ namespace ManicDigger.Mods
                 Durability = 66
             });
 
-            m.SetBlockType(80, "IronBoots", new BlockType()
+            m.SetBlockType(72, "IronBoots", new BlockType()
             {
                 AllTextures = "IronBoots",
                 DrawType = DrawType.Transparent,
@@ -756,7 +722,7 @@ namespace ManicDigger.Mods
                 Durability = 196
             });
 
-            m.SetBlockType(81, "SilverBoots", new BlockType()
+            m.SetBlockType(73, "SilverBoots", new BlockType()
             {
                 AllTextures = "SilverBoots",
                 DrawType = DrawType.Transparent,
@@ -766,7 +732,7 @@ namespace ManicDigger.Mods
                 Durability = 430
             });
 
-            m.SetBlockType(82, "GoldBoots", new BlockType()
+            m.SetBlockType(74, "GoldBoots", new BlockType()
             {
                 AllTextures = "GoldBoots",
                 DrawType = DrawType.Transparent,
@@ -1386,7 +1352,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                handimage = "Gird_Lava_Bucket.png",
+                handimage = "Lava_Bucket.png",
                 WalkSpeedWhenUsed = 1f
             });
             m.SetBlockType(176, "WBucket", new BlockType()
@@ -1395,7 +1361,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Solid,
                 WalkableType = WalkableType.Solid,
                 Sounds = solidSounds,
-                handimage = "Grid_Water_Bucket.png",
+                handimage = "Water_Bucket copie.png",
                 WalkSpeedWhenUsed = 1f,
                 IsBuildable=true
             });
@@ -1405,7 +1371,7 @@ namespace ManicDigger.Mods
                 DrawType = DrawType.Transparent,
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
-                handimage = "Grid_Empty_Bucket.png",
+                handimage = "Empty_Bucket copie.png",
                 WalkSpeedWhenUsed = 1f,
                 IsTool = true,
                 IsUsable = true
@@ -1508,11 +1474,14 @@ namespace ManicDigger.Mods
             m.AddToCreativeInventory("EmptyBucket");
             m.AddToCreativeInventory("LavaBucket");
             m.AddToCreativeInventory("WBucket");
+    
+        
             
             m.AddToStartInventory("Torch", 6);
             m.AddToStartInventory("Source", 6);
             m.AddToStartInventory("EmptyBucket", 6);
             m.AddToStartInventory("WBucket", 6);
+            m.AddToStartInventory("LavaBucket", 6);
             //m.AddToStartInventory("Crops1", 1);
             //m.AddToStartInventory("CraftingTable", 6);
             //m.AddToStartInventory("GoldCoin", 2);

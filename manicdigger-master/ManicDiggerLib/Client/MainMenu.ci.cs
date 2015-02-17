@@ -1238,7 +1238,7 @@ public class ScreenWriteWorldName : Screen
                 {
                     string test = list[i];
                     //test --> C:\\Users\\Francis\\Documents\\DefaultName1.mddbs
-                    test.Replace(path1 + "\\" + txtName.text, "");
+                    test.Replace(path1 + "\\" + txtName.text,"");
                     //test --> 1.mddbs
                     string s = "";
                     for (int i1 = 0; i1 < test.Length; i1++)
