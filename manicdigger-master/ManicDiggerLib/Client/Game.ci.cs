@@ -2206,7 +2206,19 @@
     {
         if (!AllowFreemove)
         {
-            PlayerStats.CurrentHealth -= damage;
+            //Added by <SwampGerman>
+            if (damage > PlayerStats.CurrentArmor)      
+            {
+                damage -= PlayerStats.CurrentArmor;
+                PlayerStats.CurrentArmor = 0;
+
+                PlayerStats.CurrentHealth -= damage;
+            }
+            else 
+            {
+                PlayerStats.CurrentArmor -= damage;
+            }
+            // </SwampGerman>
             if (PlayerStats.CurrentHealth <= 0)
             {
                 AudioPlay("death.wav");
@@ -8946,6 +8958,7 @@
             d_SunMoonRenderer.Draw(deltaTime);
 
             InterpolatePositions(deltaTime);
+            //TODOMATHEW
             DrawPlayers(deltaTime);
             DrawTestModel(deltaTime);
             terrainRenderer.DrawTerrain();
@@ -8959,6 +8972,14 @@
             DrawSprites();
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
+
+            if(d_Inventory.MainArmor != null)
+            {
+                //TODOMATHEW
+                
+            }
+
+
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
             {
                 Packet_Item item = d_Inventory.RightHand[ActiveMaterial];
@@ -9077,11 +9098,10 @@
                         }
                     }
 
-
                     GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
                     GLRotate(toolRotation, 0, 0, 90);
 
-                    if (mouseLeft)
+                    if (guistate == GuiState.Normal && mouseLeft)
                     {
                         if (up)
                             toolRotation += 4;
@@ -9125,7 +9145,15 @@
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        testmodel.Render(deltaTime);
+        byte[] Pixels;
+        Pixels = new byte[64*32*4];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D,0,OpenTK.Graphics.OpenGL.PixelFormat.Rgba,OpenTK.Graphics.OpenGL.PixelType.UnsignedByte,Pixels);
+        for (int i = 0; i < Pixels.Length; i++ )
+        {
+            Pixels[i] = 255;
+        }
+        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
+            testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;

@@ -27,6 +27,7 @@ namespace ManicDigger.Mods
             BLOCK_ICE = m.GetBlockId ("Water");
             BLOCK_GRASS = m.GetBlockId ("Grass");
             BLOCK_WATER = m.GetBlockId ("Water");
+            BLOCK_SOURCE = m.GetBlockId("Source");
             BLOCK_GRAVEL = m.GetBlockId ("Gravel");
             BLOCK_PUMPKIN = m.GetBlockId ("Hay");
             BLOCK_RED_ROSE = m.GetBlockId ("RedRoseDecorations");
@@ -180,9 +181,13 @@ namespace ManicDigger.Mods
                         }
                         else
                         {
-                            if (bY <= seaLevel)
+                            if (bY < seaLevel)
                             {
                                 curBlock = BLOCK_WATER;  // FF
+                            }
+                            else if (bY == seaLevel)
+                            {
+                                curBlock = BLOCK_SOURCE;
                             }
                             else
                             {
@@ -209,6 +214,7 @@ namespace ManicDigger.Mods
         int BLOCK_ICE; //todo
         int BLOCK_GRASS;
         int BLOCK_WATER;
+        int BLOCK_SOURCE;
         int BLOCK_GRAVEL;
         int BLOCK_PUMPKIN; //hay
         int BLOCK_RED_ROSE;

@@ -463,6 +463,7 @@ namespace ManicDigger
                     d_InventoryUtil.SetItemAtWearPlace(pos.WearPlace, pos.ActiveMaterial, d_Inventory.DragDropItem);
                     d_Inventory.DragDropItem = wear;
                 }
+                
                 SendInventory();
             }
             else if (pos.Type == Packet_InventoryPositionTypeEnum.Crafting)
