@@ -2199,8 +2199,8 @@
 
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
-            || IsWater(block)
-            || !IsSource(block);
+            || IsWater(block);
+          //  || !IsSource(block);
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2324,7 +2324,7 @@
         if (IsValidPos(posX, posY, posZ - 3))
         {
             int blockBelow = GetBlock(posX, posY, posZ - 3);
-            if ((blockBelow != 0) && (!IsWater(blockBelow) || !IsSource(blockBelow)))
+            if ((blockBelow != 0) && !IsWater(blockBelow))// || !IsSource(blockBelow)))
             {
                 float severity = 0;
                 if (fallspeed < 4) { return; }
@@ -4007,7 +4007,7 @@
     {
         if (GetPlayerEyesBlock() == -1) { return true; }
 
-        return IsWater(GetPlayerEyesBlock()) || IsSource(GetPlayerEyesBlock());
+        return IsWater(GetPlayerEyesBlock());// || IsSource(GetPlayerEyesBlock());
     }
 
     internal bool LavaSwimming()
