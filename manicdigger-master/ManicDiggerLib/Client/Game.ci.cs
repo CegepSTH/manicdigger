@@ -1664,7 +1664,10 @@
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1675,17 +1678,20 @@
         platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
-            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor)
+            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
-                float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
-                int posX = barDistanceToMargin + barOffset;
+                float progress = one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor;
+                int posX = barDistanceToMargin + barOffset + barOffset;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
-                Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                if (progress == 1)
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                else
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -2207,14 +2213,14 @@
         if (!AllowFreemove)
         {
             //Added by <SwampGerman>
-            if (damage > PlayerStats.CurrentArmor)      
+            if (damage > PlayerStats.CurrentArmor)
             {
                 damage -= PlayerStats.CurrentArmor;
                 PlayerStats.CurrentArmor = 0;
 
                 PlayerStats.CurrentHealth -= damage;
             }
-            else 
+            else
             {
                 PlayerStats.CurrentArmor -= damage;
             }
@@ -7861,7 +7867,7 @@
         float orientationY = 0;
         float orientationZ = -platform.MathCos(player.playerorientation.Y);
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
-        
+
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
         //TOREDO FRANK
         //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
@@ -8973,10 +8979,10 @@
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
 
-            if(d_Inventory.MainArmor != null)
+            if (d_Inventory.MainArmor != null)
             {
                 //TODOMATHEW
-                
+
             }
 
 
@@ -9146,14 +9152,14 @@
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
         byte[] Pixels;
-        Pixels = new byte[64*32*4];
-        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D,0,OpenTK.Graphics.OpenGL.PixelFormat.Rgba,OpenTK.Graphics.OpenGL.PixelType.UnsignedByte,Pixels);
-        for (int i = 0; i < Pixels.Length; i++ )
+        Pixels = new byte[64 * 32 * 4];
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
+        for (int i = 0; i < Pixels.Length; i++)
         {
             Pixels[i] = 255;
         }
         platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, Pixels);
-            testmodel.Render(deltaTime);
+        testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;
