@@ -660,7 +660,45 @@ namespace ManicDigger.Mods
                 Durability = 53
             });
 
-            
+            m.SetBlockType(71, "WoodBoots", new BlockType()
+            {
+                AllTextures = "WoodBoots",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f,
+                Durability = 66
+            });
+
+            m.SetBlockType(72, "IronBoots", new BlockType()
+            {
+                AllTextures = "IronBoots",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f,
+                Durability = 196
+            });
+
+            m.SetBlockType(73, "SilverBoots", new BlockType()
+            {
+                AllTextures = "SilverBoots",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f,
+                Durability = 430
+            });
+
+            m.SetBlockType(74, "GoldBoots", new BlockType()
+            {
+                AllTextures = "GoldBoots",
+                DrawType = DrawType.Transparent,
+                WalkableType = WalkableType.Empty,
+                Sounds = solidSounds,
+                WalkSpeedWhenUsed = 1f,
+                Durability = 92
+            });
 
             m.SetBlockType(75, "WoodChestArmor", new BlockType()
             {
@@ -701,49 +739,6 @@ namespace ManicDigger.Mods
                 WalkSpeedWhenUsed = 1f,
                 Durability = 166
             });
-
-            m.SetBlockType(71, "WoodBoots", new BlockType()
-            {
-                AllTextures = "WoodBoots",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f,
-                Durability = 66
-            });
-
-            m.SetBlockType(72, "IronBoots", new BlockType()
-            {
-                AllTextures = "IronBoots",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f,
-                Durability = 196
-            });
-
-            m.SetBlockType(73, "SilverBoots", new BlockType()
-            {
-                AllTextures = "SilverBoots",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f,
-                Durability = 430
-            });
-
-            m.SetBlockType(74, "GoldBoots", new BlockType()
-            {
-                AllTextures = "GoldBoots",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                WalkSpeedWhenUsed = 1f,
-                Durability = 92
-            });
-          
-         
-
 
             m.SetBlockType(100, "BrushedMetal", new BlockType()
                 {

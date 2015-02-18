@@ -597,8 +597,7 @@
             }
             if (item.Durability != game.blocktypes[item.BlockId].Durability &&
                 item.BlockId >= 155 && item.BlockId <= 174 ||
-                item.BlockId >= 63 &&  item.BlockId <= 70 ||
-                item.BlockId >= 74 && item.BlockId <= 82)
+                item.BlockId >= 63 &&  item.BlockId <= 78)
                 game.Draw2dTexture(game.WhiteTexture(),
                     screenposX + 5,
                     screenposY + CellDrawSize - 5,
