@@ -49,7 +49,6 @@ namespace ManicDigger.Mods
                     DrawType = DrawType.Empty,
                     WalkableType = WalkableType.Empty,
                     Sounds = noSound,
-                    IsTool = true
                 });
             m.SetBlockType(1, "Stone", new BlockType()
                 {
