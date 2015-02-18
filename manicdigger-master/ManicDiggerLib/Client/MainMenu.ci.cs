@@ -1241,9 +1241,8 @@ public class ScreenWriteWorldName : Screen
                     test.Replace(path1 + "\\" + txtName.text,"");
                     //test --> 1.mddbs
                     string s = "";
-                    for (int i1 = 0; i1 < test.Length; i1++)
+                    foreach (char c in test)
                     {
-                        char c = test[i1];
                         if (char.IsDigit(c))
                             s += c;
                     }
