@@ -5,7 +5,9 @@
     {
         pixelsCurrentLenght = 64 * 32 * 3;
         CREATIVE = true;
+        //FRANK - Const for rotation of the tools in the hand
         toolRotation = 125;
+        //FRANK - Tell if the tool should rotate up or down
         up = true;
         one = 1;
         performanceinfo = new DictionaryStringString();
@@ -15,7 +17,9 @@
         playerPositionSpawnX = 15 + one / 2;
         playerPositionSpawnY = 64;
         playerPositionSpawnZ = 15 + one / 2;
+        //CYSOTH - Initialize the tool in the hand
         playerTool = Packet_ToolsEnum.NOTOOL;
+        //CYSOTH - Initialize the type of the tool in the hand
         toolType = Packet_ToolTypeEnum.NOTYPE;
         player = new CharacterPhysicsState();
 
@@ -1275,8 +1279,8 @@
 
     internal void SendSetBlock(int x, int y, int z, int mode, int type, int materialslot)
     {
-        //DECIDE WHAT TO PICKUP
-        bool pickup = platform.PickUp(playerTool,toolType,GetBlock(x, y, z));
+        //CYSOTH - Check if the block destroyed can be pickup or not
+        bool pickup = platform.PickUp(playerTool, toolType, GetBlock(x, y, z));
         if (pickup)
         {
             Packet_ClientSetBlock p = new Packet_ClientSetBlock();
@@ -1639,14 +1643,15 @@
             int posY = platform.FloatToInt(Height() - barDistanceToMargin * Scale());
             Draw2dTexture(WhiteTexture(), posX, posY - barSizeY * Scale(), barSizeX * Scale(), barSizeY * Scale(), null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
             Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY * Scale()), barSizeX * Scale(), (progress) * barSizeY * Scale(), null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
-            //Added by Alexandre
+            //CYSOTH - Draw the health of the current player
             FontCi c = FontCi.Create("Arial", 8, 0);
             IntRef d = IntRef.Create(20);
+            //CYSOTH - If 100%, put x = 30
             if (progress == 1)
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 30, platform.GetCanvasHeight() - 40, d, false);
+            //CYSOTH - If less, put x = 34
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
-            //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
     }
@@ -1662,11 +1667,13 @@
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
-                //Added by Alexandre
+                //CYSOTH - Draw the oxygen of the current player
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
+                //CYSOTH - If 100%, put x = 90
                 if (progress == 1)
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                //CYSOTH - If less, put x = 94
                 else
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //
@@ -1674,7 +1681,8 @@
         }
     }
 
-    public void DrawArmorHealth()
+    //CYSOTH - Same principle than DrawPlayerOxygen() and DrawPlayerHealth()
+    public void DrawPlayerArmor()
     {
         if (PlayerStats != null)
         {
@@ -1685,14 +1693,15 @@
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
-                //Added by Alexandre
+                //CYSOTH - Draw the armor of the current player
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
+                //CYSOTH - If 100%, put x = 60
                 if (progress == 1)
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                //CYSOTH - If less, put x = 64
                 else
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
-                //
             }
         }
     }
@@ -1791,8 +1800,8 @@
         int blocktype = GetBlock(x, yz, z);
         float health = GetCurrentBlockHealth(x, yz, z);
         float pro = health / d_Data.Durability()[blocktype];
-        //  System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
+        //CYSOTH - Show the left health to the block
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
         if (!AllowFreemove)
             Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300 * pro, y, null, 0, Game.ColorFromArgb(255, 255, 0, 0), false);
@@ -2200,7 +2209,7 @@
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
             || IsWater(block);
-          //  || !IsSource(block);
+        //  || !IsSource(block);
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2695,6 +2704,10 @@
 
     internal int toolType;
 
+    //CYSOTH - Calculate the strong of the weapon attack depending on : 
+    //1.What tool you are using
+    //2.What type of the tool you are using
+    //3.What is the block you are hitting
     public float WeaponAttackStrength(int idBlock)
     {
         int strength = 0;
@@ -5422,6 +5435,7 @@
                     //    MyStream.ReadAllLines(d_GetFile.GetFile("lightlevels.csv")));
                     //d_CraftingRecipes.Load(MyStream.ReadAllLines(d_GetFile.GetFile("craftingrecipes.csv")));
 
+                    //JULIEN128 - Give time to the game for saving
                     platform.ThreadSleep(2000);
                     MapLoaded();
                 }
@@ -7068,7 +7082,7 @@
             {
                 drawblockinfo = !drawblockinfo;
             }
-            //Commented by Alexandre, set up in "internal void UpdateTitleFps(float dt)"
+            //CYSOTH - Commented, set up in "internal void UpdateTitleFps(float dt)"
             //int playerx = platform.FloatToInt(player.playerposition.X);
             //int playery = platform.FloatToInt(player.playerposition.Z);
             //if ((playerx >= 0 && playerx < MapSizeX)
@@ -7376,12 +7390,12 @@
             performanceinfo.Set("triangles", platform.StringFormat(language.Triangles(), platform.IntToString(terrainRenderer.TrianglesCount())));
             int playerx = platform.FloatToInt(player.playerposition.X);
             int playery = platform.FloatToInt(player.playerposition.Z);
-            //Deplaced by Alexandre
+            //CYSOTH - Moved here
             if ((playerx >= 0 && playerx < MapSizeX)
                 && (playery >= 0 && playery < MapSizeY))
             {
                 performanceinfo.Set("height", platform.StringFormat("height:{0}", platform.IntToString(d_Heightmap.GetBlock(playerx, playery))));
-                //Add by Alexandre
+                //CYSOTH - Show the position in X,Y,Z
                 performanceinfo.Set("Positions", platform.StringFormat3("X : {0}, Y : {1}, Z : {2}", platform.FloatToString(EyesPosX()), platform.FloatToString(EyesPosY()), platform.FloatToString(EyesPosZ())));
             }
             //
@@ -7428,10 +7442,10 @@
                             armor += d_Inventory.Helmet.Durability;
                         if (d_Inventory.MainArmor != null)
                             armor += d_Inventory.MainArmor.Durability;
-                        PlayerStats.SetCurrentArmor(armor);
+                        PlayerStats.CurrentArmor = armor;
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
-                        DrawArmorHealth();
+                        DrawPlayerArmor();
                     }
                     DrawEnemyHealthBlock();
                     for (int i = 0; i < screensMax; i++)
@@ -7712,7 +7726,7 @@
             {
                 UpdateWalkSound(dt);
             }
-            //Added by Alex
+            //CYSOTH - If Creative, don't give damage
             if (!AllowFreemove)
             {
                 UpdateBlockDamageToPlayer(dt);
@@ -8839,7 +8853,7 @@
 
             //ModifyPlayerSkin();
 
-            
+
 
 
             DrawPlayers(deltaTime);
@@ -8856,11 +8870,12 @@
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
 
-            
+
 
 
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
             {
+                //CYSOTH - Change the selected tool and tooltype
                 Packet_Item item = d_Inventory.RightHand[ActiveMaterial];
                 switch (item.GetBlockId())
                 {
@@ -9006,17 +9021,22 @@
         GotoDraw2d(deltaTime);
     }
 
-    internal void ModifyPlayerSkin()
+    /// <summary>
+    /// Modify the current player skin
+    /// For use in multiplayer, a different copy of the image should be used for each player
+    /// else the player will see everyone as the same of him.
+    /// </summary>
+    internal void ModifyPlayerSkin(string PLayerimage)
     {
-        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        platform.BindTexture2d(GetTexture(PLayerimage));
         byte[] PixelsCurrent;
         //Get default player skin in pixelscurrent array
         PixelsCurrent = new byte[64 * 32 * 3];
-        platform.GLtextimage(0,  PixelsCurrent);
+        platform.GLtextimage(0, PixelsCurrent);
 
 
         //defaultplayerskin
-        EquipArmor("noarmor.png",PixelsCurrent);
+        EquipArmor("noarmor.png", PixelsCurrent);
 
         //For each armor, get the skin and modify pixels
         if (d_Inventory.Helmet != null)
@@ -9032,7 +9052,7 @@
 
         }
 
-        if(d_Inventory.MainArmor != null)
+        if (d_Inventory.MainArmor != null)
         {
             if (d_Inventory.MainArmor.BlockId == 75)
                 EquipArmor("MainArmorWood.png", PixelsCurrent);
@@ -9076,21 +9096,22 @@
 
     }
 
+//Equip a armor to the player skin, change the pixels at runtime
     internal int pixelsCurrentLenght;
     internal void EquipArmor(string image, byte[] PixelsCurrent)
     {
         platform.BindTexture2d(GetTexture(image));
         byte[] PixelsArmor;
         PixelsArmor = new byte[64 * 32 * 3];
-        platform.GLtextimage(0,  PixelsArmor);
+        platform.GLtextimage(0, PixelsArmor);
 
-        for (int i = 0; i < pixelsCurrentLenght; i+=3)
+        for (int i = 0; i < pixelsCurrentLenght; i += 3)
         {
-            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i+2] == 110) || (PixelsArmor[i+2] == 109)))))
+            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i + 2] == 110) || (PixelsArmor[i + 2] == 109)))))
             {
                 PixelsCurrent[i] = PixelsArmor[i];
-                PixelsCurrent[i+1] = PixelsArmor[i+1];
-                PixelsCurrent[i+2] = PixelsArmor[i+2];
+                PixelsCurrent[i + 1] = PixelsArmor[i + 1];
+                PixelsCurrent[i + 2] = PixelsArmor[i + 2];
             }
         }
 
@@ -9114,9 +9135,9 @@
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        ModifyPlayerSkin();
-        
-            testmodel.Render(deltaTime);
+        ModifyPlayerSkin("mineplayer.png");
+
+        testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;
