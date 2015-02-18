@@ -3,7 +3,6 @@
     internal bool IsRunning;
     public Game()
     {
-        pixelsCurrentLength = 64 * 32 * 3;
         CREATIVE = true;
         toolRotation = 125;
         up = true;
@@ -1377,7 +1376,7 @@
     public void ChangeGameMode(bool creative)
     {
         CREATIVE = creative;
-        //System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
+        //  System.Console.WriteLine(this.GetType().ToString(), MethodBase.GetCurrentMethod(), MethodBase.GetCurrentMethod().GetParameters());
 
         AllowFreemove = creative;
 
@@ -1646,7 +1645,7 @@
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 30, platform.GetCanvasHeight() - 40, d, false);
             else
                 Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 34, platform.GetCanvasHeight() - 40, d, false);
-            
+            //
         }
         //if (test) { d_The3d.Draw2dTexture(d_The3d.WhiteTexture(), 50, 50, 200, 200, null, Color.Red); }
     }
@@ -1669,13 +1668,14 @@
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
                 else
                     Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
-                
+                //
             }
         }
     }
 
     public void DrawPlayerArmor()
     {
+        platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
             if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
@@ -1791,7 +1791,7 @@
         int blocktype = GetBlock(x, yz, z);
         float health = GetCurrentBlockHealth(x, yz, z);
         float pro = health / d_Data.Durability()[blocktype];
-        //System.Console.WriteLine(pro);
+        //  System.Console.WriteLine(pro);
         int y = useInfo ? 55 : 35;
         Draw2dTexture(WhiteTexture(), xcenter(300), 40, 300, y, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
         if (!AllowFreemove)
@@ -2902,153 +2902,152 @@
 
     public bool PickUp(int idBlock)
     {
-        bool strength = true;
-        //TODOTODO
-        //switch (playerTool)
-        //{
-        //    case Packet_ToolsEnum.SHOVEL:
-        //        //STONE, COBBLESTONE, COALORE
-        //        if (idBlock == 1 || idBlock == 4 || idBlock == 16
-        //            //BRICK, MOSSYCOBBLE, FOURNAISE
-        //                    || idBlock == 45 || idBlock == 48 || idBlock == 61
-        //            //BURNINGFOURNAISE, MINECART, DIRTBRICK
-        //                    || idBlock == 62 || idBlock == 113 || idBlock == 140
-        //            //SANDBRICK, ASPHALT, OBSIDIAN
-        //                    || idBlock == 142 || idBlock == 147 || idBlock == 49
-        //            //IRONORE, GOLDORE, SILVERORE
-        //                    || idBlock == 15 || idBlock == 14 || idBlock == 133
-        //            //IRONBLOCK, GOLDBLOCK, GOLDBAR
-        //                    || idBlock == 41 || idBlock == 42 || idBlock == 132
-        //            //BRUSHEDMETAL
-        //                    || idBlock == 100)
-        //            strength = false;
-        //        else
-        //            strength = true;
-        //        break;
-        //    case Packet_ToolsEnum.PICKAXE:
-        //        switch (toolType)
-        //        {
-        //            case Packet_ToolTypeEnum.WOOD:
-        //                //STONE, COBBLESTONE, COALORE
-        //                if (idBlock == 1 || idBlock == 4 || idBlock == 16
-        //                    //BRICK, MOSSYCOBBLESTONE, FOURNAISE
-        //                    || idBlock == 45 || idBlock == 48 || idBlock == 61
-        //                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
-        //                    || idBlock == 62 || idBlock == 113 || idBlock == 140
-        //                    //SANDBRICK, ASPHALT
-        //                    || idBlock == 142 || idBlock == 147)
-        //                    strength = true;
-        //                else if (idBlock == 49 || idBlock == 15 || idBlock == 14
-        //                    //SILVERORE, IRONBLOCK, GOLDBLOCK
-        //                    || idBlock == 133 || idBlock == 41 || idBlock == 42
-        //                    //GOLDBAR, BRUSHEDMETAL
-        //                    || idBlock == 132 || idBlock == 100)
-        //                    strength = false;
-        //                else
-        //                    strength = true;
-        //                break;
-        //            case Packet_ToolTypeEnum.STONE:
-        //                //STONE, COBBLESTONE, GOLDORE, COALORE
-        //                if (idBlock == 1 || idBlock == 4 || idBlock == 15 || idBlock == 16
-        //                    //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
-        //                    || idBlock == 42 || idBlock == 45 || idBlock == 48
-        //                    //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
-        //                    || idBlock == 61 || idBlock == 62 || idBlock == 100
-        //                    //MINECART, GOLDBAR, DIRTBRICK
-        //                    || idBlock == 113 || idBlock == 132 || idBlock == 140
-        //                    //SANDBRICK, ASPHALT
-        //                    || idBlock == 142 || idBlock == 147)
-        //                    strength = true;
-        //                //OBSIDIAN, GOLDORE, SILVERORE, GOLDBLOCK
-        //                else if (idBlock == 49 | idBlock == 14 || idBlock == 133 || idBlock == 42)
-        //                    strength = false;
-        //                else
-        //                    strength = true;
-        //                break;
-        //            case Packet_ToolTypeEnum.IRON:
-        //                //STONE, COBBLESTONE, GOLDORE
-        //                if (idBlock == 1 || idBlock == 4 || idBlock == 14
-        //                    //IRONORE, COALORE, GOLDBLOCK
-        //                    || idBlock == 15 || idBlock == 16 || idBlock == 41
-        //                    //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
-        //                    || idBlock == 42 || idBlock == 45 || idBlock == 48
-        //                    //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
-        //                    || idBlock == 61 || idBlock == 62 || idBlock == 100
-        //                    //MINECART, GOLDBAR, SILVERORE
-        //                    || idBlock == 113 || idBlock == 132 || idBlock == 133
-        //                    //DIRTBRICK, SANDBRICK, ASPHALT
-        //                    || idBlock == 140 || idBlock == 142 || idBlock == 147)
-        //                    strength = true;
-        //                //OBSIDIAN
-        //                else if (idBlock == 49)
-        //                    strength = false;
-        //                else
-        //                    strength = true;
-        //                break;
-        //            case Packet_ToolTypeEnum.SILVER:
-        //                strength = true;
-        //                break;
-        //            case Packet_ToolTypeEnum.GOLD:
-        //                //STONE, COBBLESTONE, COALORE, BRICK
-        //                if (idBlock == 1 || idBlock == 4 || idBlock == 16 || idBlock == 45
-        //                    //MOSSYCOBBLE, FOURNAISE, BURNINGFOURNAISE
-        //                    || idBlock == 48 || idBlock == 61 || idBlock == 62
-        //                    //BRUSHEDMETAL, MINECART, DIRTBRICK
-        //                    || idBlock == 100 || idBlock == 113 || idBlock == 140
-        //                    //SANDBRICK, ASPHALT
-        //                    || idBlock == 142 || idBlock == 147)
-        //                    strength = true;
-        //                //OBSIDIAN, IRONORE, GOLDORE
-        //                else if (idBlock == 49 || idBlock == 15 || idBlock == 14
-        //                    //SILVERORE, IRONBLOCK, GOLDBLOCK, GOLDBAR
-        //                || idBlock == 133 || idBlock == 41 || idBlock == 42 || idBlock == 132)
-        //                    strength = false;
-        //                else
-        //                    strength = true;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //        break;
-        //    case Packet_ToolsEnum.AXE:
-        //        //STONE, COBBLESTONE, COALORE
-        //        if (idBlock == 1 || idBlock == 4 || idBlock == 16
-        //            //BRICK, MOSSYCOBBLE, FOURNAISE
-        //                    || idBlock == 45 || idBlock == 48 || idBlock == 61
-        //            //BURNINGFOURNAISE, MINECART, DIRTBRICK
-        //                    || idBlock == 62 || idBlock == 113 || idBlock == 140
-        //            //SANDBRICK, ASPHALT, OBSIDIAN
-        //                    || idBlock == 142 || idBlock == 147 || idBlock == 49
-        //            //IRONORE, GOLDORE, SILVERORE
-        //                    || idBlock == 15 || idBlock == 14 || idBlock == 133
-        //            //IRONBLOCK, GOLDBLOCK, GOLDBAR
-        //                    || idBlock == 41 || idBlock == 42 || idBlock == 132
-        //            //BRUSHEDMETAL
-        //                    || idBlock == 100)
-        //            strength = false;
-        //        else
-        //            strength = true;
-        //        break;
-        //    default:
-        //        //STONE, COBBLESTONE, COALORE
-        //        if (idBlock == 1 || idBlock == 4 || idBlock == 16
-        //            //BRICK, MOSSYCOBBLE, FOURNAISE
-        //                    || idBlock == 45 || idBlock == 48 || idBlock == 61
-        //            //BURNINGFOURNAISE, MINECART, DIRTBRICK
-        //                    || idBlock == 62 || idBlock == 113 || idBlock == 140
-        //            //SANDBRICK, ASPHALT, OBSIDIAN
-        //                    || idBlock == 142 || idBlock == 147 || idBlock == 49
-        //            //IRONORE, GOLDORE, SILVERORE
-        //                    || idBlock == 15 || idBlock == 14 || idBlock == 133
-        //            //IRONBLOCK, GOLDBLOCK, GOLDBAR
-        //                    || idBlock == 41 || idBlock == 42 || idBlock == 132
-        //            //BRUSHEDMETAL
-        //                    || idBlock == 100)
-        //            strength = false;
-        //        else
-        //            strength = true;
-        //        break;
-        //}
+        bool strength = false;
+        switch (playerTool)
+        {
+            case Packet_ToolsEnum.SHOVEL:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+            case Packet_ToolsEnum.PICKAXE:
+                switch (toolType)
+                {
+                    case Packet_ToolTypeEnum.WOOD:
+                        //STONE, COBBLESTONE, COALORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                            //BRICK, MOSSYCOBBLESTONE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                            //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        else if (idBlock == 49 || idBlock == 15 || idBlock == 14
+                            //SILVERORE, IRONBLOCK, GOLDBLOCK
+                            || idBlock == 133 || idBlock == 41 || idBlock == 42
+                            //GOLDBAR, BRUSHEDMETAL
+                            || idBlock == 132 || idBlock == 100)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.STONE:
+                        //STONE, COBBLESTONE, GOLDORE, COALORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 15 || idBlock == 16
+                            //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
+                            || idBlock == 42 || idBlock == 45 || idBlock == 48
+                            //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
+                            || idBlock == 61 || idBlock == 62 || idBlock == 100
+                            //MINECART, GOLDBAR, DIRTBRICK
+                            || idBlock == 113 || idBlock == 132 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN, GOLDORE, SILVERORE, GOLDBLOCK
+                        else if (idBlock == 49 | idBlock == 14 || idBlock == 133 || idBlock == 42)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.IRON:
+                        //STONE, COBBLESTONE, GOLDORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14
+                            //IRONORE, COALORE, GOLDBLOCK
+                            || idBlock == 15 || idBlock == 16 || idBlock == 41
+                            //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
+                            || idBlock == 42 || idBlock == 45 || idBlock == 48
+                            //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
+                            || idBlock == 61 || idBlock == 62 || idBlock == 100
+                            //MINECART, GOLDBAR, SILVERORE
+                            || idBlock == 113 || idBlock == 132 || idBlock == 133
+                            //DIRTBRICK, SANDBRICK, ASPHALT
+                            || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN
+                        else if (idBlock == 49)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.SILVER:
+                        strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.GOLD:
+                        //STONE, COBBLESTONE, COALORE, BRICK
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 16 || idBlock == 45
+                            //MOSSYCOBBLE, FOURNAISE, BURNINGFOURNAISE
+                            || idBlock == 48 || idBlock == 61 || idBlock == 62
+                            //BRUSHEDMETAL, MINECART, DIRTBRICK
+                            || idBlock == 100 || idBlock == 113 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN, IRONORE, GOLDORE
+                        else if (idBlock == 49 || idBlock == 15 || idBlock == 14
+                            //SILVERORE, IRONBLOCK, GOLDBLOCK, GOLDBAR
+                        || idBlock == 133 || idBlock == 41 || idBlock == 42 || idBlock == 132)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case Packet_ToolsEnum.AXE:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+            default:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+        }
         return strength;
     }
 
@@ -5577,7 +5576,7 @@
                     //    MyStream.ReadAllLines(d_GetFile.GetFile("lightlevels.csv")));
                     //d_CraftingRecipes.Load(MyStream.ReadAllLines(d_GetFile.GetFile("craftingrecipes.csv")));
 
-                    platform.ThreadSleep(2000);
+                    System.Threading.Thread.Sleep(2000);
                     MapLoaded();
                 }
                 break;
@@ -5619,10 +5618,10 @@
                                 for (int z = startz; z <= endz; z++)
                                 {
                                     // if creative mode is off and player run out of blocks
-                                    //if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 177))
-                                    //{
-                                    //    return;
-                                    //}
+                                    if (blockCount == 0 || (packet.FillArea.BlockType >= 154 && packet.FillArea.BlockType <= 177))
+                                    {
+                                        return;
+                                    }
                                     //try
                                     {
                                         SetTileAndUpdate(x, y, z, packet.FillArea.BlockType);
@@ -8570,7 +8569,7 @@
                             {
                                 blockHealth.Set(posx, posy, posz, GetCurrentBlockHealth(posx, posy, posz));
                             }
-                            //blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx, posy, posz)));
+                            blockHealth.Set(posx, posy, posz, blockHealth.Get(posx, posy, posz) - WeaponAttackStrength(GetBlock(posx, posy, posz)));
                             float health = GetCurrentBlockHealth(posx, posy, posz);
                             if (health <= 0)
                             {
@@ -8578,11 +8577,11 @@
                                 {
                                     blockHealth.Remove(posx, posy, posz);
                                 }
-                                //currentAttackedBlock = null;
-                                //OnPick(platform.FloatToInt(newtileX), platform.FloatToInt(newtileZ), platform.FloatToInt(newtileY),
-                                //   platform.FloatToInt(tile.Current()[0]), platform.FloatToInt(tile.Current()[2]), platform.FloatToInt(tile.Current()[1]),
-                                //   tile.collisionPos,
-                                //   right);
+                                currentAttackedBlock = null;
+                                OnPick(platform.FloatToInt(newtileX), platform.FloatToInt(newtileZ), platform.FloatToInt(newtileY),
+                                   platform.FloatToInt(tile.Current()[0]), platform.FloatToInt(tile.Current()[2]), platform.FloatToInt(tile.Current()[1]),
+                                   tile.collisionPos,
+                                   right);
                             }
                             PickingEnd(left, right, middle, ispistol);
                             return;
@@ -8993,6 +8992,10 @@
             InterpolatePositions(deltaTime);
 
             //ModifyPlayerSkin();
+
+            
+
+
             DrawPlayers(deltaTime);
             DrawTestModel(deltaTime);
             terrainRenderer.DrawTerrain();
@@ -9006,6 +9009,9 @@
             DrawSprites();
             UpdateBullets(deltaTime);
             DrawMinecarts(deltaTime);
+
+            
+
 
             if ((!ENABLE_TPP_VIEW) && ENABLE_DRAW2D)
             {
@@ -9160,7 +9166,7 @@
         byte[] PixelsCurrent;
         //Get default player skin in pixelscurrent array
         PixelsCurrent = new byte[64 * 32 * 3];
-        platform.GLtextimage(0, PixelsCurrent);
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
 
 
         //defaultplayerskin
@@ -9219,26 +9225,25 @@
 
 
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        platform.Gltextsubimage(0, 0, 0, 64, 32, PixelsCurrent);
+        platform.Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, 0, 0, 64, 32, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsCurrent);
 
 
     }
-
-    internal int pixelsCurrentLength;
+    //SUCE MA QUEUE
     internal void EquipArmor(string image, byte[] PixelsCurrent)
     {
         platform.BindTexture2d(GetTexture(image));
         byte[] PixelsArmor;
         PixelsArmor = new byte[64 * 32 * 3];
-        platform.GLtextimage(0, PixelsArmor);
+        platform.GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, PixelsArmor);
 
-        for (int i = 0; i < pixelsCurrentLength; i += 3)
+        for (int i = 0; i < PixelsCurrent.Length; i+=3)
         {
-            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i + 2] == 110) || (PixelsArmor[i + 2] == 109)))))
+            if ((!((PixelsArmor[i] == 255) || (PixelsArmor[i] == 254)) || (PixelsArmor[i + 1] != 0) || (!((PixelsArmor[i+2] == 110) || (PixelsArmor[i+2] == 109)))))
             {
                 PixelsCurrent[i] = PixelsArmor[i];
-                PixelsCurrent[i + 1] = PixelsArmor[i + 1];
-                PixelsCurrent[i + 2] = PixelsArmor[i + 2];
+                PixelsCurrent[i+1] = PixelsArmor[i+1];
+                PixelsCurrent[i+2] = PixelsArmor[i+2];
             }
         }
 
@@ -9264,7 +9269,7 @@
         platform.BindTexture2d(GetTexture("mineplayer.png"));
         ModifyPlayerSkin();
         
-            //testmodel.Render(deltaTime);
+            testmodel.Render(deltaTime);
         GLPopMatrix();
     }
     AnimatedModelRenderer testmodel;

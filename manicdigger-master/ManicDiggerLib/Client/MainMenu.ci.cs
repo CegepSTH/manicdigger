@@ -1247,16 +1247,6 @@ public class ScreenWriteWorldName : Screen
                         if (char.IsDigit(c))
                             s += c;
                     }
-
-                    if (s != "")
-                    {
-                        int number;
-                        number = int.Parse(s);
-                        if (lastnumber < number)
-                        {
-                            lastnumber = number;
-                        }
-                    }
                 }
             }
 
