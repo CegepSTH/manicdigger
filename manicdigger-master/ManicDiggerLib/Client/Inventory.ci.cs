@@ -53,6 +53,7 @@ public class InventoryUtilClient
         return itemsAtArea;
     }
 
+    
     internal PointRef[] ItemsAtCraftArea(int pX, int pY, int sizeX, int sizeY, IntRef retCount)
     {
         PointRef[] itemsAtArea = new PointRef[256];

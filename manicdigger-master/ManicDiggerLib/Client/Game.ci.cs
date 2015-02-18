@@ -9156,9 +9156,14 @@
         GotoDraw2d(deltaTime);
     }
 
-    internal void ModifyPlayerSkin()
+    /// <summary>
+    /// Modify the current player skin
+    /// For use in multiplayer, a different copy of the image should be used for each player
+    /// else the player will see everyone as the same of him.
+    /// </summary>
+    internal void ModifyPlayerSkin(string PLayerimage)
     {
-        platform.BindTexture2d(GetTexture("mineplayer.png"));
+        platform.BindTexture2d(GetTexture(PLayerimage));
         byte[] PixelsCurrent;
         //Get default player skin in pixelscurrent array
         PixelsCurrent = new byte[64 * 32 * 3];
@@ -9226,6 +9231,7 @@
 
     }
 
+    //Equip a armor to the player skin, change the pixels at runtime
     internal void EquipArmor(string image, byte[] PixelsCurrent)
     {
         platform.BindTexture2d(GetTexture(image));
@@ -9263,7 +9269,7 @@
         GLPushMatrix();
         GLTranslate(MapSizeX / 2, blockheight(MapSizeX / 2, MapSizeY / 2 - 2, 128), MapSizeY / 2 - 2);
         platform.BindTexture2d(GetTexture("mineplayer.png"));
-        ModifyPlayerSkin();
+        ModifyPlayerSkin("mineplayer.png");
         
             testmodel.Render(deltaTime);
         GLPopMatrix();
