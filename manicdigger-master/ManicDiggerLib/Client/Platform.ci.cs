@@ -1,5 +1,6 @@
 ﻿public abstract class GamePlatform
 {
+    public abstract void ThreadSleep(int time);
     public abstract void UpdateServerConfig(bool isCreative);
     public abstract bool ValidateFile(string fileName, string extension);
     public abstract int FloatToInt(float value);

@@ -1,6 +1,5 @@
 ﻿public class MainMenu
 {
-
     public MainMenu()
     {
         one = 1;
@@ -1232,6 +1231,7 @@ public class ScreenWriteWorldName : Screen
             string path1 = menu.p.PathSavegames();
             string[] list = menu.p.DirectoryGetFiles(path1, IntRef.Create(100));
 
+            //TODOFRANCK -> list.length et replace
             for (int i = 0; i < list.Length; i++)
             {
                 if (list[i].Replace(path1 + "\\", "").StartsWith(txtName.text))
@@ -1252,6 +1252,7 @@ public class ScreenWriteWorldName : Screen
 
             lastnumber++;
 
+            //TODOFRANCK -> ManicDiggerLib
             ManicDiggerLib.Client.Data.GameName = menu.p.StringFormat2("{0}{1}", txtName.text, menu.p.IntToString(lastnumber));
 
             menu.StartSelectGamemode();
@@ -1335,17 +1336,20 @@ public class ScreenGameMode : Screen
             return;
         }
 
+        //TODOFRANCK -> ManicDiggerLib
         string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", ManicDiggerLib.Client.Data.GameName, ".",
             menu.p.SinglePlayerServerAvailable() ? "mddbs" : "mdss");
 
         if (w == btnCreative)
         {
             menu.ConnectToSingleplayer(result);
+            //TODOFRANCK -> ManicDiggerLib
             ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(true);
         }
         else if (w == btnSurvival)
         {
             menu.ConnectToSingleplayer(result);
+            //TODOFRANCK -> ManicDiggerLib
             ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(false);
         }
     }
@@ -1651,6 +1655,7 @@ public class ScreenGame : Screen
     public ScreenGame()
     {
         game = new Game();
+        //TODOFRANCK -> ManicDiggerLib
         ManicDiggerLib.Client.Data.gameRef = game;
     }
     Game game;
