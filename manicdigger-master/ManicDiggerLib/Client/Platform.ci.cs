@@ -5,8 +5,6 @@
     public abstract bool StartsWith(string value, string value2);
     public abstract IntRef IntTryParse(string value);
     public abstract int GetStringTableLength(string[] value);
-    public abstract void SetCreativeInit(bool value);
-    public abstract bool GetCreativeInit();
     public abstract void SetGameName(string s);
     public abstract string GetGameName();
     public abstract bool PickUp(int playerTool, int toolType, int idBlock);

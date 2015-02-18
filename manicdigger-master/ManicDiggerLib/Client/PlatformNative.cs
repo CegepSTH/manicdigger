@@ -25,10 +25,6 @@ using System.Xml;
 public class GamePlatformNative : GamePlatform
 {
     private string _gamename;
-    private bool _creativeInit;
-
-    public override void SetCreativeInit(bool value) { _creativeInit = value; }
-    public override bool GetCreativeInit() { return _creativeInit; }
 
     public override bool StartsWith(string value, string value2) { return value.StartsWith(value2); }
 
