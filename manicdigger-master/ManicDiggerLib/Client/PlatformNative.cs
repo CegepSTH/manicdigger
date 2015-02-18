@@ -24,6 +24,11 @@ using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
+    public override void ThreadSleep(int time)
+    {
+        Thread.Sleep(time);
+    }
+
     /// <summary>
     /// Methode qui ajoute un cours spécifique au document xml entré en paramètre
     /// </summary>

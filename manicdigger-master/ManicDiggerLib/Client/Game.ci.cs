@@ -1675,7 +1675,6 @@
 
     public void DrawArmorHealth()
     {
-        platform.ConsoleWriteLine(PlayerStats.CurrentArmor + "    " + PlayerStats.MaxArmor);
         if (PlayerStats != null)
         {
             if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
@@ -5573,7 +5572,7 @@
                     //    MyStream.ReadAllLines(d_GetFile.GetFile("lightlevels.csv")));
                     //d_CraftingRecipes.Load(MyStream.ReadAllLines(d_GetFile.GetFile("craftingrecipes.csv")));
 
-                    System.Threading.Thread.Sleep(2000);
+                    platform.ThreadSleep(2000);
                     MapLoaded();
                 }
                 break;
