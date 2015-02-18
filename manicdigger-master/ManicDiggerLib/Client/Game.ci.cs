@@ -2264,6 +2264,7 @@
                 p1.Health = new Packet_ClientHealth();
                 p1.Health.CurrentHealth = PlayerStats.CurrentHealth;
                 p1.Armor = new Packet_ClientArmor();
+
                 p1.Armor.CurrentArmor = PlayerStats.CurrentArmor; 
             }
             SendPacketClient(p1);
@@ -7582,6 +7583,9 @@
                             armor += d_Inventory.Helmet.Durability;
                         if (d_Inventory.MainArmor != null)
                             armor += d_Inventory.MainArmor.Durability;
+
+
+
                         PlayerStats.SetCurrentArmor(armor);
                         DrawPlayerHealth();
                         DrawPlayerOxygen();

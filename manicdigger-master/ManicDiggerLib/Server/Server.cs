@@ -2479,27 +2479,56 @@ namespace ManicDiggerServer
                     break;
                 case Packet_ClientIdEnum.Health:
                     {
+                       //<SwampGerman>
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
-                        //if (stats.CurrentArmor != packet.Armor.CurrentArmor)
-                        //{
-
-                        //    //Alexis
-                        //    //To test
-                        //    Inventory[c.playername].Inventory.Boots.Durability--;
-                        //    Inventory[c.playername].Inventory.Helmet.Durability--;
-                        //    Inventory[c.playername].Inventory.Gauntlet.Durability--;
-                        //    Inventory[c.playername].Inventory.MainArmor.Durability--;
-                        //}
-
-                        stats.CurrentHealth = packet.Health.CurrentHealth;
-
-                        if (stats.CurrentHealth < 1)
+                          if (stats.CurrentArmor != packet.Armor.CurrentArmor)
                         {
-                            //death - reset health. More stuff done in Death packet handling
-                            stats.CurrentHealth = stats.MaxHealth;
+                            try
+                            {
+                                Item item = Inventory[c.playername].Inventory.Helmet;
+                                if (item != null)
+                                {
+                                    item.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor);
+
+                                    stats.CurrentArmor = packet.Armor.CurrentArmor;
+                                    stats.CurrentHealth = packet.Health.CurrentHealth;
+
+                                        if (stats.CurrentHealth < 1)
+                                    {
+                                        //death - reset health. More stuff done in Death packet handling
+                                        stats.CurrentHealth = stats.MaxHealth;
+                                    }
+                                    clients[clientid].IsPlayerStatsDirty = true;
+                                    Console.WriteLine(item.Durability.ToString());
+                                    if (item.Durability == 0)
+                                    {
+                                        if (item.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.Helmet = new Item();
+                                        }
+                                        else
+                                        {
+                                            item.BlockCount--;
+                                            item.Durability = BlockTypes[item.BlockId].Durability;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+                            //Alexis
+                            //To test
+                            //Inventory[c.playername].Inventory.Boots.Durability--;
+                            //Inventory[c.playername].Inventory.Helmet.Durability--;
+                            //Inventory[c.playername].Inventory.Gauntlet.Durability--;
+                            //Inventory[c.playername].Inventory.MainArmor.Durability--;
+
+                          
                         }
-                        clients[clientid].IsPlayerStatsDirty = true;
+
                     }
                     break;
                 case Packet_ClientIdEnum.Death:
