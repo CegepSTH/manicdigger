@@ -24,6 +24,7 @@ using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
+    //CYSOTH - Check if the block destroyed can be pickup or not
     public override bool PickUp(int playerTool,int toolType, int idBlock)
     {
         bool strength = false;
