@@ -24,6 +24,38 @@ using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
+    private string _gamename;
+    private bool _creativeInit;
+
+    public override void SetCreativeInit(bool value) { _creativeInit = value; }
+    public override bool GetCreativeInit() { return _creativeInit; }
+
+    public override bool StartsWith(string value, string value2) { return value.StartsWith(value2); }
+
+    public override int GetStringTableLength(string[] value) { return value.GetLength(0); }
+
+    public override IntRef IntTryParse(string value)
+    {
+        try
+        {
+            return IntRef.Create(int.Parse(value));
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public override void SetGameName(string s)
+    {
+        _gamename = s;
+    }
+
+    public override string GetGameName()
+    {
+        return _gamename;
+    }
+
     public override bool PickUp(int playerTool,int toolType, int idBlock)
     {
         bool strength = false;
@@ -260,6 +292,10 @@ public class GamePlatformNative : GamePlatform
         string[] ret = value.Split(new char[] { separator[0] });
         returnLength.value = ret.Length;
         return ret;
+    }
+    public override string[] StringSplit2(string value, string separator)
+    {
+        return value.Split(new string[] { separator }, StringSplitOptions.None);
     }
 
     public override bool StringEmpty(string data)

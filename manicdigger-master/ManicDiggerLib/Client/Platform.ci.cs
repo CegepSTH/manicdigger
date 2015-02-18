@@ -1,5 +1,14 @@
 ﻿public abstract class GamePlatform
 {
+
+
+    public abstract bool StartsWith(string value, string value2);
+    public abstract IntRef IntTryParse(string value);
+    public abstract int GetStringTableLength(string[] value);
+    public abstract void SetCreativeInit(bool value);
+    public abstract bool GetCreativeInit();
+    public abstract void SetGameName(string s);
+    public abstract string GetGameName();
     public abstract bool PickUp(int playerTool, int toolType, int idBlock);
     public abstract void GLtextimage(int lvl, byte[] pixels);
     public abstract void Gltextsubimage(int level, int xoffset, int yoffset, int width, int height, byte[] pixels);
@@ -8,6 +17,7 @@
     public abstract bool ValidateFile(string fileName, string extension);
     public abstract int FloatToInt(float value);
     public abstract string[] StringSplit(string value, string separator, IntRef returnLength);
+    public abstract string[] StringSplit2(string value, string separator);
     public abstract int IntParse(string value);
     public abstract float FloatParse(string value);
     public abstract float MathSqrt(float value);
