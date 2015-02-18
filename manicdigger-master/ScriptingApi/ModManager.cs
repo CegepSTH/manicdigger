@@ -46,6 +46,7 @@ namespace ManicDigger
         void RegisterOnBlockDelete(ModDelegates.BlockDelete f);
         void RegisterOnBlockUse(ModDelegates.BlockUse f);
         void RegisterOnBlockUseWithTool(ModDelegates.BlockUseWithTool f);
+        void RegisterOnBlockBuildOnSource(ModDelegates.BlockBuildOnSource f);
         int GetMapSizeX();
         int GetMapSizeY();
         int GetMapSizeZ();
@@ -605,6 +606,7 @@ namespace ManicDigger
     public class ModDelegates
     {
         public delegate void BlockBuild(int player, int x, int y, int z);
+        public delegate void BlockBuildOnSource(int player, int x, int y, int z);
         public delegate void BlockDelete(int player, int x, int y, int z, int oldblock);
         public delegate void BlockUse(int player, int x, int y, int z);
         public delegate void BlockUseWithTool(int player, int x, int y, int z, int tool);

@@ -69,6 +69,12 @@ namespace ManicDigger
             server.modEventHandlers.onbuild.Add(f);
         }
 
+
+        public void RegisterOnBlockBuildOnSource(ModDelegates.BlockBuildOnSource f)
+        {
+            server.modEventHandlers.onbuildonsource.Add(f);
+        }
+
         public void RegisterOnBlockDelete(ModDelegates.BlockDelete f)
         {
             server.modEventHandlers.ondelete.Add(f);
@@ -959,5 +965,7 @@ namespace ManicDigger
         {
             server.SendServerRedirect(player, ip, port);
         }
+
+
     }
 }

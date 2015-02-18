@@ -3352,6 +3352,30 @@ namespace ManicDiggerServer
         {
             Vector3 v = new Vector3(cmd.X, cmd.Y, cmd.Z);
             Inventory inventory = GetPlayerInventory(clients[player_id].playername).Inventory;
+            
+            //int test = d_Map.GetBlock(cmd.X, cmd.Y, cmd.Z -1);
+            //if (test == 178)
+            //{
+            //    return false;
+            //}
+            if (cmd.Mode == Packet_BlockSetModeEnum.BuildOnSource)
+            {
+                int test = 0;  // JRC
+                for (int i = 0; i < modEventHandlers.onuse.Count; i++)
+                {
+                    try
+                    {
+                        modEventHandlers.onbuildonsource[i](player_id, cmd.X, cmd.Y, cmd.Z);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Mod exception: OnUse");
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(ex.StackTrace);
+                    }
+                }
+            }
+
             if (cmd.Mode == Packet_BlockSetModeEnum.Use)
             {
                 for (int i = 0; i < modEventHandlers.onuse.Count; i++)
@@ -3413,7 +3437,7 @@ namespace ManicDiggerServer
                     case ItemClass.Block:
                         if (item.BlockId >= 154 && item.BlockId <= 177) 
                         {
-                            return false;
+                            return false; //JRC
                         }
                         item.BlockCount--;
                         if (item.BlockCount == 0)
@@ -4701,6 +4725,7 @@ namespace ManicDiggerServer
         public List<ModDelegates.WorldGenerator> getchunk = new List<ModDelegates.WorldGenerator>();
         public List<ModDelegates.BlockUse> onuse = new List<ModDelegates.BlockUse>();
         public List<ModDelegates.BlockBuild> onbuild = new List<ModDelegates.BlockBuild>();
+        public List<ModDelegates.BlockBuildOnSource> onbuildonsource = new List<ModDelegates.BlockBuildOnSource>();
         public List<ModDelegates.BlockDelete> ondelete = new List<ModDelegates.BlockDelete>();
         public List<ModDelegates.BlockUseWithTool> onusewithtool = new List<ModDelegates.BlockUseWithTool>();
         public List<ModDelegates.ChangedActiveMaterialSlot> changedactivematerialslot = new List<ModDelegates.ChangedActiveMaterialSlot>();

@@ -233,6 +233,7 @@ namespace ManicDigger.Server.Mods.Fortress
             m.RegisterOnBlockBuild(Build);
             m.RegisterOnBlockDelete(Delete);
             m.RegisterOnBlockUseWithTool(UseWithTool);
+            m.RegisterOnBlockBuildOnSource(BuildOnSource);
         }
 
         public void Start(ModManager m)
@@ -241,8 +242,16 @@ namespace ManicDigger.Server.Mods.Fortress
             m.RequireMod("Default");
         }
 
+        void BuildOnSource(int player, int x, int y, int z)
+        {
+            Console.WriteLine("HELLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOO");
+        }
+
         void Build(int player, int x, int y, int z)
         {
+            //if (m.GetBlockName(m.GetBlock(x, y, z - 1)) == "Source")
+            //    m.SetBlock(x, y, z, m.GetBlockId("Empty"));
+
             if (m.GetBlockName(m.GetBlock(x, y, z)) == "Source" ||
                 m.GetBlockName(m.GetBlock(x, y, z)) == "WaterBucket")
             {
@@ -252,6 +261,8 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void Delete(int player, int x, int y, int z, int blockid)
         {
+            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Source")
+                m.SetBlock(x, y, z, m.GetBlockId("Source"));
             if (WaterAround(x, y, z))
             {
                 WaterBox w = new WaterBox(x, y, z, 500, m, true);
@@ -260,14 +271,14 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
-            //Console.WriteLine(m.GetBlockName(toolId));
-            //if (toolId == m.GetBlockId("EmptyBucket"))
-            //{
-            //    int actSlot = m.GetActiveMaterialSlot(player);
-            //    m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
-            //    WaterRemover w = new WaterRemover(x, y, z, 50, m);
+            Console.WriteLine(m.GetBlockName(toolId));
+            if (toolId == m.GetBlockId("EmptyBucket"))
+            {
+                int actSlot = m.GetActiveMaterialSlot(player);
+                m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
+                WaterRemover w = new WaterRemover(x, y, z, 50, m);
 
-            //}
+            }
         }
 
         private bool WaterAround(int x, int y, int z)

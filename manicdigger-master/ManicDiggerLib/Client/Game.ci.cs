@@ -402,7 +402,7 @@
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
         if (tileType >= 154 && tileType <= 177)
-            return;
+            return; // JRC
         SetBlockInChunk(chunk, pos, tileType);
     }
 
@@ -2182,6 +2182,9 @@
 
     internal bool IsTileEmptyForPhysics(int x, int y, int z)
     {
+        
+        int activeMaterial = d_Inventory.RightHand[ActiveMaterial].BlockId;
+        
         if (z >= MapSizeZ)
         {
             return true;
@@ -2195,11 +2198,22 @@
             return ENABLE_FREEMOVE;
         }
         int block = GetBlockValid(x, y, z);
+        if (IsSource(block))
+        {
+            int stop = 0;
+        }
+
+        if ((IsSource(block) && activeMaterial != 177))
+        {
+            return true;
+        }
+        else if ((IsSource(block) && activeMaterial == 177))
+            return false;
 
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
             || IsWater(block);
-          //  || !IsSource(block);
+            
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2323,7 +2337,7 @@
         if (IsValidPos(posX, posY, posZ - 3))
         {
             int blockBelow = GetBlock(posX, posY, posZ - 3);
-            if ((blockBelow != 0) && !IsWater(blockBelow))// || !IsSource(blockBelow)))
+            if ((blockBelow != 0) && !IsWater(blockBelow) || !IsSource(blockBelow))
             {
                 float severity = 0;
                 if (fallspeed < 4) { return; }
@@ -4006,7 +4020,7 @@
     {
         if (GetPlayerEyesBlock() == -1) { return true; }
 
-        return IsWater(GetPlayerEyesBlock());// || IsSource(GetPlayerEyesBlock());
+        return (IsWater(GetPlayerEyesBlock())) || (IsSource(GetPlayerEyesBlock()));
     }
 
     internal bool LavaSwimming()
@@ -5009,140 +5023,153 @@
 
     internal void OnPick(int blockposX, int blockposY, int blockposZ, int blockposoldX, int blockposoldY, int blockposoldZ, float[] collisionPos, bool right)
     {
-        float xfract = collisionPos[0] - MathFloor(collisionPos[0]);
-        float zfract = collisionPos[2] - MathFloor(collisionPos[2]);
+        int test = GetBlock(blockposX, blockposY, blockposZ);
+        int mode;
+       
         int activematerial = MaterialSlots(ActiveMaterial);
-        int railstart = d_Data.BlockIdRailstart();
-        if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical
-            || activematerial == railstart + RailDirectionFlags.Corners)
-        {
-            RailDirection dirnew;
-            if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical)
-            {
-                dirnew = PickHorizontalVertical(xfract, zfract);
-            }
-            else
-            {
-                dirnew = PickCorners(xfract, zfract);
-            }
-            int dir = d_Data.Rail()[GetBlock(blockposoldX, blockposoldY, blockposoldZ)];
-            if (dir != 0)
-            {
-                blockposX = blockposoldX;
-                blockposY = blockposoldY;
-                blockposZ = blockposoldZ;
-            }
-            activematerial = railstart + (dir | DirectionUtils.ToRailDirectionFlags(dirnew));
-            //Console.WriteLine(blockposold);
-            //Console.WriteLine(xfract + ":" + zfract + ":" + activematerial + ":" + dirnew);
-        }
         int x = platform.FloatToInt(blockposX);
         int y = platform.FloatToInt(blockposY);
         int z = platform.FloatToInt(blockposZ);
-        int mode = right ? Packet_BlockSetModeEnum.Create : Packet_BlockSetModeEnum.Destroy;
+
+        if (test == 178)
         {
-            if (IsAnyPlayerInPos(x, y, z) || activematerial == 151)
-            {
-                return;
-            }
-            Vector3IntRef v = Vector3IntRef.Create(x, y, z);
-            Vector3IntRef oldfillstart = fillstart;
-            Vector3IntRef oldfillend = fillend;
-            if (mode == Packet_BlockSetModeEnum.Create)
-            {
-                if (blocktypes[activematerial].IsTool)
-                {
-                    OnPickUseWithTool(blockposX, blockposY, blockposZ);
-                    return;
-                }
-
-                //if (GameDataManicDigger.IsDoorTile(activematerial))
-                //{
-                //    if (z + 1 == d_Map.MapSizeZ || z == 0) return;
-                //}
-
-                if (activematerial == d_Data.BlockIdCuboid())
-                {
-                    ClearFillArea();
-
-                    if (fillstart != null)
-                    {
-                        Vector3IntRef f = fillstart;
-                        if (!IsFillBlock(GetBlock(f.X, f.Y, f.Z)))
-                        {
-                            fillarea.Set(f.X, f.Y, f.Z, GetBlock(f.X, f.Y, f.Z));
-                        }
-                        SetBlock(f.X, f.Y, f.Z, d_Data.BlockIdFillStart());
-
-
-                        FillFill(v, fillstart);
-                    }
-                    if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
-                    {
-                        fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
-                    }
-                    SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdCuboid());
-                    fillend = v;
-                    RedrawBlock(v.X, v.Y, v.Z);
-                    return;
-                }
-                if (activematerial == d_Data.BlockIdFillStart())
-                {
-                    ClearFillArea();
-                    if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
-                    {
-                        fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
-                    }
-                    SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdFillStart());
-                    fillstart = v;
-                    fillend = null;
-                    RedrawBlock(v.X, v.Y, v.Z);
-                    return;
-                }
-                if (fillarea.ContainsKey(v.X, v.Y, v.Z))// && fillarea[v])
-                {
-                    SendFillArea(fillstart.X, fillstart.Y, fillstart.Z, fillend.X, fillend.Y, fillend.Z, activematerial);
-                    ClearFillArea();
-                    fillstart = null;
-                    fillend = null;
-                    return;
-                }
-            }
-            else
-            {
-                if (blocktypes[activematerial].IsTool)
-                {
-                    OnPickUseWithTool(blockposX, blockposY, blockposoldZ);
-                    return;
-                }
-                //delete fill start
-                if (fillstart != null && fillstart.X == v.X && fillstart.Y == v.Y && fillstart.Z == v.Z)
-                {
-                    ClearFillArea();
-                    fillstart = null;
-                    fillend = null;
-                    return;
-                }
-                //delete fill end
-                if (fillend != null && fillend.X == v.X && fillend.Y == v.Y && fillend.Z == v.Z)
-                {
-                    ClearFillArea();
-                    fillend = null;
-                    return;
-                }
-            }
-            if (mode == Packet_BlockSetModeEnum.Create && activematerial == d_Data.BlockIdMinecart())
-            {
-                //CommandRailVehicleBuild cmd2 = new CommandRailVehicleBuild();
-                //cmd2.x = (short)x;
-                //cmd2.y = (short)y;
-                //cmd2.z = (short)z;
-                //TrySendCommand(MakeCommand(CommandId.RailVehicleBuild, cmd2));
-                return;
-            }
-            //if (TrySendCommand(MakeCommand(CommandId.Build, cmd)))
-            SendSetBlockAndUpdateSpeculative(activematerial, x, y, z, mode);
+            mode = Packet_BlockSetModeEnum.BuildOnSource;
         }
+        else
+        {
+            float xfract = collisionPos[0] - MathFloor(collisionPos[0]);
+            float zfract = collisionPos[2] - MathFloor(collisionPos[2]);
+            
+            int railstart = d_Data.BlockIdRailstart();
+            if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical
+                || activematerial == railstart + RailDirectionFlags.Corners)
+            {
+                RailDirection dirnew;
+                if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical)
+                {
+                    dirnew = PickHorizontalVertical(xfract, zfract);
+                }
+                else
+                {
+                    dirnew = PickCorners(xfract, zfract);
+                }
+                int dir = d_Data.Rail()[GetBlock(blockposoldX, blockposoldY, blockposoldZ)];
+                if (dir != 0)
+                {
+                    blockposX = blockposoldX;
+                    blockposY = blockposoldY;
+                    blockposZ = blockposoldZ;
+                }
+                activematerial = railstart + (dir | DirectionUtils.ToRailDirectionFlags(dirnew));
+                //Console.WriteLine(blockposold);
+                //Console.WriteLine(xfract + ":" + zfract + ":" + activematerial + ":" + dirnew);
+            }
+
+            mode = right ? Packet_BlockSetModeEnum.Create : Packet_BlockSetModeEnum.Destroy;
+            {
+                if (IsAnyPlayerInPos(x, y, z) || activematerial == 151)
+                {
+                    return;
+                }
+                Vector3IntRef v = Vector3IntRef.Create(x, y, z);
+                Vector3IntRef oldfillstart = fillstart;
+                Vector3IntRef oldfillend = fillend;
+                if (mode == Packet_BlockSetModeEnum.Create)
+                {
+                    if (blocktypes[activematerial].IsTool)
+                    {
+                        OnPickUseWithTool(blockposX, blockposY, blockposZ);
+                        return;
+                    }
+
+                    //if (GameDataManicDigger.IsDoorTile(activematerial))
+                    //{
+                    //    if (z + 1 == d_Map.MapSizeZ || z == 0) return;
+                    //}
+
+                    if (activematerial == d_Data.BlockIdCuboid())
+                    {
+                        ClearFillArea();
+
+                        if (fillstart != null)
+                        {
+                            Vector3IntRef f = fillstart;
+                            if (!IsFillBlock(GetBlock(f.X, f.Y, f.Z)))
+                            {
+                                fillarea.Set(f.X, f.Y, f.Z, GetBlock(f.X, f.Y, f.Z));
+                            }
+                            SetBlock(f.X, f.Y, f.Z, d_Data.BlockIdFillStart());
+
+
+                            FillFill(v, fillstart);
+                        }
+                        if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
+                        {
+                            fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
+                        }
+                        SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdCuboid());
+                        fillend = v;
+                        RedrawBlock(v.X, v.Y, v.Z);
+                        return;
+                    }
+                    if (activematerial == d_Data.BlockIdFillStart())
+                    {
+                        ClearFillArea();
+                        if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
+                        {
+                            fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
+                        }
+                        SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdFillStart());
+                        fillstart = v;
+                        fillend = null;
+                        RedrawBlock(v.X, v.Y, v.Z);
+                        return;
+                    }
+                    if (fillarea.ContainsKey(v.X, v.Y, v.Z))// && fillarea[v])
+                    {
+                        SendFillArea(fillstart.X, fillstart.Y, fillstart.Z, fillend.X, fillend.Y, fillend.Z, activematerial);
+                        ClearFillArea();
+                        fillstart = null;
+                        fillend = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (blocktypes[activematerial].IsTool)
+                    {
+                        OnPickUseWithTool(blockposX, blockposY, blockposoldZ);
+                        return;
+                    }
+                    //delete fill start
+                    if (fillstart != null && fillstart.X == v.X && fillstart.Y == v.Y && fillstart.Z == v.Z)
+                    {
+                        ClearFillArea();
+                        fillstart = null;
+                        fillend = null;
+                        return;
+                    }
+                    //delete fill end
+                    if (fillend != null && fillend.X == v.X && fillend.Y == v.Y && fillend.Z == v.Z)
+                    {
+                        ClearFillArea();
+                        fillend = null;
+                        return;
+                    }
+                }
+                if (mode == Packet_BlockSetModeEnum.Create && activematerial == d_Data.BlockIdMinecart())
+                {
+                    //CommandRailVehicleBuild cmd2 = new CommandRailVehicleBuild();
+                    //cmd2.x = (short)x;
+                    //cmd2.y = (short)y;
+                    //cmd2.z = (short)z;
+                    //TrySendCommand(MakeCommand(CommandId.RailVehicleBuild, cmd2));
+                    return;
+                }
+                //if (TrySendCommand(MakeCommand(CommandId.Build, cmd)))
+            }
+        }
+        SendSetBlockAndUpdateSpeculative(activematerial, x, y, z, mode);
     }
 
     internal void Set3dProjection1(float zfar_)
