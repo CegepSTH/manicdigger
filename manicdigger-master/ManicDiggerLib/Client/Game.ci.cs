@@ -1683,7 +1683,7 @@
                 int posX = barDistanceToMargin + barOffset + barOffset;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
-                Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
+                Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 133, 133, 133), false);
                 //Added by Alexandre
                 FontCi c = FontCi.Create("Arial", 8, 0);
                 IntRef d = IntRef.Create(20);
@@ -2262,11 +2262,18 @@
                 p1.Id = Packet_ClientIdEnum.Health;
                 p1.Health = new Packet_ClientHealth();
                 p1.Health.CurrentHealth = PlayerStats.CurrentHealth;
-                p1.Armor = new Packet_ClientArmor();
 
-                p1.Armor.CurrentArmor = PlayerStats.CurrentArmor; 
             }
             SendPacketClient(p1);
+
+            Packet_Client p2 = new Packet_Client();
+            {
+                p2.Id = Packet_ClientIdEnum.Armor;
+                p2.Armor = new Packet_ClientArmor();
+
+                p2.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+            }
+            SendPacketClient(p2);
 
         }
     }
@@ -7585,7 +7592,7 @@
 
 
 
-                        PlayerStats.SetCurrentArmor(armor);
+                        PlayerStats.CurrentArmor= armor;
                         DrawPlayerHealth();
                         DrawPlayerOxygen();
                         DrawPlayerArmor();

@@ -21,6 +21,7 @@ package Packet;
         Reload = 58;
         Oxygen = 59;
         Death = 60;
+		Armor = 61;
         ServerQuery = 64;
         GameResolution = 10;
         ExtendedPacketCommand = 100;
