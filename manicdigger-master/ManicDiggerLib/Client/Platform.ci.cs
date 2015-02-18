@@ -1,5 +1,8 @@
 ﻿public abstract class GamePlatform
 {
+    public abstract bool PickUp(int playerTool, int toolType, int idBlock);
+    public abstract void GLtextimage(int lvl, byte[] pixels);
+    public abstract void Gltextsubimage(int level, int xoffset, int yoffset, int width, int height, byte[] pixels);
     public abstract void ThreadSleep(int time);
     public abstract void UpdateServerConfig(bool isCreative);
     public abstract bool ValidateFile(string fileName, string extension);
@@ -57,11 +60,7 @@
     public abstract BitmapCi BitmapCreate(int width, int height);
     public abstract void BitmapSetPixelsArgb(BitmapCi bmp, int[] pixels);
     public abstract int LoadTextureFromBitmap(BitmapCi bmp);
-
-    public abstract void GLtextimage(OpenTK.Graphics.OpenGL.TextureTarget target, int lvl, OpenTK.Graphics.OpenGL.PixelFormat pixel, OpenTK.Graphics.OpenGL.PixelType type, byte[] pixels);
-
-    public abstract void Gltextsubimage(OpenTK.Graphics.OpenGL.TextureTarget target, int level, int xoffset, int yoffset, int width, int height, OpenTK.Graphics.OpenGL.PixelFormat pixel, OpenTK.Graphics.OpenGL.PixelType type, byte[] pixels);
-    public abstract void GLLineWidth(int width);
+     public abstract void GLLineWidth(int width);
     public abstract void GLDisableAlphaTest();
     public abstract void GLEnableAlphaTest();
     public abstract void GLDeleteTexture(int id);
