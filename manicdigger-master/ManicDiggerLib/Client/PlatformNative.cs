@@ -24,10 +24,6 @@ using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
-    public override void ThreadSleep(int time)
-    {
-        Thread.Sleep(time);
-    }
     /// <summary>
     /// Methode qui ajoute un cours spécifique au document xml entré en paramètre
     /// </summary>
@@ -2177,15 +2173,16 @@ public class GamePlatformNative : GamePlatform
         //Return true if all checks have been passed
         return true;
     }
-    public override void GLtextimage(int lvl,byte[] pixels)
+    public override void GLtextimage(TextureTarget target,int lvl,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type,byte[] pixels)
     {
-        GL.GetTexImage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, lvl, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, pixels);
+        GL.GetTexImage(target, lvl, pixel, type, pixels);
+        
     }
 
-    public override void Gltextsubimage(int level, int xoffset, int yoffset, int width, int height, byte[] pixels)
+    public override void Gltextsubimage(TextureTarget target,int level, int xoffset, int yoffset, int width, int height,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type, byte[] pixels)
     {
        // GL.TexImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
-        GL.TexImage2D(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, level, OpenTK.Graphics.OpenGL.PixelInternalFormat.Rgb8, width, height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, pixels);
+        GL.TexImage2D(target, level, OpenTK.Graphics.OpenGL.PixelInternalFormat.Rgb8, width, height, 0, pixel, type, pixels);
     }
 }
 
