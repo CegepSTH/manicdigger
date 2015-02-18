@@ -484,12 +484,14 @@ namespace ManicDigger
                 {
                     if(selected.Value.X == 4 && selected.Value.Y == 2)
                     {
-                        ApplyRecipe(d_Inventory.currentRecipe);
-                        d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+                        if (ApplyRecipe(d_Inventory.currentRecipe))
+                        {
+                            d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+                            d_Inventory.DragDropItem.Durability = d_Inventory.currentRecipe.output.Dura;
+                            //   d_Inventory.DragDropItem.Durability = d_Inventory.BlockTypes[d_Inventory.DragDropItem.BlockId].Durability;
 
-                        d_Inventory.DragDropItem.Durability = d_Inventory.BlockTypes[d_Inventory.DragDropItem.BlockId].Durability;
-
-                        d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                            d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                        }
                         //crafting
                         CheckRecipes();
                         SendInventory();
