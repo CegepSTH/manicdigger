@@ -24,6 +24,168 @@ using System.Xml;
 
 public class GamePlatformNative : GamePlatform
 {
+    public override bool PickUp(int playerTool,int toolType, int idBlock)
+    {
+        bool strength = false;
+        switch (playerTool)
+        {
+            case Packet_ToolsEnum.SHOVEL:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+            case Packet_ToolsEnum.PICKAXE:
+                switch (toolType)
+                {
+                    case Packet_ToolTypeEnum.WOOD:
+                        //STONE, COBBLESTONE, COALORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                            //BRICK, MOSSYCOBBLESTONE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                            //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        else if (idBlock == 49 || idBlock == 15 || idBlock == 14
+                            //SILVERORE, IRONBLOCK, GOLDBLOCK
+                            || idBlock == 133 || idBlock == 41 || idBlock == 42
+                            //GOLDBAR, BRUSHEDMETAL
+                            || idBlock == 132 || idBlock == 100)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.STONE:
+                        //STONE, COBBLESTONE, GOLDORE, COALORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 15 || idBlock == 16
+                            //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
+                            || idBlock == 42 || idBlock == 45 || idBlock == 48
+                            //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
+                            || idBlock == 61 || idBlock == 62 || idBlock == 100
+                            //MINECART, GOLDBAR, DIRTBRICK
+                            || idBlock == 113 || idBlock == 132 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN, GOLDORE, SILVERORE, GOLDBLOCK
+                        else if (idBlock == 49 | idBlock == 14 || idBlock == 133 || idBlock == 42)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.IRON:
+                        //STONE, COBBLESTONE, GOLDORE
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 14
+                            //IRONORE, COALORE, GOLDBLOCK
+                            || idBlock == 15 || idBlock == 16 || idBlock == 41
+                            //IRONBLOCK, BRICK, MOSSYCOBBLESTONE
+                            || idBlock == 42 || idBlock == 45 || idBlock == 48
+                            //FOURNAISE, BURNINGFOURNAISE, BRUSHEDMETAL
+                            || idBlock == 61 || idBlock == 62 || idBlock == 100
+                            //MINECART, GOLDBAR, SILVERORE
+                            || idBlock == 113 || idBlock == 132 || idBlock == 133
+                            //DIRTBRICK, SANDBRICK, ASPHALT
+                            || idBlock == 140 || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN
+                        else if (idBlock == 49)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.SILVER:
+                        strength = true;
+                        break;
+                    case Packet_ToolTypeEnum.GOLD:
+                        //STONE, COBBLESTONE, COALORE, BRICK
+                        if (idBlock == 1 || idBlock == 4 || idBlock == 16 || idBlock == 45
+                            //MOSSYCOBBLE, FOURNAISE, BURNINGFOURNAISE
+                            || idBlock == 48 || idBlock == 61 || idBlock == 62
+                            //BRUSHEDMETAL, MINECART, DIRTBRICK
+                            || idBlock == 100 || idBlock == 113 || idBlock == 140
+                            //SANDBRICK, ASPHALT
+                            || idBlock == 142 || idBlock == 147)
+                            strength = true;
+                        //OBSIDIAN, IRONORE, GOLDORE
+                        else if (idBlock == 49 || idBlock == 15 || idBlock == 14
+                            //SILVERORE, IRONBLOCK, GOLDBLOCK, GOLDBAR
+                        || idBlock == 133 || idBlock == 41 || idBlock == 42 || idBlock == 132)
+                            strength = false;
+                        else
+                            strength = true;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case Packet_ToolsEnum.AXE:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+            default:
+                //STONE, COBBLESTONE, COALORE
+                if (idBlock == 1 || idBlock == 4 || idBlock == 16
+                    //BRICK, MOSSYCOBBLE, FOURNAISE
+                            || idBlock == 45 || idBlock == 48 || idBlock == 61
+                    //BURNINGFOURNAISE, MINECART, DIRTBRICK
+                            || idBlock == 62 || idBlock == 113 || idBlock == 140
+                    //SANDBRICK, ASPHALT, OBSIDIAN
+                            || idBlock == 142 || idBlock == 147 || idBlock == 49
+                    //IRONORE, GOLDORE, SILVERORE
+                            || idBlock == 15 || idBlock == 14 || idBlock == 133
+                    //IRONBLOCK, GOLDBLOCK, GOLDBAR
+                            || idBlock == 41 || idBlock == 42 || idBlock == 132
+                    //BRUSHEDMETAL
+                            || idBlock == 100)
+                    strength = false;
+                else
+                    strength = true;
+                break;
+        }
+        return strength;
+    }
+
+    public override void GLtextimage(int lvl, byte[] pixels)
+    {
+        GL.GetTexImage(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, lvl, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, pixels);
+    }
+
+    public override void Gltextsubimage(int level, int xoffset, int yoffset, int width, int height, byte[] pixels)
+    {
+        // GL.TexImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
+        GL.TexImage2D(OpenTK.Graphics.OpenGL.TextureTarget.Texture2D, level, OpenTK.Graphics.OpenGL.PixelInternalFormat.Rgb8, width, height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgb, OpenTK.Graphics.OpenGL.PixelType.UnsignedByte, pixels);
+    }
+
     public override void ThreadSleep(int time)
     {
         Thread.Sleep(time);
@@ -539,13 +701,13 @@ public class GamePlatformNative : GamePlatform
     public override void GlDisableDepthTest()
     {
         GL.Disable(EnableCap.DepthTest);
-        
+
     }
 
     public override void BindTexture2d(int texture)
     {
         GL.BindTexture(TextureTarget.Texture2D, texture);
-        
+
     }
 
     float[] xyz = new float[65536 * 3];
@@ -707,7 +869,7 @@ public class GamePlatformNative : GamePlatform
             bmp = bmp2;
         }
         GL.Enable(EnableCap.Texture2D);
-        int id = GL.GenTexture();    
+        int id = GL.GenTexture();
         GL.BindTexture(TextureTarget.Texture2D, id);
         if (!ENABLE_MIPMAPS)
         {
@@ -1735,7 +1897,7 @@ public class GamePlatformNative : GamePlatform
         singlepLayerServerExit = false;
         StartSinglePlayerServer(saveFilename);
     }
-    
+
     public bool singlepLayerServerExit;
     public override void SinglePlayerServerExit()
     {
@@ -2177,17 +2339,6 @@ public class GamePlatformNative : GamePlatform
         }
         //Return true if all checks have been passed
         return true;
-    }
-    public override void GLtextimage(TextureTarget target,int lvl,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type,byte[] pixels)
-    {
-        GL.GetTexImage(target, lvl, pixel, type, pixels);
-        
-    }
-
-    public override void Gltextsubimage(TextureTarget target,int level, int xoffset, int yoffset, int width, int height,OpenTK.Graphics.OpenGL.PixelFormat pixel,PixelType type, byte[] pixels)
-    {
-       // GL.TexImage2D(target, level, xoffset, yoffset, width, height, pixel, type, pixels);
-        GL.TexImage2D(target, level, OpenTK.Graphics.OpenGL.PixelInternalFormat.Rgb8, width, height, 0, pixel, type, pixels);
     }
 }
 
