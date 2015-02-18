@@ -649,7 +649,6 @@ namespace ManicDiggerServer
             ManicDiggerSave save = Serializer.Deserialize<ManicDiggerSave>(new MemoryStream(globaldata));
             //d_Generator.SetSeed(save.Seed);
             Seed = save.Seed;
-            //TODOMATHEW
             config.IsCreative = save.IsCreative;
             d_Map.Reset(d_Map.MapSizeX, d_Map.MapSizeY, d_Map.MapSizeZ);
             if (config.IsCreative) this.Inventory = Inventory = new Dictionary<string, PacketServerInventory>(StringComparer.InvariantCultureIgnoreCase);
@@ -677,6 +676,7 @@ namespace ManicDiggerServer
             }
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
+            //Save the gamemode
             save.IsCreative = config.IsCreative;
             if (!config.IsCreative)
             {

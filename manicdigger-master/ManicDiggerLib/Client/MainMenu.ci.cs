@@ -612,11 +612,11 @@
         return p.CharArrayToString(charArray, length);
     }
 
-    public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData)
+    public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData, bool creative)
     {
         ScreenGame screenGame = new ScreenGame();
         screenGame.menu = this;
-        screenGame.Start(p, singleplayer, singleplayerSavePath, connectData);
+        screenGame.Start(p, singleplayer, singleplayerSavePath, connectData, creative);
         screen = screenGame;
     }
 
@@ -628,12 +628,12 @@
         connectData.Auth = loginResultData.AuthCode;
         connectData.Username = username;
 
-        StartGame(false, null, connectData);
+        StartGame(false, null, connectData, false);
     }
 
-    public void ConnectToSingleplayer(string filename)
+    public void ConnectToSingleplayer(string filename, bool creative)
     {
-        StartGame(true, filename, null);
+        StartGame(true, filename, null, creative);
     }
 
     public float GetScale()
@@ -1003,11 +1003,11 @@ public class ScreenMain : Screen
         if (e.GetKeyCode() == GlKeys.F5)
         {
             menu.p.SinglePlayerServerDisable();
-            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mdss"), null);
+            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mdss"), null, true);
         }
         if (e.GetKeyCode() == GlKeys.F6)
         {
-            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mddbs"), null);
+            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mddbs"), null, true);
         }
     }
 }
@@ -1142,7 +1142,7 @@ public class ScreenSingleplayer : Screen
             string result = menu.p.FileOpenDialog(extension, "Manic Digger Savegame", menu.p.PathSavegames());
             if (result != null)
             {
-                menu.ConnectToSingleplayer(result);
+                menu.ConnectToSingleplayer(result, false);
             }
         }
         else if (w == back)
@@ -1231,29 +1231,25 @@ public class ScreenWriteWorldName : Screen
             string path1 = menu.p.PathSavegames();
             string[] list = menu.p.DirectoryGetFiles(path1, IntRef.Create(100));
 
-            //TODOFRANCK -> list.length et replace
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < menu.p.GetStringTableLength(list); i++)
             {
-                if (list[i].Replace(path1 + "\\", "").StartsWith(txtName.text))
+                string str = menu.p.StringReplace(list[i], menu.p.StringFormat2("{0}{1}", menu.p.PathSavegames(), "\\"), "");
+                if (menu.p.StartsWith(str, txtName.text))
                 {
-                    string test = list[i];
-                    //test --> C:\\Users\\Francis\\Documents\\DefaultName1.mddbs
-                    test.Replace(path1 + "\\" + txtName.text,"");
-                    //test --> 1.mddbs
-                    string s = "";
-                    for (int i1 = 0; i1 < test.Length; i1++)
+                    string s1 = menu.p.StringSplit2(str, txtName.text)[1];
+                    s1 = menu.p.StringSplit2(s1, ".")[0];
+
+                    if (s1 != "")
                     {
-                        char c = test[i1];
-                        if (char.IsDigit(c))
-                            s += c;
+                        IntRef number = menu.p.IntTryParse(s1);
+                        if (number != null && number.value > lastnumber)
+                            lastnumber = number.value;
                     }
                 }
             }
-
             lastnumber++;
 
-            //TODOFRANCK -> ManicDiggerLib
-            ManicDiggerLib.Client.Data.GameName = menu.p.StringFormat2("{0}{1}", txtName.text, menu.p.IntToString(lastnumber));
+            menu.p.SetGameName(menu.p.StringFormat2("{0}{1}", txtName.text, menu.p.IntToString(lastnumber)));
 
             menu.StartSelectGamemode();
             //menu.ConnectToSingleplayer(menu.p.StringFormat4("{0}{1}{2}{3}", menu.p.PathSavegames(), "\\", txtName.text, menu.p.IntToString(lastnumber)));
@@ -1336,21 +1332,16 @@ public class ScreenGameMode : Screen
             return;
         }
 
-        //TODOFRANCK -> ManicDiggerLib
-        string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", ManicDiggerLib.Client.Data.GameName, ".",
+        string result = menu.p.StringFormat5("{0}{1}{2}{3}{4}", menu.p.PathSavegames(), "\\", menu.p.GetGameName(), ".",
             menu.p.SinglePlayerServerAvailable() ? "mddbs" : "mdss");
 
         if (w == btnCreative)
         {
-            menu.ConnectToSingleplayer(result);
-            //TODOFRANCK -> ManicDiggerLib
-            ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(true);
+            menu.ConnectToSingleplayer(result, true);
         }
         else if (w == btnSurvival)
         {
-            menu.ConnectToSingleplayer(result);
-            //TODOFRANCK -> ManicDiggerLib
-            ManicDiggerLib.Client.Data.gameRef.ChangeGameMode(false);
+            menu.ConnectToSingleplayer(result, false);
         }
     }
 }
@@ -1622,7 +1613,7 @@ public class ScreenLogin : Screen
                 connectdata.Ip = serverIp;
                 connectdata.Port = serverPort;
                 connectdata.Username = loginUsername.text;
-                menu.StartGame(false, null, connectdata);
+                menu.StartGame(false, null, connectdata, false);
             }
         }
         if (w == createAccount)
@@ -1655,12 +1646,10 @@ public class ScreenGame : Screen
     public ScreenGame()
     {
         game = new Game();
-        //TODOFRANCK -> ManicDiggerLib
-        ManicDiggerLib.Client.Data.gameRef = game;
     }
     Game game;
 
-    public void Start(GamePlatform platform_, bool singleplayer_, string singleplayerSavePath_, ConnectData connectData_)
+    public void Start(GamePlatform platform_, bool singleplayer_, string singleplayerSavePath_, ConnectData connectData_, bool creative)
     {
         platform = platform_;
         singleplayer = singleplayer_;
@@ -1671,6 +1660,7 @@ public class ScreenGame : Screen
         game.issingleplayer = singleplayer;
         game.assets = menu.assets;
         game.assetsLoadProgress = menu.assetsLoadProgress;
+        game.ChangeGameMode(creative);
 
         game.Start();
         Connect(platform);
@@ -1747,7 +1737,7 @@ public class ScreenGame : Screen
         if (game.reconnect)
         {
             game.Dispose();
-            menu.StartGame(singleplayer, singleplayerSavePath, connectData);
+            menu.StartGame(singleplayer, singleplayerSavePath, connectData, false);
             return;
         }
         if (game.exitToMainMenu)

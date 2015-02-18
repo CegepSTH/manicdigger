@@ -1115,7 +1115,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(5, 1, 2, 3));
             ings.Add(new CraftIngredient(5, 1, 0, 2));
             ings.Add(new CraftIngredient(5, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(79, 1, 4, 2),66);
+            AddCraftRecipe(ings, new CraftIngredient(71, 1, 4, 2),66);
 
             //Iron boots
             ings.Clear();
@@ -1123,7 +1123,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(15, 1, 2, 3));
             ings.Add(new CraftIngredient(15, 1, 0, 2));
             ings.Add(new CraftIngredient(15, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(80, 1, 4, 2),196);
+            AddCraftRecipe(ings, new CraftIngredient(72, 1, 4, 2),196);
 
             //Silver boots
             ings.Clear();
@@ -1132,7 +1132,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(133, 1,0, 2));
             ings.Add(new CraftIngredient(133, 1, 2, 2));
 
-            AddCraftRecipe(ings, new CraftIngredient(81, 1, 4, 2),430);
+            AddCraftRecipe(ings, new CraftIngredient(73, 1, 4, 2),430);
 
             //Gold boots
             ings.Clear();
@@ -1140,7 +1140,7 @@ namespace ManicDigger
             ings.Add(new CraftIngredient(14, 1, 2, 3));
             ings.Add(new CraftIngredient(14, 1, 0, 2));
             ings.Add(new CraftIngredient(14, 1, 2, 2));
-            AddCraftRecipe(ings, new CraftIngredient(82, 1, 4, 2),92);
+            AddCraftRecipe(ings, new CraftIngredient(74, 1, 4, 2),92);
             #endregion
 
 
