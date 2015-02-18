@@ -1357,7 +1357,8 @@ namespace ManicDigger.Mods
                 Sounds = solidSounds,
                 handimage = "Water_Bucket copie.png",
                 WalkSpeedWhenUsed = 1f,
-                IsBuildable=true
+                IsBuildable=true,
+                IsTool = true
             });
             m.SetBlockType(177, "EmptyBucket", new BlockType()
             {

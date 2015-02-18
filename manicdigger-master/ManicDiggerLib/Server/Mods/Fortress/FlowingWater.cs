@@ -15,7 +15,7 @@ namespace ManicDigger.Server.Mods.Fortress
             private ModManager _m;
 
 
-            public WaterRemover(int x, int y, int z, int s, ModManager m)
+            public WaterRemover(int x, int y, int z, int s, ModManager m, bool bucket)
             {
                 if (m == null)
                     return;
@@ -28,7 +28,7 @@ namespace ManicDigger.Server.Mods.Fortress
                 _m = m;
                
 
-                if (bName == "Source" || bName == "Water")
+                if ((bName == "Source" || bName == "Water") && bucket)
                 {
                     if (_s > 0)
                         m.SetBlock(_x, _y, _z, _m.GetBlockId("Empty"));
@@ -61,7 +61,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
                     if (s > 0)
                     {
-                        WaterRemover w = new WaterRemover(x, y, z, s, _m);
+                        WaterRemover w = new WaterRemover(x, y, z, s, _m, true);
                     }
                 }
             }
@@ -83,7 +83,7 @@ namespace ManicDigger.Server.Mods.Fortress
         private class WaterBox
         {
             // force de l'eau (distance max de la source)
-            public const int MAX_STRENGH = 2;
+            public const int MAX_STRENGH = 5;
 
             // position du block
             private int _x, _y, _z, _s;
@@ -244,7 +244,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void BuildOnSource(int player, int x, int y, int z)
         {
-            Console.WriteLine("HELLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOO");
+            WaterRemover w = new WaterRemover(x, y, z, 50, m, false);
         }
 
         void Build(int player, int x, int y, int z)
@@ -271,12 +271,17 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
+            if (toolId == 176)
+            {
+                WaterBox w = new WaterBox(x, y, z, 500, m, true);
+                return;
+            }
             Console.WriteLine(m.GetBlockName(toolId));
             if (toolId == m.GetBlockId("EmptyBucket"))
             {
                 int actSlot = m.GetActiveMaterialSlot(player);
                 m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
-                WaterRemover w = new WaterRemover(x, y, z, 50, m);
+                WaterRemover w = new WaterRemover(x, y, z, 50, m, true);
 
             }
         }
