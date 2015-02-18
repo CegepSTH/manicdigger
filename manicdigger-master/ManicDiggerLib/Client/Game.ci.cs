@@ -9226,7 +9226,7 @@
 
 
     }
-    //SUCE MA QUEUE
+
     internal void EquipArmor(string image, byte[] PixelsCurrent)
     {
         platform.BindTexture2d(GetTexture(image));
