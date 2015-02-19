@@ -406,7 +406,7 @@
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
-        if (tileType >= 154 && tileType <= 177)
+        if (tileType >= 154 && tileType <= 177 || tileType >= 63 && tileType <= 78)
             return;
         SetBlockInChunk(chunk, pos, tileType);
     }
@@ -4579,6 +4579,7 @@
 
     internal void OnPickUseWithTool(int posX, int posY, int posZ)
     {
+        if(mouseLeft)
         SendSetBlock(posX, posY, posZ, Packet_BlockSetModeEnum.UseWithTool, d_Inventory.RightHand[ActiveMaterial].BlockId, ActiveMaterial);
     }
 
