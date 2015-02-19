@@ -21,7 +21,6 @@ package Packet;
         Reload = 58;
         Oxygen = 59;
         Death = 60;
-		Armor = 61;
         ServerQuery = 64;
         GameResolution = 10;
         ExtendedPacketCommand = 100;
@@ -138,7 +137,6 @@ package Packet;
         Create = 1;
         Use = 2; //open doors, use crafting table, etc.
         UseWithTool = 3;
-	BuildOnSource = 4;
     }
 
     message ClientReload
