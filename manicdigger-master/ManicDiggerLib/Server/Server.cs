@@ -140,7 +140,7 @@ namespace ManicDiggerServer
             }
             catch
             {
-            	Console.WriteLine(language.ServerCannotWriteLog(), filename);
+                Console.WriteLine(language.ServerCannotWriteLog(), filename);
             }
         }
 
@@ -199,11 +199,11 @@ namespace ManicDiggerServer
                 }
                 oldtime = currenttime;
             }
-            
+
             INetIncomingMessage msg;
             Stopwatch s = new Stopwatch();
             s.Start();
-            
+
             //Process client packets
             while ((msg = mainSocket0.ReadMessage()) != null)
             {
@@ -220,10 +220,10 @@ namespace ManicDiggerServer
             {
                 k.Value.socket.Update();
             }
-            
+
             //Updates the map
             NotifyMap();
-            
+
             //Send updates to player
             foreach (var k in clients)
             {
@@ -235,7 +235,7 @@ namespace ManicDiggerServer
                     k.Value.notifyMonstersTimer.Update(delegate { NotifyMonsters(k.Key); });
                 }
             }
-            
+
             //Sends ping to all clients and disconnects timed-out players
             pingtimer.Update(
             delegate
@@ -269,22 +269,22 @@ namespace ManicDiggerServer
                 }
             }
             );
-            
+
             //Unload chunks currently not seen by players
             UnloadUnusedChunks();
-            
+
             //Update all loaded chunks
             for (int i = 0; i < ChunksSimulated; i++)
             {
                 ChunkSimulation();
             }
-            
+
             //Process Mod timers
             foreach (var k in timers)
             {
                 k.Key.Update(k.Value);
             }
-            
+
             //Reset data displayed in /stat
             if ((DateTime.UtcNow - statsupdate).TotalSeconds >= 2)
             {
@@ -292,7 +292,7 @@ namespace ManicDiggerServer
                 StatTotalPackets = 0;
                 StatTotalPacketsLength = 0;
             }
-            
+
             //Send player position updates to every other player
             if ((DateTime.UtcNow - botpositionupdate).TotalSeconds >= 0.1)
             {
@@ -321,7 +321,7 @@ namespace ManicDiggerServer
                 }
                 botpositionupdate = DateTime.UtcNow;
             }
-            
+
             //Determine how long it took all operations to finish
             lastServerTick = s.ElapsedMilliseconds;
             if (lastServerTick > 500)
@@ -337,11 +337,11 @@ namespace ManicDiggerServer
             GamePlatform p = new GamePlatformNative();
             language.platform = p;
             language.LoadTranslations();
-            
+
             //Load config files
             LoadConfig();
             LoadBanlist();
-            
+
             //Initialize server map
             var map = new ServerMap();
             map.server = this;
@@ -354,7 +354,7 @@ namespace ManicDiggerServer
             map.d_Heightmap = new InfiniteMapChunked2dServer() { chunksize = Server.chunksize, d_Map = map };
             map.Reset(config.MapSizeX, config.MapSizeY, config.MapSizeZ);
             d_Map = map;
-            
+
             //Load assets (textures, sounds, etc.)
             string[] datapaths = new[] { Path.Combine(Path.Combine(Path.Combine("..", ".."), ".."), "data"), "data" };
             string[] datapathspublic = new[] { Path.Combine(datapaths[0], "public"), Path.Combine(datapaths[1], "public") };
@@ -363,7 +363,7 @@ namespace ManicDiggerServer
             LoadAssets();
             var getfile = new GetFileStream(datapaths);
             d_GetFile = getfile;
-            
+
             //Initialize game components
             var data = new GameData();
             data.Start();
@@ -385,7 +385,7 @@ namespace ManicDiggerServer
                     mainSocket1 = new TcpNetServer();
                 }
             }
-            
+
             //Start heartbeat thread
             d_Heartbeat = new ServerHeartbeat();
             if ((Public) && (config.Public))
@@ -400,15 +400,15 @@ namespace ManicDiggerServer
                             {
                                 //ADDED Francis (TRY CATCH)
                                 //This was causing the CLR crash!
-                                try 
-	                            {
+                                try
+                                {
                                     SendHeartbeat();
-	                            }
-	                            catch (Exception ex)
-	                            {
+                                }
+                                catch (Exception ex)
+                                {
 
-                                    Console.WriteLine( ex.Message);
-	                            }
+                                    Console.WriteLine(ex.Message);
+                                }
                                 finally
                                 {
                                     elapsed = 0;
@@ -468,7 +468,7 @@ namespace ManicDiggerServer
             serverConsoleClient.AssignGroup(serverGroup);
             serverConsole = new ServerConsole(this, exit);
 
-            
+
 
         }
         void Start(int port)
@@ -649,7 +649,6 @@ namespace ManicDiggerServer
             ManicDiggerSave save = Serializer.Deserialize<ManicDiggerSave>(new MemoryStream(globaldata));
             //d_Generator.SetSeed(save.Seed);
             Seed = save.Seed;
-            //TODOMATHEW
             config.IsCreative = save.IsCreative;
             d_Map.Reset(d_Map.MapSizeX, d_Map.MapSizeY, d_Map.MapSizeZ);
             if (config.IsCreative) this.Inventory = Inventory = new Dictionary<string, PacketServerInventory>(StringComparer.InvariantCultureIgnoreCase);
@@ -677,12 +676,13 @@ namespace ManicDiggerServer
             }
             ManicDiggerSave save = new ManicDiggerSave();
             SaveAllLoadedChunks();
+            //Save the gamemode
             save.IsCreative = config.IsCreative;
             if (!config.IsCreative)
             {
                 //Put crafting inventory in the main inventory on a save call
                 bool found = false;
-                foreach(var k in Inventory.Values)
+                foreach (var k in Inventory.Values)
                 {
                     foreach (var c in k.Inventory.CraftInv)
                     {
@@ -711,13 +711,13 @@ namespace ManicDiggerServer
                     {
                         for (int y = 0; y < 5; y++)
                         {
-                            if(k.Inventory.CraftInv.ContainsKey(new ProtoPoint(x,y)))
-                                k.Inventory.CraftInv.Remove(new ProtoPoint(x,y));
+                            if (k.Inventory.CraftInv.ContainsKey(new ProtoPoint(x, y)))
+                                k.Inventory.CraftInv.Remove(new ProtoPoint(x, y));
                         }
                     }
 
                 }
-                
+
                 save.Inventory = Inventory;
             }
             save.PlayerStats = PlayerStats;
@@ -732,7 +732,7 @@ namespace ManicDiggerServer
         {
             if (!GameStorePath.IsValidName(backupFilename))
             {
-            	Console.WriteLine(language.ServerInvalidBackupName() + backupFilename);
+                Console.WriteLine(language.ServerInvalidBackupName() + backupFilename);
                 return false;
             }
             if (!Directory.Exists(GameStorePath.gamepathbackup))
@@ -836,11 +836,11 @@ namespace ManicDiggerServer
             }
             catch //This if for the original format
             {
-            	try
-            	{
+                try
+                {
                     using (Stream s = new MemoryStream(File.ReadAllBytes(Path.Combine(GameStorePath.gamepathconfig, filename))))
                     {
-                	    config = new ServerConfig();
+                        config = new ServerConfig();
                         StreamReader sr = new StreamReader(s);
                         XmlDocument d = new XmlDocument();
                         d.Load(sr);
@@ -877,21 +877,21 @@ namespace ManicDiggerServer
                     }
                     //Save with new version.
                     SaveConfig();
-            	}
-            	catch
+                }
+                catch
                 {
                     //ServerConfig is really messed up. Backup a copy, then create a new one.
                     try
-            	    {
-            	        File.Copy(Path.Combine(GameStorePath.gamepathconfig, filename), Path.Combine(GameStorePath.gamepathconfig, filename + ".old"));
-            	        Console.WriteLine(language.ServerConfigCorruptBackup());
-            	    }
-            	    catch
-            	    {
-            	        Console.WriteLine(language.ServerConfigCorruptNoBackup());
-            	    }
-            	    config = null;
-            	    SaveConfig();
+                    {
+                        File.Copy(Path.Combine(GameStorePath.gamepathconfig, filename), Path.Combine(GameStorePath.gamepathconfig, filename + ".old"));
+                        Console.WriteLine(language.ServerConfigCorruptBackup());
+                    }
+                    catch
+                    {
+                        Console.WriteLine(language.ServerConfigCorruptNoBackup());
+                    }
+                    config = null;
+                    SaveConfig();
                 }
             }
             language.OverrideLanguage = config.ServerLanguage;  //Switch to user-defined language.
@@ -926,98 +926,98 @@ namespace ManicDiggerServer
                 line = Console.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
-                	if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
-                		wantsconfig = true;
-                	else
-                		wantsconfig = false;
+                    if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
+                        wantsconfig = true;
+                    else
+                        wantsconfig = false;
                 }
                 //Only ask these questions if user wants to
                 if (wantsconfig)
                 {
-                	Console.WriteLine(language.ServerSetupPublic());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		bool choice;
-                		if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
-                			choice = true;
-                		else
-                			choice = false;
-                		config.Public = choice;
-                	}
-                	Console.WriteLine(language.ServerSetupName());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		config.Name = line;
-                	}
-                	Console.WriteLine(language.ServerSetupMOTD());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		config.Motd = line;
-                	}
-                	Console.WriteLine(language.ServerSetupWelcomeMessage());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		config.WelcomeMessage = line;
-                	}
-                	Console.WriteLine(language.ServerSetupPort());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		int port;
-                		try
-                		{
-                			port = int.Parse(line);
-                			if (port > 0 && port <= 65565)
-                			{
-                				config.Port = port;
-                			}
-                			else
-                			{
-                				Console.WriteLine(language.ServerSetupPortInvalidValue());
-                			}
-                		}
-                		catch
-                		{
-                			Console.WriteLine(language.ServerSetupPortInvalidInput());
-                		}
-                	}
-                	Console.WriteLine(language.ServerSetupMaxClients());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		int players;
-                		try
-                		{
-                			players = int.Parse(line);
-                			if (players > 0)
-                			{
-                				config.MaxClients = players;
-                			}
-                			else
-                			{
-                				Console.WriteLine(language.ServerSetupMaxClientsInvalidValue());
-                			}
-                		}
-                		catch
-                		{
-                			Console.WriteLine(language.ServerSetupMaxClientsInvalidInput());
-                		}
-                	}
-                	Console.WriteLine(language.ServerSetupEnableHTTP());
-                	line = Console.ReadLine();
-                	if (!string.IsNullOrEmpty(line))
-                	{
-                		bool choice;
-                		if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
-                			choice = true;
-                		else
-                			choice = false;
-                		config.EnableHTTPServer = choice;
-                	}
+                    Console.WriteLine(language.ServerSetupPublic());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        bool choice;
+                        if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
+                            choice = true;
+                        else
+                            choice = false;
+                        config.Public = choice;
+                    }
+                    Console.WriteLine(language.ServerSetupName());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        config.Name = line;
+                    }
+                    Console.WriteLine(language.ServerSetupMOTD());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        config.Motd = line;
+                    }
+                    Console.WriteLine(language.ServerSetupWelcomeMessage());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        config.WelcomeMessage = line;
+                    }
+                    Console.WriteLine(language.ServerSetupPort());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        int port;
+                        try
+                        {
+                            port = int.Parse(line);
+                            if (port > 0 && port <= 65565)
+                            {
+                                config.Port = port;
+                            }
+                            else
+                            {
+                                Console.WriteLine(language.ServerSetupPortInvalidValue());
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine(language.ServerSetupPortInvalidInput());
+                        }
+                    }
+                    Console.WriteLine(language.ServerSetupMaxClients());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        int players;
+                        try
+                        {
+                            players = int.Parse(line);
+                            if (players > 0)
+                            {
+                                config.MaxClients = players;
+                            }
+                            else
+                            {
+                                Console.WriteLine(language.ServerSetupMaxClientsInvalidValue());
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine(language.ServerSetupMaxClientsInvalidInput());
+                        }
+                    }
+                    Console.WriteLine(language.ServerSetupEnableHTTP());
+                    line = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        bool choice;
+                        if (line.Equals(language.ServerSetupAccept(), StringComparison.InvariantCultureIgnoreCase))
+                            choice = true;
+                        else
+                            choice = false;
+                        config.EnableHTTPServer = choice;
+                    }
                 }
             }
             if (config.Areas.Count == 0)
@@ -1028,13 +1028,13 @@ namespace ManicDiggerServer
             serializer.Serialize(textWriter, config);
             textWriter.Close();
         }
-        
+
         public void LoadBanlist()
         {
-        	string filename = "ServerBanlist.txt";
+            string filename = "ServerBanlist.txt";
             if (!File.Exists(Path.Combine(GameStorePath.gamepathconfig, filename)))
             {
-            	Console.WriteLine(language.ServerBanlistNotFound());
+                Console.WriteLine(language.ServerBanlistNotFound());
                 SaveBanlist();
                 return;
             }
@@ -1049,27 +1049,27 @@ namespace ManicDiggerServer
             }
             catch
             {
-            	//Banlist corrupt. Try to backup old, then create new one.
-            	try
-            	{
-            	    File.Copy(Path.Combine(GameStorePath.gamepathconfig, filename), Path.Combine(GameStorePath.gamepathconfig, filename + ".old"));
-            	    Console.WriteLine(language.ServerBanlistCorrupt());
-            	}
-            	catch
-            	{
-            		Console.WriteLine(language.ServerBanlistCorruptNoBackup());
-            	}
-            	banlist = null;
+                //Banlist corrupt. Try to backup old, then create new one.
+                try
+                {
+                    File.Copy(Path.Combine(GameStorePath.gamepathconfig, filename), Path.Combine(GameStorePath.gamepathconfig, filename + ".old"));
+                    Console.WriteLine(language.ServerBanlistCorrupt());
+                }
+                catch
+                {
+                    Console.WriteLine(language.ServerBanlistCorruptNoBackup());
+                }
+                banlist = null;
                 SaveBanlist();
             }
             banlist.ClearTimeBans();
             SaveBanlist();
             Console.WriteLine(language.ServerBanlistLoaded());
         }
-        
+
         public void SaveBanlist()
         {
-        	//Verify that we have a directory to place the file into.
+            //Verify that we have a directory to place the file into.
             if (!Directory.Exists(GameStorePath.gamepathconfig))
             {
                 Directory.CreateDirectory(GameStorePath.gamepathconfig);
@@ -1083,7 +1083,7 @@ namespace ManicDiggerServer
             {
                 banlist = new ServerBanlist();
             }
-            
+
             //Serialize the ServerBanlist class to XML
             serializer.Serialize(textWriter, banlist);
             textWriter.Close();
@@ -1707,6 +1707,8 @@ namespace ManicDiggerServer
             p.MaxHealth = stats.MaxHealth;
             p.CurrentOxygen = stats.CurrentOxygen;
             p.MaxOxygen = stats.MaxOxygen;
+            p.CurrentArmor = stats.CurrentArmor;
+            p.MaxArmor = stats.MaxArmor;
             return p;
         }
 
@@ -1954,7 +1956,7 @@ namespace ManicDiggerServer
             return PlayerStats[playername];
         }
         public int FiniteInventoryMax = 200;
-        
+
         Inventory StartInventory()
         {
             Inventory inv = ManicDigger.Inventory.Create(BlockTypes);
@@ -1965,7 +1967,7 @@ namespace ManicDiggerServer
                 int amount = d_Data.StartInventoryAmount()[i];
                 if (config.IsCreative)
                 {
-                    if (amount > 0 || BlockTypes[i].IsBuildable) 
+                    if (amount > 0 || BlockTypes[i].IsBuildable)
                     {
                         inv.Items.Add(new ProtoPoint(x, y), new Item() { ItemClass = ItemClass.Block, BlockId = i, BlockCount = 0, Durability = BlockTypes[i].Durability });
                         x++;
@@ -1996,6 +1998,8 @@ namespace ManicDiggerServer
             p.MaxHealth = 20;
             p.CurrentOxygen = 10;
             p.MaxOxygen = 10;
+            p.CurrentArmor = 0;
+            p.MaxArmor = 1819;
             return p;
         }
         public Vector3i PlayerBlockPosition(ClientOnServer c)
@@ -2060,7 +2064,7 @@ namespace ManicDiggerServer
             }
             if (name != "invalid")
             {
-            	SendMessageToAll(string.Format(language.ServerPlayerDisconnect(), coloredName));
+                SendMessageToAll(string.Format(language.ServerPlayerDisconnect(), coloredName));
                 ServerEventLog(string.Format("{0} disconnects.", name));
             }
         }
@@ -2128,7 +2132,7 @@ namespace ManicDiggerServer
 
                         if (string.IsNullOrEmpty(username) || !allowedUsername.IsMatch(username))
                         {
-                        	SendPacket(clientid, ServerPackets.DisconnectPlayer(language.ServerUsernameInvalid()));
+                            SendPacket(clientid, ServerPackets.DisconnectPlayer(language.ServerUsernameInvalid()));
                             ServerEventLog(string.Format("{0} can't join (invalid username: {1}).", (c.socket.RemoteEndPoint()).AddressToString(), username));
                             KillPlayer(clientid);
                             break;
@@ -2147,7 +2151,7 @@ namespace ManicDiggerServer
 
                         if (!config.AllowGuests && verificationFailed)
                         {
-                        	SendPacket(clientid, ServerPackets.DisconnectPlayer(language.ServerNoGuests()));
+                            SendPacket(clientid, ServerPackets.DisconnectPlayer(language.ServerNoGuests()));
                             KillPlayer(clientid);
                             break;
                         }
@@ -2355,12 +2359,12 @@ namespace ManicDiggerServer
                     {
                         if (!clients[clientid].privileges.Contains(ServerClientMisc.Privilege.build))
                         {
-                        	SendMessage(clientid, colorError + language.ServerNoBuildPrivilege());
+                            SendMessage(clientid, colorError + language.ServerNoBuildPrivilege());
                             break;
                         }
                         if (clients[clientid].IsSpectator && !config.AllowSpectatorBuild)
                         {
-                        	SendMessage(clientid, colorError + language.ServerNoSpectatorBuild());
+                            SendMessage(clientid, colorError + language.ServerNoSpectatorBuild());
                             break;
                         }
                         Vector3i a = new Vector3i(packet.FillArea.X1, packet.FillArea.Y1, packet.FillArea.Z1);
@@ -2370,12 +2374,12 @@ namespace ManicDiggerServer
 
                         if (blockCount > clients[clientid].FillLimit)
                         {
-                        	SendMessage(clientid, colorError + language.ServerFillAreaTooLarge());
+                            SendMessage(clientid, colorError + language.ServerFillAreaTooLarge());
                             break;
                         }
                         if (!this.IsFillAreaValid(clients[clientid], a, b))
                         {
-                        	SendMessage(clientid, colorError + language.ServerFillAreaInvalid());
+                            SendMessage(clientid, colorError + language.ServerFillAreaInvalid());
                             break;
                         }
                         this.DoFillArea(clientid, packet.FillArea, blockCount);
@@ -2400,7 +2404,7 @@ namespace ManicDiggerServer
                             {
                                 if (DistanceSquared(PlayerBlockPosition(clients[k.Key]), PlayerBlockPosition(clients[clientid])) <= config.PlayerDrawDistance * config.PlayerDrawDistance)
                                 {
-                                	SendPlayerTeleport(k.Key, clientid, p.X, p.Y, p.Z, (byte)p.Heading, (byte)p.Pitch, (byte)p.Stance);
+                                    SendPlayerTeleport(k.Key, clientid, p.X, p.Y, p.Z, (byte)p.Heading, (byte)p.Pitch, (byte)p.Stance);
                                 }
                             }
                         }
@@ -2466,7 +2470,7 @@ namespace ManicDiggerServer
                             }
                             else
                             {
-                            	SendMessage(clientid, string.Format(language.ServerNoChatPrivilege(), colorError));
+                                SendMessage(clientid, string.Format(language.ServerNoChatPrivilege(), colorError));
                             }
                         }
                     }
@@ -2479,29 +2483,169 @@ namespace ManicDiggerServer
                     break;
                 case Packet_ClientIdEnum.Health:
                     {
+                        //<SwampGerman>
                         //todo server side
                         var stats = GetPlayerStats(clients[clientid].playername);
-                       //if( stats.CurrentArmor != packet.Armor.CurrentArmor)
-                       // {
-                            
-                       //     //Alexis
-                       //     //To test
-                       //     Inventory[c.playername].Inventory.Boots.Durability--;
-                       //     Inventory[c.playername].Inventory.Helmet.Durability--;
-                       //     Inventory[c.playername].Inventory.Gauntlet.Durability--;
-                       //     Inventory[c.playername].Inventory.MainArmor.Durability--;
-                       // }
-
-                        stats.CurrentHealth = packet.Health.CurrentHealth;
-
-                        if (stats.CurrentHealth < 1)
+                        if (stats.CurrentHealth != packet.Health.CurrentHealth)
                         {
-                            //death - reset health. More stuff done in Death packet handling
-                            stats.CurrentHealth = stats.MaxHealth;
+                            stats.CurrentHealth = packet.Health.CurrentHealth;
+                           
+                            if (stats.CurrentHealth < 1)
+                            {
+                                //death - reset health. More stuff done in Death packet handling
+                                stats.CurrentHealth = stats.MaxHealth;
+                            }
+                            clients[clientid].IsPlayerStatsDirty = true;
                         }
-                        clients[clientid].IsPlayerStatsDirty = true;
+                        
                     }
                     break;
+                    //<SwampGerman>
+                case Packet_ClientIdEnum.Armor:
+                    {
+                        var stats = GetPlayerStats(clients[clientid].playername);
+                        if (stats.CurrentArmor != packet.Armor.CurrentArmor)
+                        {
+                            try
+                            {
+                                int nbArmorPiece = 0;
+                                int damage = 0;
+
+                                Item helmet = Inventory[c.playername].Inventory.Helmet;
+                                Item boots = Inventory[c.playername].Inventory.Boots;
+                                Item gauntlet = Inventory[c.playername].Inventory.Gauntlet;
+                                Item mainArmor = Inventory[c.playername].Inventory.MainArmor;
+
+                                //Used to divide the domage throughout the armor
+                                nbArmorPiece += (helmet != null) ? (helmet.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (boots != null) ? (boots.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (gauntlet != null) ? (gauntlet.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (mainArmor != null) ? (mainArmor.Durability > 0) ? 1 : 0 : 0;
+
+                                damage = (int)((float)(stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece);
+                                damage = (damage >= 1) ? damage : 1;
+
+                                if (helmet != null)
+                                {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
+                                        if (helmet.Durability > damage)
+                                            helmet.Durability -= damage;
+                                        else
+                                            helmet.Durability = 0;
+                                        
+                                    Console.WriteLine(helmet.Durability.ToString());
+                                     if (helmet.Durability == 0)
+                                    {
+                                        if (helmet.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.Helmet = new Item();
+                                        }
+                                        else
+                                        {
+                                            helmet.BlockCount--;
+                                            helmet.Durability = BlockTypes[helmet.BlockId].Durability;
+                                        }
+                                    }
+                                    clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
+                                }
+
+                                if (boots != null)
+                                {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
+                                        if (boots.Durability > damage)
+                                            boots.Durability -= damage;
+                                        else
+                                            boots.Durability = 0;
+
+                                   
+                                    Console.WriteLine(boots.Durability.ToString());
+                                    if (boots.Durability == 0)
+                                    {
+                                        if (boots.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.Boots = new Item();
+                                        }
+                                        else
+                                        {
+                                            boots.BlockCount--;
+                                            boots.Durability = BlockTypes[boots.BlockId].Durability;
+                                        }
+                                    }
+                                    clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
+                                }
+
+                                if (gauntlet != null)
+                                {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
+                                        if (gauntlet.Durability > damage)
+                                            gauntlet.Durability -= damage;
+                                        else
+                                            gauntlet.Durability = 0;
+
+
+                                    Console.WriteLine(gauntlet.Durability.ToString());
+                                    if (gauntlet.Durability == 0)
+                                    {
+                                        if (gauntlet.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.Gauntlet = new Item();
+                                        }
+                                        else
+                                        {
+                                            gauntlet.BlockCount--;
+                                            gauntlet.Durability = BlockTypes[gauntlet.BlockId].Durability;
+                                        }
+                                    }
+                                    clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
+                                }
+
+                                if (mainArmor != null)
+                                {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
+                                        if (mainArmor.Durability > damage)
+                                            mainArmor.Durability -= damage;
+                                        else
+                                            mainArmor.Durability = 0;
+
+                                    
+                                    Console.WriteLine(mainArmor.Durability.ToString());
+                                    if (mainArmor.Durability == 0)
+                                    {
+                                        if (mainArmor.BlockCount == 1)
+                                        {
+                                            Inventory[c.playername].Inventory.MainArmor = new Item();
+                                        }
+                                        else
+                                        {
+                                            mainArmor.BlockCount--;
+                                            mainArmor.Durability = BlockTypes[mainArmor.BlockId].Durability;
+                                        }
+                                    }
+                                    clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
+                                }
+                                stats.CurrentArmor = packet.Armor.CurrentArmor;
+                                clients[clientid].IsPlayerStatsDirty = true;
+                            }
+                            catch (Exception)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+                    break;
+                    //</SwampGerman>
                 case Packet_ClientIdEnum.Death:
                     {
                         //Console.WriteLine("Death Packet Received. Client: {0}, Reason: {1}, Source: {2}", clientid, packet.Death.Reason, packet.Death.SourcePlayer);
@@ -2779,7 +2923,7 @@ namespace ManicDiggerServer
                     break;
                 case Packet_ClientIdEnum.GameResolution:
                     //Update client information
-                    clients[clientid].WindowSize = new int[] {packet.GameResolution.Width, packet.GameResolution.Height};
+                    clients[clientid].WindowSize = new int[] { packet.GameResolution.Width, packet.GameResolution.Height };
                     //Console.WriteLine("client:{0} --> {1}x{2}", clientid, clients[clientid].WindowSize[0], clients[clientid].WindowSize[1]);
                     break;
                 default:
@@ -2787,8 +2931,8 @@ namespace ManicDiggerServer
                     break;
             }
         }
-        
-        
+
+
         public void SendServerRedirect(int clientid, string ip_, int port_)
         {
             Packet_Server p = new Packet_Server();
@@ -2827,7 +2971,7 @@ namespace ManicDiggerServer
                 //Resize the image if it does not have the proper size
                 bmp2 = new Bitmap(bmp, 64, 64);
             }
-            using(MemoryStream ms = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
                 //Convert image to a byte[] for transfer
                 bmp2.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
@@ -2933,12 +3077,12 @@ namespace ManicDiggerServer
 
         public void SendPlayerSpawn(int clientid, int spawnedplayer)
         {
-        	if (!clients[clientid].IsBot)	//Bots don't need to be sent packets with other player's positions
-        	{
+            if (!clients[clientid].IsBot)	//Bots don't need to be sent packets with other player's positions
+            {
                 ClientOnServer c = clients[spawnedplayer];
                 Packet_ServerSpawnPlayer p = new Packet_ServerSpawnPlayer()
                 {
-                	PlayerId = spawnedplayer,
+                    PlayerId = spawnedplayer,
                     PlayerName = c.displayColor + c.playername,
                     PositionAndOrientation = new Packet_PositionAndOrientation()
                     {
@@ -3055,7 +3199,7 @@ namespace ManicDiggerServer
                 SendSetBlock(k.Key, x, y, z, blocktype);
             }
         }
-        
+
         bool ENABLE_FINITEINVENTORY { get { return !config.IsCreative; } }
         private bool DoCommandCraft(bool execute, Packet_ClientCraft cmd)
         {
@@ -3228,7 +3372,7 @@ namespace ManicDiggerServer
 
             Inventory inventory = GetPlayerInventory(clients[player_id].playername).Inventory;
             var item = inventory.RightHand[fill.MaterialSlot];
-            
+
             if (item == null)
             {
                 return false;
@@ -3435,7 +3579,7 @@ namespace ManicDiggerServer
                 switch (item.ItemClass)
                 {
                     case ItemClass.Block:
-                        if (item.BlockId >= 154 && item.BlockId <= 177) 
+                        if (item.BlockId >= 154 && item.BlockId <= 177)
                         {
                             return false; //JRC
                         }
@@ -3818,7 +3962,7 @@ namespace ManicDiggerServer
             catch (Exception)
             {
                 Console.WriteLine("Network exception.");
-            	KillPlayer(clientid);
+                KillPlayer(clientid);
             }
         }
         void EmptyCallback(IAsyncResult result)
@@ -3990,7 +4134,7 @@ namespace ManicDiggerServer
             Packet_ServerBlockTypes p = new Packet_ServerBlockTypes() { };
             SendPacket(clientid, Serialize(new Packet_Server() { Id = Packet_ServerIdEnum.BlockTypes, BlockTypes = p }));
         }
-        
+
         public void SendTranslations(int clientid)
         {
             //Read all lines from server translation and send them to the client
@@ -4184,7 +4328,7 @@ namespace ManicDiggerServer
             int z;
             if (!MapUtil.IsValidPos(d_Map, x, y))
             {
-            	throw new Exception(language.ServerInvalidSpawnCoordinates());
+                throw new Exception(language.ServerInvalidSpawnCoordinates());
             }
 
             if (spawn.z == null)
@@ -4196,7 +4340,7 @@ namespace ManicDiggerServer
                 z = spawn.z.Value;
                 if (!MapUtil.IsValidPos(d_Map, x, y, z))
                 {
-                	throw new Exception(language.ServerInvalidSpawnCoordinates());
+                    throw new Exception(language.ServerInvalidSpawnCoordinates());
                 }
             }
             return new Vector3i(x * 32, z * 32, y * 32);
@@ -4207,7 +4351,7 @@ namespace ManicDiggerServer
             string filename = "ServerClient.txt";
             if (!File.Exists(Path.Combine(GameStorePath.gamepathconfig, filename)))
             {
-            	Console.WriteLine(language.ServerClientConfigNotFound());
+                Console.WriteLine(language.ServerClientConfigNotFound());
                 SaveServerClient();
             }
             else
@@ -4269,7 +4413,7 @@ namespace ManicDiggerServer
             );
             if (this.defaultGroupGuest == null)
             {
-            	throw new Exception(language.ServerClientConfigGuestGroupNotFound());
+                throw new Exception(language.ServerClientConfigGuestGroupNotFound());
             }
             this.defaultGroupRegistered = serverClient.Groups.Find(
                 delegate(ManicDigger.Group grp)
@@ -4279,7 +4423,7 @@ namespace ManicDiggerServer
             );
             if (this.defaultGroupRegistered == null)
             {
-            	throw new Exception(language.ServerClientConfigRegisteredGroupNotFound());
+                throw new Exception(language.ServerClientConfigRegisteredGroupNotFound());
             }
             Console.WriteLine(language.ServerClientConfigLoaded());
         }
@@ -4654,7 +4798,7 @@ namespace ManicDiggerServer
             displayColor = "&f";
             EyeHeight = one * 15 / 10;
             ModelHeight = one * 17 / 10;
-            WindowSize = new int[]{ 800, 600 };
+            WindowSize = new int[] { 800, 600 };
         }
         internal int Id;
         internal int state; // ClientStateOnServer

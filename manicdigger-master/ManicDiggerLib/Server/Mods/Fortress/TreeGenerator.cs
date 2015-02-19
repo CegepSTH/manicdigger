@@ -72,13 +72,19 @@ namespace ManicDigger.Mods
                 {
                     continue;
                 }
-                chooseTreeType = rnd.Next(0, 4);
+                chooseTreeType = rnd.Next(0, 10);
                 switch (chooseTreeType)
                 {
-                    case 0: MakeTreeType1(x, y, z, rnd); break;
-                    case 1: MakeTreeType2(x, y, z, rnd); break;
-                    case 2: MakeTreeType3(x, y, z, rnd); break;
-                    case 3: MakeTreeTypeBig(x, y, z, rnd); break;
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4: MakeTreeType1(x, y, z, rnd); break;
+                    case 5:
+                    case 6: MakeTreeType2(x, y, z, rnd); break;
+                    case 7:
+                    case 8: MakeTreeType3(x, y, z, rnd); break;
+                    case 9: MakeTreeTypeBig(x, y, z, rnd); break;
                 };
             }
         }
@@ -94,13 +100,13 @@ namespace ManicDigger.Mods
                 SetBlock(x, y, z + i, TileIdTreeTrunk);
                 SetBlock(x + 1, y, z + i, TileIdTreeTrunk);
                 SetBlock(x + 1, y + 1, z + i, TileIdTreeTrunk);
-                SetBlock(x , y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x, y + 1, z + i, TileIdTreeTrunk);
                 SetBlock(x, y - 1, z + i, TileIdTreeTrunk);
-                SetBlock(x -1 , y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y - 1, z + i, TileIdTreeTrunk);
                 SetBlock(x + 1, y - 1, z + i, TileIdTreeTrunk);
-                SetBlock(x - 1, y , z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y, z + i, TileIdTreeTrunk);
                 SetBlock(x - 1, y + 1, z + i, TileIdTreeTrunk);
-        
+
                 if (i == treeHeight - 1)
                 {
                     for (int j = 1; j < 9; j++)
@@ -289,6 +295,59 @@ namespace ManicDigger.Mods
                     }
                 }
                 SetBlockIfEmpty(x, y, z + treeHeight, TileIdLeaves);
+            }
+        }
+
+        private void MakeTreeType4(int x, int y, int z, Random rnd)
+        {
+            int treeHeight = rnd.Next(8, 30);
+            int xx = 0;
+            int yy = 0;
+            int dir = 0;
+            for (int i = 0; i < treeHeight; i++)
+            {
+                SetBlock(x, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x, y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x, y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x + 1, y - 1, z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y, z + i, TileIdTreeTrunk);
+                SetBlock(x - 1, y + 1, z + i, TileIdTreeTrunk);
+                SetBlock(x, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 2, y, z + i, TileIdTreeTrunk);
+                SetBlock(x + 2, y + 2, z + i, TileIdTreeTrunk);
+                SetBlock(x, y + 2, z + i, TileIdTreeTrunk);
+                SetBlock(x, y - 2, z + i, TileIdTreeTrunk);
+                SetBlock(x - 2, y - 2, z + i, TileIdTreeTrunk);
+                SetBlock(x + 2, y - 2, z + i, TileIdTreeTrunk);
+                SetBlock(x - 2, y, z + i, TileIdTreeTrunk);
+                SetBlock(x - 2, y + 2, z + i, TileIdTreeTrunk);
+
+                if (i == treeHeight - 1)
+                {
+                    for (int j = 1; j < 27; j++)
+                    {
+                        dir += 45;
+                        for (int k = 1; k < 10; k++)
+                        {
+                            int length = dir % 90 == 0 ? k : (int)(k / 2);
+                            xx = length * (int)System.Math.Round(System.Math.Cos(dir * System.Math.PI / 180));
+                            yy = length * (int)System.Math.Round(System.Math.Sin(dir * System.Math.PI / 180));
+
+                            SetBlock(x + xx, y + yy, z + i, TileIdTreeTrunk);
+
+
+                            SetBlockIfEmpty(x + xx, y + yy, z + i + 1, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx + 1, y + yy, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx - 1, y + yy, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx, y + yy + 1, z + i, TileIdLeaves);
+                            SetBlockIfEmpty(x + xx, y + yy - 1, z + i, TileIdLeaves);
+
+                        }
+                    }
+                }
             }
         }
 

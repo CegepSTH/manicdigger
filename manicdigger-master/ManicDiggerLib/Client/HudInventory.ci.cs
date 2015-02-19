@@ -105,9 +105,10 @@
         PointRef cellinCraft = SelectedCraftCell(scaledMouse);
 
         
-
+        //if clicked in the craft interface 
         if(cellinCraft != null)
         {
+            //Send a different packet to split stack
             if (args.GetButton() == MouseButtonEnum.Right)
             {
                 Packet_InventoryPosition p = new Packet_InventoryPosition();
@@ -117,7 +118,7 @@
                 controller.InventoryRightClick(p);
                 return true;
             }
-
+            //send a packet for crafting interface
             Packet_InventoryPosition p1 = new Packet_InventoryPosition();
             p1.Type = Packet_InventoryPositionTypeEnum.Crafting;
             p1.AreaX = cellinCraft.X;
@@ -454,7 +455,7 @@
                 }
             }
         }
-
+        //draw item info when mouseover in craft interface
         if(SelectedCraftCell(scaledMouse) != null)
         {
             PointRef selected = SelectedCraftCell(scaledMouse);

@@ -465,7 +465,7 @@ namespace ManicDigger
                 }
                 
                 SendInventory();
-            }
+            }//Click in the crafting interface
             else if (pos.Type == Packet_InventoryPositionTypeEnum.Crafting)
             {
                 Point? selected = null;
@@ -484,12 +484,15 @@ namespace ManicDigger
                 {
                     if(selected.Value.X == 4 && selected.Value.Y == 2)
                     {
-                        ApplyRecipe(d_Inventory.currentRecipe);
-                        d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+                        if (ApplyRecipe(d_Inventory.currentRecipe))
+                        {
+                            d_Inventory.DragDropItem = d_Inventory.CraftInv[new ProtoPoint(selected.Value.X, selected.Value.Y)];
+                            d_Inventory.DragDropItem.Durability = d_Inventory.currentRecipe.output.Dura;
+                            //   d_Inventory.DragDropItem.Durability = d_Inventory.BlockTypes[d_Inventory.DragDropItem.BlockId].Durability;
 
-                        d_Inventory.DragDropItem.Durability = d_Inventory.BlockTypes[d_Inventory.DragDropItem.BlockId].Durability;
-
-                        d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                            d_Inventory.CraftInv.Remove(new ProtoPoint(selected.Value.X, selected.Value.Y));
+                        }
+                        //crafting
                         CheckRecipes();
                         SendInventory();
                         return;
@@ -523,8 +526,10 @@ namespace ManicDigger
                     else //1
                     {
                         var swapWith = itemsAtArea[0];
+                        //craft result cell
                         if (swapWith.X == 4 && swapWith.Y == 2)
-                        {
+                        { 
+                            //take the output of the recipe and apply it (remove ingredients)
                             if (d_Inventory.DragDropItem.BlockId == d_Inventory.currentRecipe.output.Type)
                             {
                                 ApplyRecipe(d_Inventory.currentRecipe);
@@ -538,6 +543,7 @@ namespace ManicDigger
                         Item stackResult = d_Items.Stack(d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)], d_Inventory.DragDropItem);
                         if (stackResult != null)
                         {
+                            //wont stack at cell craft output
                             if (pos.AreaX == 4 && pos.AreaY == 2)
                                 return;
                             d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)] = stackResult;
@@ -548,6 +554,7 @@ namespace ManicDigger
                         {
                             //try to swap
                             //swap (swapWith, dragdropitem)
+                            //wont swap with cell craft output
                             if (pos.AreaX == 4 && pos.AreaY == 2)
                                 return;
                             Item z = d_Inventory.CraftInv[new ProtoPoint(swapWith.X, swapWith.Y)];
@@ -562,6 +569,10 @@ namespace ManicDigger
             }
         }
         
+        /// <summary>
+        /// Right click event, called when a right-click is done in the inventory, used to split stacks
+        /// </summary>
+        /// <param name="pos"></param>
         public override void InventoryRightClick(Packet_InventoryPosition pos)
         {
             if (pos.Type == Packet_InventoryPositionTypeEnum.MainArea)
@@ -635,7 +646,7 @@ namespace ManicDigger
             }
         }
         private void SendInventory()
-       {
+        {
         }
 
         public override void WearItem(Packet_InventoryPosition from, Packet_InventoryPosition to)
@@ -699,8 +710,9 @@ namespace ManicDigger
                 }
             }
         }
-
+        
         //Check if a recipe is complete and add the output to the crafting result
+        //4,2 is the output
         public void CheckRecipes()
         {
             int IngCountok = 0;
@@ -709,6 +721,7 @@ namespace ManicDigger
             {
                 IngCountok = 0;
                 int Count = d_Inventory.CraftInv.Count;
+                //if already an output, doesn't count it as a ingredient
                 if (d_Inventory.CraftInv.ContainsKey(new ProtoPoint(4, 2)))
                     Count--;
                 if (r.ingredients.Count == Count)
