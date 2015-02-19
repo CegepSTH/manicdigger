@@ -2243,16 +2243,24 @@
             SendPacketClient(pArmor1);
 
             //Added by <SwampGerman>
-            if (damage > PlayerStats.CurrentArmor)
+            if (damageSource != Packet_DeathReasonEnum.Drowning)
             {
-                damage -= PlayerStats.CurrentArmor;
-                PlayerStats.CurrentArmor = 0;
+                if (damage > PlayerStats.CurrentArmor)
+                {
+                    if (PlayerStats.CurrentArmor > 0)
+                        damage -= PlayerStats.CurrentArmor;
+                    PlayerStats.CurrentArmor = 0;
 
-                PlayerStats.CurrentHealth -= damage;
+                    PlayerStats.CurrentHealth -= damage;
+                }
+                else
+                {
+                    PlayerStats.CurrentArmor -= damage;
+                }
             }
-            else
+            else 
             {
-                PlayerStats.CurrentArmor -= damage;
+                PlayerStats.CurrentHealth -= damage;
             }
             // </SwampGerman>
             if (PlayerStats.CurrentHealth <= 0)
@@ -2284,16 +2292,17 @@
 
             }
             SendPacketClient(p1);
-
-            Packet_Client p2 = new Packet_Client();
+            if (damageSource != Packet_DeathReasonEnum.Drowning)
             {
-                p2.Id = Packet_ClientIdEnum.Armor;
-                p2.Armor = new Packet_ClientArmor();
+                Packet_Client p2 = new Packet_Client();
+                {
+                    p2.Id = Packet_ClientIdEnum.Armor;
+                    p2.Armor = new Packet_ClientArmor();
 
-                p2.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+                    p2.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+                }
+                SendPacketClient(p2);
             }
-            SendPacketClient(p2);
-
         }
     }
 

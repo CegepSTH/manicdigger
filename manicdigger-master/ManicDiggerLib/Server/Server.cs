@@ -2509,25 +2509,30 @@ namespace ManicDiggerServer
                             try
                             {
                                 int nbArmorPiece = 0;
+                                int damage = 0;
 
                                 Item helmet = Inventory[c.playername].Inventory.Helmet;
                                 Item boots = Inventory[c.playername].Inventory.Boots;
                                 Item gauntlet = Inventory[c.playername].Inventory.Gauntlet;
                                 Item mainArmor = Inventory[c.playername].Inventory.MainArmor;
 
-                                nbArmorPiece += (helmet != null) ? 1 : 0;
-                                nbArmorPiece += (boots != null) ? 1 : 0;
-                                nbArmorPiece += (gauntlet != null) ? 1 : 0;
-                                nbArmorPiece += (mainArmor != null) ? 1 : 0;
+                                //Used to divide the domage throughout the armor
+                                nbArmorPiece += (helmet != null) ? (helmet.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (boots != null) ? (boots.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (gauntlet != null) ? (gauntlet.Durability > 0) ? 1 : 0 : 0;
+                                nbArmorPiece += (mainArmor != null) ? (mainArmor.Durability > 0) ? 1 : 0 : 0;
+
+                                damage = (int)((float)(stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece);
+                                damage = (damage >= 1) ? damage : 1;
 
                                 if (helmet != null)
                                 {
-                                    if(stats.CurrentArmor > packet.Armor.CurrentArmor)
-                                    helmet.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
-
-                                    
-
-                                    
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
+                                        if (helmet.Durability > damage)
+                                            helmet.Durability -= damage;
+                                        else
+                                            helmet.Durability = 0;
+                                        
                                     Console.WriteLine(helmet.Durability.ToString());
                                      if (helmet.Durability == 0)
                                     {
@@ -2542,12 +2547,18 @@ namespace ManicDiggerServer
                                         }
                                     }
                                     clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
                                 }
 
                                 if (boots != null)
                                 {
                                     if (stats.CurrentArmor > packet.Armor.CurrentArmor)
-                                    boots.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
+                                        if (boots.Durability > damage)
+                                            boots.Durability -= damage;
+                                        else
+                                            boots.Durability = 0;
 
                                    
                                     Console.WriteLine(boots.Durability.ToString());
@@ -2564,12 +2575,18 @@ namespace ManicDiggerServer
                                         }
                                     }
                                     clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
                                 }
 
                                 if (gauntlet != null)
                                 {
                                     if (stats.CurrentArmor > packet.Armor.CurrentArmor)
-                                    gauntlet.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
+                                        if (gauntlet.Durability > damage)
+                                            gauntlet.Durability -= damage;
+                                        else
+                                            gauntlet.Durability = 0;
 
 
                                     Console.WriteLine(gauntlet.Durability.ToString());
@@ -2586,12 +2603,18 @@ namespace ManicDiggerServer
                                         }
                                     }
                                     clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
                                 }
 
                                 if (mainArmor != null)
                                 {
                                     if (stats.CurrentArmor > packet.Armor.CurrentArmor)
-                                    mainArmor.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
+                                        if (mainArmor.Durability > damage)
+                                            mainArmor.Durability -= damage;
+                                        else
+                                            mainArmor.Durability = 0;
 
                                     
                                     Console.WriteLine(mainArmor.Durability.ToString());
@@ -2608,8 +2631,12 @@ namespace ManicDiggerServer
                                         }
                                     }
                                     clients[clientid].IsPlayerStatsDirty = true;
+
+                                    clients[clientid].IsInventoryDirty = true;
+                                    NotifyInventory(clientid);
                                 }
                                 stats.CurrentArmor = packet.Armor.CurrentArmor;
+                                clients[clientid].IsPlayerStatsDirty = true;
                             }
                             catch (Exception)
                             {
