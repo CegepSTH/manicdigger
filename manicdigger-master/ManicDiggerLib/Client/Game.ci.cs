@@ -1660,7 +1660,7 @@
     {
         if (PlayerStats != null)
         {
-            //if (PlayerStats.CurrentOxygen < PlayerStats.MaxOxygen)
+            if (PlayerStats.CurrentOxygen < PlayerStats.MaxOxygen)
             {
                 float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
                 int posX = barDistanceToMargin + barOffset + barOffset + 4;
@@ -1686,7 +1686,7 @@
     {
         if (PlayerStats != null)
         {
-            //if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
+            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
                 float progress = (one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor);
                 int posX = barDistanceToMargin + barOffset+2;

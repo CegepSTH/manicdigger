@@ -1239,56 +1239,56 @@ namespace ManicDigger.Mods
             });
 
 
-            m.SetBlockType(165, "Silver hoe", new BlockType()
-            {
-                AllTextures = "Grid_Silver_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f,
-                Durability = 1562
-            });
-            m.SetBlockType(166, "Iron hoe", new BlockType()
-            {
-                AllTextures = "Grid_Iron_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f,
-                Durability = 251
-            });
-            m.SetBlockType(167, "Golden hoe", new BlockType()
-            {
-                AllTextures = "Grid_Golden_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f,
-                Durability = 33
-            });
-            m.SetBlockType(168, "Stone hoe", new BlockType()
-            {
-                AllTextures = "Grid_Stone_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f,
-                Durability = 132
-            });
-            m.SetBlockType(169, "Wooden hoe", new BlockType()
-            {
-                AllTextures = "Grid_Wooden_Hoe",
-                DrawType = DrawType.Transparent,
-                WalkableType = WalkableType.Empty,
-                Sounds = solidSounds,
-                handimage = "Toolhand_Iron_Axe.png",
-                WalkSpeedWhenUsed = 1f,
-                Durability = 60
-            });
+            //m.SetBlockType(165, "Silver hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Silver_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f,
+            //    Durability = 1562
+            //});
+            //m.SetBlockType(166, "Iron hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Iron_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f,
+            //    Durability = 251
+            //});
+            //m.SetBlockType(167, "Golden hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Golden_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f,
+            //    Durability = 33
+            //});
+            //m.SetBlockType(168, "Stone hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Stone_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f,
+            //    Durability = 132
+            //});
+            //m.SetBlockType(169, "Wooden hoe", new BlockType()
+            //{
+            //    AllTextures = "Grid_Wooden_Hoe",
+            //    DrawType = DrawType.Transparent,
+            //    WalkableType = WalkableType.Empty,
+            //    Sounds = solidSounds,
+            //    handimage = "Toolhand_Iron_Axe.png",
+            //    WalkSpeedWhenUsed = 1f,
+            //    Durability = 60
+            //});
 
             m.SetBlockType(170, "Silver shovel", new BlockType()
             {
