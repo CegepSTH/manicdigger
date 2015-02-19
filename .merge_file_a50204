@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
@@ -9,7 +9,7 @@ namespace ManicDigger.Server.Mods.Fortress
     {
         #region private Type
 
-        private enum LiquidType
+        private enum LiquiType
         {
             NONE,
             WATER,
@@ -22,14 +22,12 @@ namespace ManicDigger.Server.Mods.Fortress
             private int _x, _y, _z, _s;
             private ModManager _m;
 
-            private LiquidType _liquidType = LiquidType.NONE;
 
-            public LiquidRemover(int x, int y, int z, int s, ModManager m, bool bucket, LiquidType liquidType)
+            public LiquidRemover(int x, int y, int z, int s, ModManager m, bool bucket)
             {
                 if (m == null)
                     return;
 
-                _liquidType = liquidType;
                 string bName = m.GetBlockName(m.GetBlock(x, y, z));
                 _x = x;
                 _y = y;
@@ -38,7 +36,7 @@ namespace ManicDigger.Server.Mods.Fortress
                 _m = m;
 
 
-                if ((bName == "Source" || bName == "Water" || bName == "Lava" || bName == "LavaSource") && bucket)
+                if ((bName == "Source" || bName == "Water") && bucket)
                 {
                     if (_s > 0)
                         m.SetBlock(_x, _y, _z, _m.GetBlockId("Empty"));
@@ -53,6 +51,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
             private void RemoveXY()
             {
+                //Console.WriteLine("ici");
                 _s--;
                 Remove(_x - 1, _y, _z, _s);
                 Remove(_x + 1, _y, _z, _s);
@@ -63,13 +62,14 @@ namespace ManicDigger.Server.Mods.Fortress
             private void Remove(int x, int y, int z, int s)
             {
                 string bName = _m.GetBlockName(_m.GetBlock(x, y, z));
+               //Console.WriteLine("test " + bName);
                 if (bName == "Water")
                 {
                     _m.SetBlock(x, y, z, _m.GetBlockId("Empty"));
 
                     if (s > 0)
                     {
-                        LiquidRemover w = new LiquidRemover(x, y, z, s, _m, true, _liquidType);
+                        LiquidRemover w = new LiquidRemover(x, y, z, s, _m, true);
                     }
                 }
             }
@@ -102,7 +102,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
             private bool _isSource;
             private ModManager _mod;
-            private LiquidType _liquidType;
+            private LiquiType _liquidType;
             private List<LiquidCube> _liquid = new List<LiquidCube>();
 
             public int X { get { return _x; } }
@@ -118,19 +118,19 @@ namespace ManicDigger.Server.Mods.Fortress
                 _sz = z;
             }
 
-            public LiquidType LiquidType { get { return _liquidType; } }
+            public LiquiType LiquidType { get { return _liquidType; } }
 
-            public LiquidCube(int x, int y, int z, int strength, ModManager mod, bool isSource, LiquidType liquidType)
+            public LiquidCube(int x, int y, int z, int strength, ModManager mod, bool isSource, LiquiType liquidType)
             {
                 _liquidType = liquidType;
                 string name = "";
 
-                if (liquidType == LiquidType.WATER_SOURCE || liquidType == LiquidType.WATER)
+                if (liquidType == LiquiType.WATER_SOURCE || liquidType == LiquiType.WATER)
                 {
                     MAX_STRENGH = MAX_STRENGH_WATER;
                     name = (isSource) ? "Source" : "Water";
                 }
-                else if (liquidType == LiquidType.LAVA_SOURCE || liquidType == LiquidType.LAVA)
+                else if (liquidType == LiquiType.LAVA_SOURCE || liquidType == LiquiType.LAVA)
                 {
                     MAX_STRENGH = MAX_STRENGH_LAVA;
                     name = (isSource) ? "LavaSource" : "Lava";
@@ -154,6 +154,7 @@ namespace ManicDigger.Server.Mods.Fortress
                 if (_s > MAX_STRENGH)
                     _s = MAX_STRENGH;
 
+               // Console.WriteLine("STRENGH: " + _s.ToString());
 
                 mod.SetBlock(x, y, z, _mod.GetBlockId(name));
                 if (CanFlow())
@@ -162,6 +163,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
             private bool CanFlow()
             {
+                //Console.WriteLine("canFlow");
 
                 //regarde vers le bas
                 if (CanFlowZ())
@@ -187,23 +189,34 @@ namespace ManicDigger.Server.Mods.Fortress
                 bool canFill = false;
 
                 // LAVA
-                if (_liquidType == LiquidType.LAVA_SOURCE || _liquidType == LiquidType.LAVA)
+                if (_liquidType == LiquiType.LAVA_SOURCE || _liquidType == LiquiType.LAVA)
                 {
                     if (name == "LAVA" || name == "Empty")
                     {
-                        _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquidType.LAVA));
+                        _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquiType.LAVA));
                         canFill = true;
+                    }
+
+                    if (name == "Water" || name == "Source")
+                    {
+                        _mod.SetBlock(_x, _y, _z - 1, _mod.GetBlockId("Obsidian"));
                     }
                 }
                 // WATER
-                else if (_liquidType == LiquidType.WATER_SOURCE || _liquidType == LiquidType.WATER)
+                else if (_liquidType == LiquiType.WATER_SOURCE || _liquidType == LiquiType.WATER)
                 {
                     if (name == "Water" || name == "Empty")
                     {
-                        _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquidType.WATER));
+                        _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquiType.WATER));
                         canFill = true;
                     }
+                    if (name == "LavaSource" || name == "Lava")
+                    {
+                        _mod.SetBlock(_x, _y, _z - 1, _mod.GetBlockId("Obsidian"));
+                    }
                 }
+
+                //Console.WriteLine(canFill.ToString());
                 return canFill;
             }
 
@@ -227,33 +240,44 @@ namespace ManicDigger.Server.Mods.Fortress
             {
                 bool canFill = false;
                 string name = _mod.GetBlockName(_mod.GetBlock(x, y, z));
-                string bottom = _mod.GetBlockName(_mod.GetBlock(x, y, z - 1));
+                //string bottom = _mod.GetBlockName(_mod.GetBlock(x, y, z - 1));
 
+                //Console.WriteLine("FillPlaneSurfaceWithFluid");
                 for (int i = 0; i < textures.Length; i++)
                 {
+                    //Console.WriteLine(textures[i]);
                     if (textures[i] == name)
                     {
                         canFill = true;
                         break;
                     }
+                    if( _liquidType == LiquiType.LAVA &&( "Water" == name || "Source" == name))
+                    {
+                        _mod.SetBlock(x, y, z, _mod.GetBlockId("Obsidian"));
+                    }
+                    if (_liquidType == LiquiType.WATER &&( "Lava" == name || "LavaSource" == name ))
+                    {
+                        _mod.SetBlock(x, y, z, _mod.GetBlockId("Obsidian"));
+                    }
                     //if (textures[i] == bottom)
                     //    return false;
                 }
+                //Console.WriteLine("ICIIIIIIIIII");
 
                 if (canFill)
                 {
-
-                    LiquidType tempLiquiType = LiquidType.NONE;
+                    
+                    LiquiType tempLiquiType = LiquiType.NONE;
 
                     //LAVA
-                    if (_liquidType == LiquidType.LAVA || _liquidType == LiquidType.LAVA_SOURCE)
+                    if (_liquidType == LiquiType.LAVA || _liquidType == LiquiType.LAVA_SOURCE)
                     {
-                        tempLiquiType = LiquidType.LAVA;
+                        tempLiquiType = LiquiType.LAVA;
                     }
                     //WATER
-                    else if (_liquidType == LiquidType.WATER || _liquidType == LiquidType.WATER_SOURCE)
+                    else if (_liquidType == LiquiType.WATER || _liquidType == LiquiType.WATER_SOURCE)
                     {
-                        tempLiquiType = LiquidType.WATER;
+                        tempLiquiType = LiquiType.WATER;
                     }
 
                     LiquidCube w = new LiquidCube(x, y, z, s, _mod, false, tempLiquiType);
@@ -262,31 +286,36 @@ namespace ManicDigger.Server.Mods.Fortress
                     canFill = true;
                 }
 
+                //Console.WriteLine(canFill.ToString());
                 return canFill;
             }
 
             private void FlowWater()
             {
+                Console.WriteLine("liquid: " + _liquid.Count.ToString());
+               // Console.WriteLine("FlowWater");
                 for (int i = 0; i < _liquid.Count; i++)
                 {
+                    //Console.WriteLine(i.ToString());
                     string texture = "";
                     LiquidCube w = _liquid[i];
-                    LiquidType t = w.LiquidType;
+                    LiquiType t = w.LiquidType;
 
                     switch (t)
                     {
-                        case LiquidType.WATER:
+                        case LiquiType.WATER:
                             texture = "Water";
                             break;
-                        case LiquidType.LAVA:
+                        case LiquiType.LAVA:
                             texture = "Lava";
                             break;
-                        case LiquidType.WATER_SOURCE:
+                        case LiquiType.WATER_SOURCE:
                             texture = "Source";
                             break;
-                        case LiquidType.LAVA_SOURCE:
+                        case LiquiType.LAVA_SOURCE:
                             texture = "LavaSource";
                             break;
+                 
                     }
 
                     bool s = _liquid[i].Source;
@@ -297,7 +326,7 @@ namespace ManicDigger.Server.Mods.Fortress
         }
 
         #endregion
-
+       
         private ModManager _m;
 
         public void PreStart(ModManager manager)
@@ -319,11 +348,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void BuildOnSource(int player, int x, int y, int z)
         {
-            string name = _m.GetBlockName(_m.GetBlock(x, y, z));
-
-            LiquidType type = (name == "Source") ? LiquidType.WATER : LiquidType.LAVA;
-
-            LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, false, type);
+            LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, false);
         }
 
         void Build(int player, int x, int y, int z)
@@ -334,112 +359,59 @@ namespace ManicDigger.Server.Mods.Fortress
             if (_m.GetBlockName(_m.GetBlock(x, y, z)) == "Source" ||
                 _m.GetBlockName(_m.GetBlock(x, y, z)) == "WaterBucket")
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquidType.WATER_SOURCE);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER_SOURCE);
             }
         }
 
         void Delete(int player, int x, int y, int z, int blockid)
         {
-            string name = _m.GetBlockName(_m.GetBlock(x, y, z));
-
-            if (name == "Source" || name == "Water")
+            if (_m.GetBlockName(_m.GetBlock(x, y, z)) == "Source")
+                _m.SetBlock(x, y, z, _m.GetBlockId("Source"));
+            if (WaterAround(x, y, z))
             {
-                _m.SetBlock(x, y, z, _m.GetBlockId("Water"));
-            }
-            else if (name == "Lava" || name == "LavaSource")
-            {
-                _m.SetBlock(x, y, z, _m.GetBlockId("Lava"));
-            }
-
-            if (LiquidAroud(x, y, z) != LiquidType.NONE)
-            {
-                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquidAroud(x, y, z));
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER);
             }
         }
 
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
+            //Console.WriteLine("use with tool");
             if (toolId == _m.GetBlockId("WBucket"))
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquidType.WATER_SOURCE);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER_SOURCE);
                 return;
             }
             else if (toolId == _m.GetBlockId("LavaBucket"))
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquidType.LAVA_SOURCE);
+               // Console.WriteLine("use lava buvket");
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.LAVA_SOURCE);
                 return;
             }
 
             if (toolId == _m.GetBlockId("EmptyBucket"))
             {
-                string blockName = _m.GetBlockName(_m.GetBlock(x, y, z));
-                string fillName = "Empty";
-                LiquidType type = LiquidType.NONE;
-
-                if (blockName == "Source")
-                {
-                    fillName = "wBucket";
-                    type = LiquidType.WATER;
-                }
-
-                else if (blockName == "LavaSource")
-                { 
-                    fillName = "LavaBucket";
-                    type = LiquidType.LAVA;
-                }
-
                 int actSlot = _m.GetActiveMaterialSlot(player);
+                _m.GetInventory(player).RightHand[actSlot].BlockId = _m.GetBlockId("WBucket");
+                LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, true);
 
-                Console.WriteLine(fillName);
-                _m.GetInventory(player).RightHand[actSlot].BlockId = _m.GetBlockId(fillName);
-                LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, true, type);
             }
         }
 
-        private LiquidType LiquidAroud(int x, int y, int z)
+        private bool WaterAround(int x, int y, int z)
         {
-            List<LiquidType> types = new List<LiquidType>();
-
-            types.Add(isLiquid(x, y, z + 1));
-            types.Add(isLiquid(x + 1, y, z));
-            types.Add(isLiquid(x - 1, y, z));
-            types.Add(isLiquid(x, y + 1, z));
-            types.Add(isLiquid(x, y - 1, z));
-
-            LiquidType strongerType = LiquidType.NONE;
-
-            for (int i = 0; i < types.Count; i++)
-            {
-                // water always stronger
-                if (types[i] == LiquidType.WATER || types[i] == LiquidType.WATER_SOURCE)
-                    return LiquidType.WATER;
-
-                // lava
-                if (types[i] == LiquidType.LAVA || types[i] == LiquidType.LAVA_SOURCE)
-                    strongerType = LiquidType.LAVA;
-            }
-
-            // return NONE if thers's no liquid around
-            return strongerType;
+            return
+                isWater(x, y, z + 1) ||
+                isWater(x + 1, y, z) ||
+                isWater(x - 1, y, z) ||
+                isWater(x, y + 1, z) ||
+                isWater(x, y - 1, z);
         }
 
-        private LiquidType isLiquid(int x, int y, int z)
+        private bool isWater(int x, int y, int z)
         {
             string name = _m.GetBlockName(_m.GetBlock(x, y, z));
 
-            switch (name)
-            {
-                case "Water":
-                    return LiquidType.WATER;
-                case "Source":
-                    return LiquidType.WATER_SOURCE;
-                case "Lava":
-                    return LiquidType.LAVA;
-                case "LavaSource":
-                    return LiquidType.LAVA_SOURCE;
-                default:
-                    return LiquidType.NONE;
-            }
+            return name == "Water";
         }
     }
 }
