@@ -78,12 +78,12 @@ namespace ManicDigger.Mods
                     case 0:
                     case 1:
                     case 2:
-                    case 3: MakeTreeType1(x, y, z, rnd); break;
-                    case 4:
-                    case 5: MakeTreeType2(x, y, z, rnd); break;
-                    case 6:
-                    case 7: MakeTreeType3(x, y, z, rnd); break;
-                    case 8: MakeTreeType4(x, y, z, rnd); break;
+                    case 3:
+                    case 4: MakeTreeType1(x, y, z, rnd); break;
+                    case 5:
+                    case 6: MakeTreeType2(x, y, z, rnd); break;
+                    case 7:
+                    case 8: MakeTreeType3(x, y, z, rnd); break;
                     case 9: MakeTreeTypeBig(x, y, z, rnd); break;
                 };
             }

@@ -2500,6 +2500,7 @@ namespace ManicDiggerServer
                         
                     }
                     break;
+                    //<SwampGerman>
                 case Packet_ClientIdEnum.Armor:
                     {
                         var stats = GetPlayerStats(clients[clientid].playername);
@@ -2545,6 +2546,7 @@ namespace ManicDiggerServer
 
                                 if (boots != null)
                                 {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
                                     boots.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
 
                                    
@@ -2566,6 +2568,7 @@ namespace ManicDiggerServer
 
                                 if (gauntlet != null)
                                 {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
                                     gauntlet.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
 
 
@@ -2587,6 +2590,7 @@ namespace ManicDiggerServer
 
                                 if (mainArmor != null)
                                 {
+                                    if (stats.CurrentArmor > packet.Armor.CurrentArmor)
                                     mainArmor.Durability -= (stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece;
 
                                     
@@ -2611,17 +2615,10 @@ namespace ManicDiggerServer
                             {
                                 throw;
                             }
-                            //Alexis
-                            //To test
-                            //Inventory[c.playername].Inventory.Boots.Durability--;
-                            //Inventory[c.playername].Inventory.Helmet.Durability--;
-                            //Inventory[c.playername].Inventory.Gauntlet.Durability--;
-                            //Inventory[c.playername].Inventory.MainArmor.Durability--;
-
-
                         }
                     }
                     break;
+                    //</SwampGerman>
                 case Packet_ClientIdEnum.Death:
                     {
                         //Console.WriteLine("Death Packet Received. Client: {0}, Reason: {1}, Source: {2}", clientid, packet.Death.Reason, packet.Death.SourcePlayer);
