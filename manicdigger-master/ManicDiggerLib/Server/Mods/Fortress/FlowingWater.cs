@@ -38,7 +38,7 @@ namespace ManicDigger.Server.Mods.Fortress
                 _m = m;
 
 
-                if ((bName == "Source" || bName == "Water") && bucket)
+                if ((bName == "Source" || bName == "Water" || bName == "Lava" || bName == "LavaSource") && bucket)
                 {
                     if (_s > 0)
                         m.SetBlock(_x, _y, _z, _m.GetBlockId("Empty"));
