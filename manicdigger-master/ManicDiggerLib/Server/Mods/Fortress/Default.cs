@@ -1347,7 +1347,8 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Empty,
                 Sounds = solidSounds,
                 handimage = "Lava_Bucket.png",
-                WalkSpeedWhenUsed = 1f
+                WalkSpeedWhenUsed = 1f,
+                IsTool = true
             });
             m.SetBlockType(176, "WBucket", new BlockType()
             {
@@ -1378,6 +1379,15 @@ namespace ManicDigger.Mods
                 WalkableType = WalkableType.Fluid,
                 handimage = "Water.png",
                 Sounds = noSound,
+            });
+            m.SetBlockType(203, "LavaSource", new BlockType()
+            {
+                AllTextures = "Lava",
+                DrawType = DrawType.Fluid,
+                WalkableType = WalkableType.Fluid,
+                Sounds = noSound,
+                LightRadius = 15,
+                DamageToPlayer = 2,
             });
 
             m.RegisterTimer(UpdateSeasons, 1);
