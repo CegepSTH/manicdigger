@@ -1660,10 +1660,10 @@
     {
         if (PlayerStats != null)
         {
-            if (PlayerStats.CurrentOxygen < PlayerStats.MaxOxygen)
+            //if (PlayerStats.CurrentOxygen < PlayerStats.MaxOxygen)
             {
                 float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
-                int posX = barDistanceToMargin + barOffset;
+                int posX = barDistanceToMargin + barOffset + barOffset + 4;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
@@ -1672,10 +1672,10 @@
                 IntRef d = IntRef.Create(20);
                 //CYSOTH - If 100%, put x = 90
                 if (progress == 1)
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //CYSOTH - If less, put x = 94
                 else
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 98, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1686,10 +1686,10 @@
     {
         if (PlayerStats != null)
         {
-            if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
+            //if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
-                float progress = one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor;
-                int posX = barDistanceToMargin + barOffset + barOffset;
+                float progress = (one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor);
+                int posX = barDistanceToMargin + barOffset+2;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 133, 133, 133), false);
@@ -1698,10 +1698,10 @@
                 IntRef d = IntRef.Create(20);
                 //CYSOTH - If 100%, put x = 60
                 if (progress == 1)
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.IntToString(platform.FloatToInt(progress * 100))), c, 62, platform.GetCanvasHeight() - 40, d, false);
                 //CYSOTH - If less, put x = 64
                 else
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.IntToString(platform.FloatToInt(progress * 100))), c, 66, platform.GetCanvasHeight() - 40, d, false);
             }
         }
     }
