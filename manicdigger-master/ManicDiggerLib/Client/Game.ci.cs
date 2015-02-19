@@ -1726,7 +1726,7 @@
         {
             return false;
         }
-        return platform.StringContains(name, "Water"); // todo
+        return platform.StringContains(name, "Water") || name == "Lava";
     }
 
     internal bool IsSource(int blockType)
@@ -1736,7 +1736,7 @@
         {
             return false;
         }
-        return platform.StringContains(name, "Source"); // todo
+        return platform.StringContains(name, "Source") || name == "LavaSource";
     }
 
     internal int mouseCurrentX;
