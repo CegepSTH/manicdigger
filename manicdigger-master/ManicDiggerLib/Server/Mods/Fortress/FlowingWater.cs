@@ -7,6 +7,8 @@ namespace ManicDigger.Server.Mods.Fortress
 {
     class FlowingWater : IMod
     {
+        #region private Type
+
         private enum LiquiType
         {
             NONE,
@@ -15,16 +17,13 @@ namespace ManicDigger.Server.Mods.Fortress
             WATER_SOURCE,
             LAVA_SOURCE
         }
-
-
-        //###################################################
-        private class WaterRemover
+        private class LiquidRemover
         {
             private int _x, _y, _z, _s;
             private ModManager _m;
 
 
-            public WaterRemover(int x, int y, int z, int s, ModManager m, bool bucket)
+            public LiquidRemover(int x, int y, int z, int s, ModManager m, bool bucket)
             {
                 if (m == null)
                     return;
@@ -70,7 +69,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
                     if (s > 0)
                     {
-                        WaterRemover w = new WaterRemover(x, y, z, s, _m, true);
+                        LiquidRemover w = new LiquidRemover(x, y, z, s, _m, true);
                     }
                 }
             }
@@ -88,7 +87,6 @@ namespace ManicDigger.Server.Mods.Fortress
                 while (bName == "Water" || bName == "Source");
             }
         }
-
         private class LiquidCube
         {
             public const int MAX_STRENGH_WATER = 7;
@@ -307,20 +305,20 @@ namespace ManicDigger.Server.Mods.Fortress
                 }
             }
         }
-        //###################################################
 
-        ModManager m;
-
+        #endregion
+       
+        private ModManager _m;
 
         public void PreStart(ModManager manager)
         {
-            m = manager;
+            _m = manager;
 
             // s'abonne au event Build et Delete
-            m.RegisterOnBlockBuild(Build);
-            m.RegisterOnBlockDelete(Delete);
-            m.RegisterOnBlockUseWithTool(UseWithTool);
-            m.RegisterOnBlockBuildOnSource(BuildOnSource);
+            _m.RegisterOnBlockBuild(Build);
+            _m.RegisterOnBlockDelete(Delete);
+            _m.RegisterOnBlockUseWithTool(UseWithTool);
+            _m.RegisterOnBlockBuildOnSource(BuildOnSource);
         }
 
         public void Start(ModManager m)
@@ -331,7 +329,7 @@ namespace ManicDigger.Server.Mods.Fortress
 
         void BuildOnSource(int player, int x, int y, int z)
         {
-            WaterRemover w = new WaterRemover(x, y, z, 50, m, false);
+            LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, false);
         }
 
         void Build(int player, int x, int y, int z)
@@ -339,43 +337,43 @@ namespace ManicDigger.Server.Mods.Fortress
             //if (m.GetBlockName(m.GetBlock(x, y, z - 1)) == "Source")
             //    m.SetBlock(x, y, z, m.GetBlockId("Empty"));
 
-            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Source" ||
-                m.GetBlockName(m.GetBlock(x, y, z)) == "WaterBucket")
+            if (_m.GetBlockName(_m.GetBlock(x, y, z)) == "Source" ||
+                _m.GetBlockName(_m.GetBlock(x, y, z)) == "WaterBucket")
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, m, true, LiquiType.WATER_SOURCE);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER_SOURCE);
             }
         }
 
         void Delete(int player, int x, int y, int z, int blockid)
         {
-            if (m.GetBlockName(m.GetBlock(x, y, z)) == "Source")
-                m.SetBlock(x, y, z, m.GetBlockId("Source"));
+            if (_m.GetBlockName(_m.GetBlock(x, y, z)) == "Source")
+                _m.SetBlock(x, y, z, _m.GetBlockId("Source"));
             if (WaterAround(x, y, z))
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, m, true, LiquiType.WATER);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER);
             }
         }
 
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
             Console.WriteLine("use with tool");
-            if (toolId == m.GetBlockId("WBucket"))
+            if (toolId == _m.GetBlockId("WBucket"))
             {
-                LiquidCube w = new LiquidCube(x, y, z, 500, m, true, LiquiType.WATER_SOURCE);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.WATER_SOURCE);
                 return;
             }
-            else if (toolId == m.GetBlockId("LavaBucket"))
+            else if (toolId == _m.GetBlockId("LavaBucket"))
             {
                 Console.WriteLine("use lava buvket");
-                LiquidCube w = new LiquidCube(x, y, z, 500, m, true, LiquiType.LAVA_SOURCE);
+                LiquidCube w = new LiquidCube(x, y, z, 500, _m, true, LiquiType.LAVA_SOURCE);
                 return;
             }
 
-            if (toolId == m.GetBlockId("EmptyBucket"))
+            if (toolId == _m.GetBlockId("EmptyBucket"))
             {
-                int actSlot = m.GetActiveMaterialSlot(player);
-                m.GetInventory(player).RightHand[actSlot].BlockId = m.GetBlockId("WBucket");
-                WaterRemover w = new WaterRemover(x, y, z, 50, m, true);
+                int actSlot = _m.GetActiveMaterialSlot(player);
+                _m.GetInventory(player).RightHand[actSlot].BlockId = _m.GetBlockId("WBucket");
+                LiquidRemover w = new LiquidRemover(x, y, z, 50, _m, true);
 
             }
         }
@@ -389,9 +387,10 @@ namespace ManicDigger.Server.Mods.Fortress
                 isWater(x, y + 1, z) ||
                 isWater(x, y - 1, z);
         }
+
         private bool isWater(int x, int y, int z)
         {
-            string name = m.GetBlockName(m.GetBlock(x, y, z));
+            string name = _m.GetBlockName(_m.GetBlock(x, y, z));
 
             return name == "Water";
         }
