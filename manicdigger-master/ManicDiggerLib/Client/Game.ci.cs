@@ -2233,6 +2233,15 @@
     {
         if (!AllowFreemove)
         {
+            Packet_Client pArmor1 = new Packet_Client();
+            {
+                pArmor1.Id = Packet_ClientIdEnum.Armor;
+                pArmor1.Armor = new Packet_ClientArmor();
+
+                pArmor1.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+            }
+            SendPacketClient(pArmor1);
+
             //Added by <SwampGerman>
             if (damage > PlayerStats.CurrentArmor)
             {
