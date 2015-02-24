@@ -2642,7 +2642,8 @@ namespace ManicDiggerServer
                                     NotifyInventory(clientid);
                                 }
                                 stats.CurrentArmor = packet.Armor.CurrentArmor;
-                                clients[clientid].IsPlayerStatsDirty = true;
+                                clients[clientid].IsInventoryDirty = true;
+                                NotifyInventory(clientid);
                             }
                             catch (Exception)
                             {
@@ -2671,6 +2672,16 @@ namespace ManicDiggerServer
                     }
                     break;
                 case Packet_ClientIdEnum.IsCreative:
+                    if (packet.IsCreative.IsSet)
+                        config.IsCreative = packet.IsCreative.IsCreative;
+
+                    Packet_Server p2 = new Packet_Server();
+                    p2.Id = Packet_ServerIdEnum.IsCreative;
+                    p2.IsCreative = new Packet_ServerIsCreative()
+                    {
+                        IsCreative = config.IsCreative
+                    };
+                    SendPacket(clientid, Serialize(p2));
 
                     d_Data.SetStartInventoryAmount(new int[1024]);
                     break;

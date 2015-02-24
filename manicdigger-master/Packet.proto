@@ -28,6 +28,11 @@ package Packet;
 		IsCreative = 999;
 	}
 	
+	message ClientIsCreative
+	{
+		optional bool IsSet = 1;
+		optional bool IsCreative= 2;
+	}
 	
 	message ClientIdentification
 	{
@@ -270,6 +275,7 @@ package Packet;
         optional ClientServerQuery query = 19;
         optional ClientGameResolution gameResolution = 20;
 		optional ClientArmor armor = 21;
+		optional ClientIsCreative isCreative = 22;
 	}
 	
     message SoundSet
@@ -432,6 +438,12 @@ package Packet;
         ServerRedirect = 65;
         ExtendedPacketCommand = 100;
         ExtendedPacketTick = 101;
+		IsCreative = 999;
+	}
+	
+	message ServerIsCreative
+	{
+		optional bool isCreative = 1;
 	}
 	
 	message ServerIdentification
@@ -748,6 +760,7 @@ package Packet;
         optional ServerQueryAnswer queryAnswer = 36;
         optional ServerRedirect redirect = 37;
         optional ServerChunkEntity chunkEntity_ = 38;
+		optional ServerIsCreative isCreative = 39;
     }
     
     message IntInt
@@ -855,7 +868,7 @@ package Packet;
         repeated PositionItem items = 7;
         optional Item dragDropItem = 8;
         repeated Item rightHand = 9;
-	repeated PositionItem CraftItems = 10;
+		repeated PositionItem CraftItems = 10;
     }
     
     message Item

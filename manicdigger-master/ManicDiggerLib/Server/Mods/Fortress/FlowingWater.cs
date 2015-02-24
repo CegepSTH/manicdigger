@@ -9,6 +9,9 @@ namespace ManicDigger.Server.Mods.Fortress
     {
         #region private Type
 
+        /// <summary>
+        /// Type of liquids that can flow
+        /// </summary>
         private enum LiquidType
         {
             NONE,
@@ -17,6 +20,11 @@ namespace ManicDigger.Server.Mods.Fortress
             WATER_SOURCE,
             LAVA_SOURCE
         }
+
+        /// <summary>
+        /// This class is use to remove liquid from a source liquid around the source position
+        /// pass in the constructor will be remove
+        /// </summary>
         private class LiquidRemover
         {
             private int _x, _y, _z, _s;
@@ -24,6 +32,16 @@ namespace ManicDigger.Server.Mods.Fortress
 
             private LiquidType _liquidType = LiquidType.NONE;
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="x">x position of source</param>
+            /// <param name="y">y position of source</param>
+            /// <param name="z">z position of source</param>
+            /// <param name="s">strengh of the liquid</param>
+            /// <param name="m">mod manager</param>
+            /// <param name="bucket">is it remove from a bucket DIRECTLY</param>
+            /// <param name="liquidType">type of liquid</param>
             public LiquidRemover(int x, int y, int z, int s, ModManager m, bool bucket, LiquidType liquidType)
             {
                 if (m == null)
@@ -51,6 +69,9 @@ namespace ManicDigger.Server.Mods.Fortress
                 RemoveXY();
             }
 
+            /// <summary>
+            /// Remove all around on X and Y Axes and decrement the strngh for the next remover
+            /// </summary>
             private void RemoveXY()
             {
                 _s--;
@@ -60,6 +81,13 @@ namespace ManicDigger.Server.Mods.Fortress
                 Remove(_x, _y + 1, _z, _s);
             }
 
+            /// <summary>
+            /// Remove liquid, set the block to an empty block
+            /// </summary>
+            /// <param name="x">position of the block</param>
+            /// <param name="y">position of the block</param>
+            /// <param name="z">position of the block</param>
+            /// <param name="s">position of the block</param>
             private void Remove(int x, int y, int z, int s)
             {
                 string bName = _m.GetBlockName(_m.GetBlock(x, y, z));
@@ -74,6 +102,10 @@ namespace ManicDigger.Server.Mods.Fortress
                 }
             }
 
+
+            /// <summary>
+            /// Remove liquid on Z axe
+            /// </summary>
             private void RemoveZ()
             {
                 string bName = "";
@@ -87,8 +119,16 @@ namespace ManicDigger.Server.Mods.Fortress
                 while (bName == "Water" || bName == "Source");
             }
         }
+
+
+
+        /// <summary>
+        /// Class used to add liquid in the world (physic algo)
+        /// </summary>
         private class LiquidCube
         {
+            //STRENGH is how many cube the liquid will flow on X and Y axes
+            // will be increment on Z axes and decrement on X and Y axes
             public const int MAX_STRENGH_WATER = 7;
             public const int MAX_STRENGH_LAVA = 3;
 
@@ -120,6 +160,16 @@ namespace ManicDigger.Server.Mods.Fortress
 
             public LiquidType LiquidType { get { return _liquidType; } }
 
+            /// <summary>
+            /// Reprenset ONE cube of liquid, source and non-source liquid
+            /// </summary>
+            /// <param name="x">position</param>
+            /// <param name="y">position</param>
+            /// <param name="z">position</param>
+            /// <param name="strength">Strength left to the liquid</param>
+            /// <param name="mod">mod manager</param>
+            /// <param name="isSource">is it a source of simple liquid flowing from a source</param>
+            /// <param name="liquidType">type of liquid</param>
             public LiquidCube(int x, int y, int z, int strength, ModManager mod, bool isSource, LiquidType liquidType)
             {
                 _liquidType = liquidType;
@@ -160,18 +210,23 @@ namespace ManicDigger.Server.Mods.Fortress
                     new Thread(FlowWater).Start();
             }
 
+
+            /// <summary>
+            /// Check if the liquid cube can flow in any direction
+            /// </summary>
+            /// <returns></returns>
             private bool CanFlow()
             {
 
-                //regarde vers le bas
+                //check on z axe
                 if (CanFlowZ())
                     return true;
 
-                // regarde si la force de l'eau est asser forte
+                //validate the strenght
                 if (_s < 1)
                     return false;
 
-                // regarde dans toute les direction
+                //check on x and y axes
                 _s--;
                 bool canX = CanFlowX();
                 bool canY = CanFlowY();
@@ -180,6 +235,11 @@ namespace ManicDigger.Server.Mods.Fortress
                 return canX || canY;
             }
 
+
+            /// <summary>
+            /// check if liquid cube can flow on Z axe
+            /// </summary>
+            /// <returns>true if it can flow</returns>
             private bool CanFlowZ()
             {
                 string name = _mod.GetBlockName(_mod.GetBlock(_x, _y, _z - 1));
@@ -207,6 +267,10 @@ namespace ManicDigger.Server.Mods.Fortress
                 return canFill;
             }
 
+            /// <summary>
+            /// Check if the liquid cube can flow on x axe 
+            /// </summary>
+            /// <returns>true if it can flow</returns>
             private bool CanFlowX()
             {
                 string[] v = new string[] { "Empty" };
@@ -215,6 +279,10 @@ namespace ManicDigger.Server.Mods.Fortress
                 return canP || canN;
             }
 
+            /// <summary>
+            /// Check if the liquid cube can flow on y axe 
+            /// </summary>
+            /// <returns>true if it can flow</returns>
             private bool CanFlowY()
             {
                 string[] v = new string[] { "Empty" };
@@ -223,6 +291,15 @@ namespace ManicDigger.Server.Mods.Fortress
                 return canP || canN;
             }
 
+            /// <summary>
+            /// Add the liquid cube passed in parameters in a LiquidCube List to be added int the world
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <param name="z"></param>
+            /// <param name="s"></param>
+            /// <param name="textures"></param>
+            /// <returns></returns>
             private bool FillPlaneSurfaceWithFluid(int x, int y, int z, int s, params string[] textures)
             {
                 bool canFill = false;
@@ -265,6 +342,9 @@ namespace ManicDigger.Server.Mods.Fortress
                 return canFill;
             }
 
+            /// <summary>
+            /// Add all liquids cubes of the list in the world
+            /// </summary>
             private void FlowWater()
             {
                 for (int i = 0; i < _liquid.Count; i++)
@@ -304,7 +384,6 @@ namespace ManicDigger.Server.Mods.Fortress
         {
             _m = manager;
 
-            // s'abonne au event Build et Delete
             _m.RegisterOnBlockBuild(Build);
             _m.RegisterOnBlockDelete(Delete);
             _m.RegisterOnBlockUseWithTool(UseWithTool);
@@ -313,10 +392,12 @@ namespace ManicDigger.Server.Mods.Fortress
 
         public void Start(ModManager m)
         {
-            // ajoute la Classe au mode Default (forteress)
             m.RequireMod("Default");
         }
 
+        /// <summary>
+        /// event called when the player build a block of any type on a source
+        /// </summary>
         void BuildOnSource(int player, int x, int y, int z)
         {
             string name = _m.GetBlockName(_m.GetBlock(x, y, z));
@@ -357,6 +438,11 @@ namespace ManicDigger.Server.Mods.Fortress
             }
         }
 
+        /// <summary>
+        /// Liquid will be remove if the tool is an empty bucket,
+        /// Water will be added if the tool is a water bucker
+        /// Lava will be added if the tool is a lava bucket
+        /// </summary>
         void UseWithTool(int player, int x, int y, int z, int toolId)
         {
             if (toolId == _m.GetBlockId("WBucket"))
@@ -396,6 +482,10 @@ namespace ManicDigger.Server.Mods.Fortress
             }
         }
 
+        /// <summary>
+        /// check if there's liquid around the position and return the Type 
+        /// return Type.NONE if there's no liquid
+        /// </summary>
         private LiquidType LiquidAroud(int x, int y, int z)
         {
             List<LiquidType> types = new List<LiquidType>();
@@ -423,6 +513,10 @@ namespace ManicDigger.Server.Mods.Fortress
             return strongerType;
         }
 
+
+        /// <summary>
+        /// check if the cube sended in parameters is a liquid
+        /// </summary>
         private LiquidType isLiquid(int x, int y, int z)
         {
             string name = _m.GetBlockName(_m.GetBlock(x, y, z));

@@ -154,6 +154,8 @@
         screenTextEditor.game = this;
         screens[1] = screenTextEditor;
         audiosamples = new DictionaryStringAudioSample();
+
+        
     }
     ScreenTextEditor screenTextEditor;
 
@@ -1269,6 +1271,16 @@
         pp.Id = Packet_ClientIdEnum.Message;
         pp.Message = p;
         SendPacketClient(pp);
+
+        if (platform.StartsWith(s,"/gamemode "))
+        {
+            Packet_Client p1 = new Packet_Client();
+            p1.Id = Packet_ClientIdEnum.IsCreative;
+            p1.IsCreative = new Packet_ClientIsCreative();
+            p1.IsCreative.IsSet = true;
+            p1.IsCreative.IsCreative = platform.StringSplit2(s, " ")[1] == "0";
+            SendPacketClient(p1);
+        }
     }
 
     internal HudChat d_HudChat;
@@ -2297,7 +2309,8 @@
                     }
                     SendPacketClient(p);
                 }
-
+                if (damageSource == Packet_DeathReasonEnum.Drowning)
+                    PlayerStats.CurrentOxygen = 10;
                 //Respawn(); //Death is not respawn ;)
             }
             else
@@ -4088,6 +4101,7 @@
 
     internal void GuiStateBackToGame()
     {
+
         guistate = GuiState.Normal;
         platform.RequestMousePointerLock();
     }
@@ -4668,6 +4682,16 @@
             p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
         }
         SendPacketClient(p);
+
+
+
+        Packet_Client p1 = new Packet_Client();
+        p1.Id = Packet_ClientIdEnum.IsCreative;
+        p1.IsCreative = new Packet_ClientIsCreative();
+        p1.IsCreative.IsSet = false;
+        p1.IsCreative.IsCreative = false;
+        SendPacketClient(p1);
+
         player.movedz = 0;
 
 
@@ -6014,6 +6038,9 @@
                 SendLeave(Packet_LeaveReasonEnum.Leave);
                 //Exit game screen and create new game instance
                 ExitAndSwitchServer(packet.Redirect);
+                break;
+            case Packet_ServerIdEnum.IsCreative:
+                ChangeGameMode(packet.IsCreative.IsCreative);
                 break;
         }
     }
@@ -7535,7 +7562,7 @@
             case GuiState.Inventory:
                 {
                     DrawDialogs();
-
+                    
                     //d_The3d.ResizeGraphics(Width, Height);
                     //d_The3d.OrthoMode(d_HudInventory.ConstWidth, d_HudInventory.ConstHeight);
                     d_HudInventory.Draw();

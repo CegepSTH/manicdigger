@@ -615,11 +615,11 @@
         return p.CharArrayToString(charArray, length);
     }
 
-    public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData, bool creative)
+    public void StartGame(bool singleplayer, string singleplayerSavePath, ConnectData connectData, bool creative, bool newgame)
     {
         ScreenGame screenGame = new ScreenGame();
         screenGame.menu = this;
-        screenGame.Start(p, singleplayer, singleplayerSavePath, connectData, creative);
+        screenGame.Start(p, singleplayer, singleplayerSavePath, connectData, creative, newgame);
         screen = screenGame;
     }
 
@@ -631,12 +631,12 @@
         connectData.Auth = loginResultData.AuthCode;
         connectData.Username = username;
 
-        StartGame(false, null, connectData, false);
+        StartGame(false, null, connectData, false, false);
     }
 
-    public void ConnectToSingleplayer(string filename, bool creative)
+    public void ConnectToSingleplayer(string filename, bool creative, bool newgame)
     {
-        StartGame(true, filename, null, creative);
+        StartGame(true, filename, null, creative, newgame);
     }
 
     public float GetScale()
@@ -1006,11 +1006,11 @@ public class ScreenMain : Screen
         if (e.GetKeyCode() == GlKeys.F5)
         {
             menu.p.SinglePlayerServerDisable();
-            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mdss"), null, true);
+            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mdss"), null, true, true);
         }
         if (e.GetKeyCode() == GlKeys.F6)
         {
-            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mddbs"), null, true);
+            menu.StartGame(true, menu.p.PathCombine(menu.p.PathSavegames(), "Default.mddbs"), null, true, true);
         }
     }
 }
@@ -1146,7 +1146,7 @@ public class ScreenSingleplayer : Screen
             string result = menu.p.FileOpenDialog(extension, "Manic Digger Savegame", menu.p.PathSavegames());
             if (result != null)
             {
-                menu.ConnectToSingleplayer(result, false);
+                menu.ConnectToSingleplayer(result, false, false);
             }
         }
         else if (w == back)
@@ -1343,11 +1343,11 @@ public class ScreenGameMode : Screen
 
         if (w == btnCreative)
         {
-            menu.ConnectToSingleplayer(result, true);
+            menu.ConnectToSingleplayer(result, true, true);
         }
         else if (w == btnSurvival)
         {
-            menu.ConnectToSingleplayer(result, false);
+            menu.ConnectToSingleplayer(result, false, true);
         }
     }
 }
@@ -1619,7 +1619,7 @@ public class ScreenLogin : Screen
                 connectdata.Ip = serverIp;
                 connectdata.Port = serverPort;
                 connectdata.Username = loginUsername.text;
-                menu.StartGame(false, null, connectdata, false);
+                menu.StartGame(false, null, connectdata, false, false);
             }
         }
         if (w == createAccount)
@@ -1655,7 +1655,7 @@ public class ScreenGame : Screen
     }
     Game game;
 
-    public void Start(GamePlatform platform_, bool singleplayer_, string singleplayerSavePath_, ConnectData connectData_, bool creative)
+    public void Start(GamePlatform platform_, bool singleplayer_, string singleplayerSavePath_, ConnectData connectData_, bool creative, bool newgame)
     {
         platform = platform_;
         singleplayer = singleplayer_;
@@ -1666,7 +1666,8 @@ public class ScreenGame : Screen
         game.issingleplayer = singleplayer;
         game.assets = menu.assets;
         game.assetsLoadProgress = menu.assetsLoadProgress;
-        game.ChangeGameMode(creative);
+        if (newgame)
+            game.ChangeGameMode(creative);   
 
         game.Start();
         Connect(platform);
@@ -1743,7 +1744,7 @@ public class ScreenGame : Screen
         if (game.reconnect)
         {
             game.Dispose();
-            menu.StartGame(singleplayer, singleplayerSavePath, connectData, false);
+            menu.StartGame(singleplayer, singleplayerSavePath, connectData, false, false);
             return;
         }
         if (game.exitToMainMenu)
