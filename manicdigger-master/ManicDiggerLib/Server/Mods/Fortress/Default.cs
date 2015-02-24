@@ -1130,7 +1130,7 @@ namespace ManicDigger.Mods
                 TextureIdLeft = "Empty",
                 TextureIdRight = "Empty",
                 TextureIdForInventory = "Stick",
-                handimage = "hand_Stick",
+                handimage = "hand_Stick.png",
                 DrawType = DrawType.Torch,
                 WalkableType = WalkableType.Empty,
                 Sounds = noSound,
