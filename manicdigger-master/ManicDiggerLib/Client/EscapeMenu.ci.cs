@@ -73,7 +73,9 @@
             game.SendLeave(Packet_LeaveReasonEnum.Leave);
             game.platform.ExitMousePointerLock();
             game.ExitToMainMenu();
-            game.platform.ThreadSleep(2700);
+            //Frank : Thread sleep to let the server save! otherwhise the thread is killed before...
+            if (game.issingleplayer)
+                game.platform.ThreadSleep(2700);
             game.platform.Exit();
         }
     }
