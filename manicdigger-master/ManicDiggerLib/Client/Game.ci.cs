@@ -4623,7 +4623,6 @@
 
     internal void OnPickUseWithTool(int posX, int posY, int posZ)
     {
-        if(mouseLeft)
         SendSetBlock(posX, posY, posZ, Packet_BlockSetModeEnum.UseWithTool, d_Inventory.RightHand[ActiveMaterial].BlockId, ActiveMaterial);
     }
 
