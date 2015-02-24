@@ -15,12 +15,6 @@ namespace ManicDiggerServer
 
             switch (command)
             {
-                //ADDED FRANCIS
-                case "gamemode":
-                        SendMessage(sourceClientId, colorSuccess + "Your gamemode have been successfully changed!");
-                    else
-                        SendMessage(sourceClientId, colorError + "Failed: The argument must be 0 for Creative or 1 for Survival");
-                    break;
                 case "msg":
                 case "pm":
                     ss = argument.Split(new[] { ' ' });
