@@ -254,6 +254,11 @@ namespace ManicDigger.Server.Mods.Fortress
                         _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquidType.LAVA));
                         canFill = true;
                     }
+                    if (name == "Water" || name == "Source")
+                    {
+                        _mod.SetBlock(_x, _y, _z - 1, _mod.GetBlockId("Obsidian"));
+                    }
+
                 }
                 // WATER
                 else if (_liquidType == LiquidType.WATER_SOURCE || _liquidType == LiquidType.WATER)
@@ -263,6 +268,11 @@ namespace ManicDigger.Server.Mods.Fortress
                         _liquid.Add(new LiquidCube(_x, _y, _z - 1, (_s + 1) >= MAX_STRENGH ? MAX_STRENGH : _s + 1, _mod, false, LiquidType.WATER));
                         canFill = true;
                     }
+                    if (name == "LavaSource" || name == "Lava")
+                    {
+                        _mod.SetBlock(_x, _y, _z - 1, _mod.GetBlockId("Obsidian"));
+                    }
+
                 }
                 return canFill;
             }
@@ -312,6 +322,14 @@ namespace ManicDigger.Server.Mods.Fortress
                     {
                         canFill = true;
                         break;
+                    }
+                    if (_liquidType == LiquidType.LAVA && ("Water" == name || "Source" == name))
+                    {
+                        _mod.SetBlock(x, y, z, _mod.GetBlockId("Obsidian"));
+                    }
+                    if (_liquidType == LiquidType.WATER && ("Lava" == name || "LavaSource" == name))
+                    {
+                        _mod.SetBlock(x, y, z, _mod.GetBlockId("Obsidian"));
                     }
                     //if (textures[i] == bottom)
                     //    return false;
