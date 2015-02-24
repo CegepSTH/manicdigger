@@ -2327,30 +2327,36 @@ namespace ManicDiggerServer
                             if (packet.SetBlock.Mode != Packet_BlockSetModeEnum.UseWithTool)
                                 BuildLog(string.Format("{0} {1} {2} {3} {4} {5}", x, y, z, c.playername, (c.socket.RemoteEndPoint()).AddressToString(), d_Map.GetBlock(x, y, z)));
                             //Set durability
+                            //Frank : this is where we downgrade the durability of the current tool
                             try
                             {
-                                Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
-                                if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
+                                if (!config.IsCreative)
                                 {
-                                    item.Durability--;
-                                    Console.WriteLine(item.Durability.ToString());
-                                    if (item.Durability == 0)
+                                    Item item = Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot];
+                                    if (item != null && item.BlockId >= 155 && item.BlockId <= 174)
                                     {
-                                        if (item.BlockCount == 1)
+                                        item.Durability--;
+                                        Console.WriteLine(item.Durability.ToString());
+                                        if (item.Durability == 1)
                                         {
-                                            Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                            if (item.BlockCount == 1)
+                                            {
+                                                Inventory[c.playername].Inventory.RightHand[c.ActiveMaterialSlot] = new Item();
+                                            }
+                                            else
+                                            {
+                                                item.BlockCount--;
+                                                item.Durability = BlockTypes[item.BlockId].Durability;
+                                            }
                                         }
-                                        else
-                                        {
-                                            item.BlockCount--;
-                                            item.Durability = BlockTypes[item.BlockId].Durability;
-                                        }
+                                        //notify the client.
+                                        NotifyInventory(clientid);
                                     }
                                 }
                             }
-                            catch (Exception)
+                            catch (Exception e)
                             {
-                                throw;
+                                Console.WriteLine(e.ToString());
                             }
                         }
                         break;
