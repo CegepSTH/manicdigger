@@ -2309,7 +2309,8 @@
                     }
                     SendPacketClient(p);
                 }
-
+                if (damageSource == Packet_DeathReasonEnum.Drowning)
+                    PlayerStats.CurrentOxygen = 10;
                 //Respawn(); //Death is not respawn ;)
             }
             else
