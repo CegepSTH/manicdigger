@@ -17,7 +17,6 @@ namespace ManicDiggerServer
             {
                 //ADDED FRANCIS
                 case "gamemode":
-                    if (argument.Equals("0") || argument.Equals("1"))
                         SendMessage(sourceClientId, colorSuccess + "Your gamemode have been successfully changed!");
                     else
                         SendMessage(sourceClientId, colorError + "Failed: The argument must be 0 for Creative or 1 for Survival");

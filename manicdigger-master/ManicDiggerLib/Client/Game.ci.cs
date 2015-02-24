@@ -1,6 +1,8 @@
 ﻿public class Game
 {
+    //Added by someone?...
     internal bool IsRunning;
+
     public Game()
     {
         pixelsCurrentLenght = 64 * 32 * 3;
@@ -408,7 +410,10 @@
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
-        if (tileType >= 154 && tileType <= 177)
+        //Frank + JRC : if block is stick, tool, bucket, armor....
+        //dont place it
+        //Note: must to the same verification on the server side too.
+        if (tileType >= 154 && tileType <= 177 || tileType >= 63 && tileType <= 78)
             return;
         SetBlockInChunk(chunk, pos, tileType);
     }
@@ -1389,7 +1394,9 @@
     internal bool AllowFreemove;
     internal bool enableCameraControl;
 
+    //Added by someone...
     internal bool CREATIVE;
+    //Frank : TOREDO; take from other branch OR DELETE!
     public void ChangeGameMode(bool creative)
     {
         CREATIVE = creative;
@@ -1408,8 +1415,8 @@
         }
     }
 
-
-
+    //Frank : edited: the user cannot respawn manually if he press the good key.
+    // well in survival.
     internal void Respawn()
     {
         if (AllowFreemove)
@@ -1675,7 +1682,7 @@
             if (PlayerStats.CurrentOxygen < PlayerStats.MaxOxygen)
             {
                 float progress = one * PlayerStats.CurrentOxygen / PlayerStats.MaxOxygen;
-                int posX = barDistanceToMargin + barOffset;
+                int posX = barDistanceToMargin + barOffset + barOffset + 4;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 255), false);
@@ -1684,10 +1691,10 @@
                 IntRef d = IntRef.Create(20);
                 //CYSOTH - If 100%, put x = 90
                 if (progress == 1)
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 90, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
                 //CYSOTH - If less, put x = 94
                 else
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 94, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 98, platform.GetCanvasHeight() - 40, d, false);
                 //
             }
         }
@@ -1700,8 +1707,8 @@
         {
             if (PlayerStats.CurrentArmor < PlayerStats.MaxArmor && PlayerStats.CurrentArmor > 0 && PlayerStats.MaxArmor > 0)
             {
-                float progress = one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor;
-                int posX = barDistanceToMargin + barOffset + barOffset;
+                float progress = (one * PlayerStats.CurrentArmor / PlayerStats.MaxArmor);
+                int posX = barDistanceToMargin + barOffset+2;
                 int posY = Height() - barDistanceToMargin;
                 Draw2dTexture(WhiteTexture(), posX, posY - barSizeY, barSizeX, barSizeY, null, 0, Game.ColorFromArgb(255, 0, 0, 0), false);
                 Draw2dTexture(WhiteTexture(), posX, posY - (progress * barSizeY), barSizeX, (progress) * barSizeY, null, 0, Game.ColorFromArgb(255, 133, 133, 133), false);
@@ -1710,10 +1717,10 @@
                 IntRef d = IntRef.Create(20);
                 //CYSOTH - If 100%, put x = 60
                 if (progress == 1)
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 60, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.IntToString(platform.FloatToInt(progress * 100))), c, 62, platform.GetCanvasHeight() - 40, d, false);
                 //CYSOTH - If less, put x = 64
                 else
-                    Draw2dText(platform.StringFormat("{0}%", platform.FloatToString(progress * 100)), c, 64, platform.GetCanvasHeight() - 40, d, false);
+                    Draw2dText(platform.StringFormat("{0}%", platform.IntToString(platform.FloatToInt(progress * 100))), c, 66, platform.GetCanvasHeight() - 40, d, false);
             }
         }
     }
@@ -1748,7 +1755,7 @@
         {
             return false;
         }
-        return platform.StringContains(name, "Water"); // todo
+        return platform.StringContains(name, "Water") || name == "Lava";
     }
 
     internal bool IsSource(int blockType)
@@ -1758,7 +1765,7 @@
         {
             return false;
         }
-        return platform.StringContains(name, "Source"); // todo
+        return platform.StringContains(name, "Source") || name == "LavaSource";
     }
 
     internal int mouseCurrentX;
@@ -2204,6 +2211,9 @@
 
     internal bool IsTileEmptyForPhysics(int x, int y, int z)
     {
+        
+        int activeMaterial = d_Inventory.RightHand[ActiveMaterial].BlockId;
+        
         if (z >= MapSizeZ)
         {
             return true;
@@ -2217,11 +2227,22 @@
             return ENABLE_FREEMOVE;
         }
         int block = GetBlockValid(x, y, z);
+        if (IsSource(block))
+        {
+            int stop = 0;
+        }
+
+        if ((IsSource(block) && activeMaterial != 177))
+        {
+            return true;
+        }
+        else if ((IsSource(block) && activeMaterial == 177))
+            return false;
 
         return block == SpecialBlockId.Empty
             || block == d_Data.BlockIdFillArea()
             || IsWater(block);
-        //  || !IsSource(block);
+            
     }
 
     internal bool IsTileEmptyForPhysicsClose(int x, int y, int z)
@@ -2255,16 +2276,24 @@
             SendPacketClient(pArmor1);
 
             //Added by <SwampGerman>
-            if (damage > PlayerStats.CurrentArmor)
+            if (damageSource != Packet_DeathReasonEnum.Drowning)
             {
-                damage -= PlayerStats.CurrentArmor;
-                PlayerStats.CurrentArmor = 0;
+                if (damage > PlayerStats.CurrentArmor)
+                {
+                    if (PlayerStats.CurrentArmor > 0)
+                        damage -= PlayerStats.CurrentArmor;
+                    PlayerStats.CurrentArmor = 0;
 
-                PlayerStats.CurrentHealth -= damage;
+                    PlayerStats.CurrentHealth -= damage;
+                }
+                else
+                {
+                    PlayerStats.CurrentArmor -= damage;
+                }
             }
-            else
+            else 
             {
-                PlayerStats.CurrentArmor -= damage;
+                PlayerStats.CurrentHealth -= damage;
             }
             // </SwampGerman>
             if (PlayerStats.CurrentHealth <= 0)
@@ -2296,16 +2325,17 @@
 
             }
             SendPacketClient(p1);
-
-            Packet_Client p2 = new Packet_Client();
+            if (damageSource != Packet_DeathReasonEnum.Drowning)
             {
-                p2.Id = Packet_ClientIdEnum.Armor;
-                p2.Armor = new Packet_ClientArmor();
+                Packet_Client p2 = new Packet_Client();
+                {
+                    p2.Id = Packet_ClientIdEnum.Armor;
+                    p2.Armor = new Packet_ClientArmor();
 
-                p2.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+                    p2.Armor.CurrentArmor = PlayerStats.CurrentArmor;
+                }
+                SendPacketClient(p2);
             }
-            SendPacketClient(p2);
-
         }
     }
 
@@ -2365,7 +2395,7 @@
         if (IsValidPos(posX, posY, posZ - 3))
         {
             int blockBelow = GetBlock(posX, posY, posZ - 3);
-            if ((blockBelow != 0) && !IsWater(blockBelow))// || !IsSource(blockBelow)))
+            if ((blockBelow != 0) && !IsWater(blockBelow) || !IsSource(blockBelow))
             {
                 float severity = 0;
                 if (fallspeed < 4) { return; }
@@ -3901,7 +3931,7 @@
     {
         if (GetPlayerEyesBlock() == -1) { return true; }
 
-        return IsWater(GetPlayerEyesBlock());// || IsSource(GetPlayerEyesBlock());
+        return (IsWater(GetPlayerEyesBlock())) || (IsSource(GetPlayerEyesBlock()));
     }
 
     internal bool LavaSwimming()
@@ -4592,6 +4622,7 @@
 
     internal void OnPickUseWithTool(int posX, int posY, int posZ)
     {
+        if(mouseLeft)
         SendSetBlock(posX, posY, posZ, Packet_BlockSetModeEnum.UseWithTool, d_Inventory.RightHand[ActiveMaterial].BlockId, ActiveMaterial);
     }
 
@@ -4915,140 +4946,153 @@
 
     internal void OnPick(int blockposX, int blockposY, int blockposZ, int blockposoldX, int blockposoldY, int blockposoldZ, float[] collisionPos, bool right)
     {
-        float xfract = collisionPos[0] - MathFloor(collisionPos[0]);
-        float zfract = collisionPos[2] - MathFloor(collisionPos[2]);
+        int test = GetBlock(blockposX, blockposY, blockposZ);
+        int mode;
+       
         int activematerial = MaterialSlots(ActiveMaterial);
-        int railstart = d_Data.BlockIdRailstart();
-        if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical
-            || activematerial == railstart + RailDirectionFlags.Corners)
-        {
-            RailDirection dirnew;
-            if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical)
-            {
-                dirnew = PickHorizontalVertical(xfract, zfract);
-            }
-            else
-            {
-                dirnew = PickCorners(xfract, zfract);
-            }
-            int dir = d_Data.Rail()[GetBlock(blockposoldX, blockposoldY, blockposoldZ)];
-            if (dir != 0)
-            {
-                blockposX = blockposoldX;
-                blockposY = blockposoldY;
-                blockposZ = blockposoldZ;
-            }
-            activematerial = railstart + (dir | DirectionUtils.ToRailDirectionFlags(dirnew));
-            //Console.WriteLine(blockposold);
-            //Console.WriteLine(xfract + ":" + zfract + ":" + activematerial + ":" + dirnew);
-        }
         int x = platform.FloatToInt(blockposX);
         int y = platform.FloatToInt(blockposY);
         int z = platform.FloatToInt(blockposZ);
-        int mode = right ? Packet_BlockSetModeEnum.Create : Packet_BlockSetModeEnum.Destroy;
+
+        if (test == 178)
         {
-            if (IsAnyPlayerInPos(x, y, z) || activematerial == 151)
-            {
-                return;
-            }
-            Vector3IntRef v = Vector3IntRef.Create(x, y, z);
-            Vector3IntRef oldfillstart = fillstart;
-            Vector3IntRef oldfillend = fillend;
-            if (mode == Packet_BlockSetModeEnum.Create)
-            {
-                if (blocktypes[activematerial].IsTool)
-                {
-                    OnPickUseWithTool(blockposX, blockposY, blockposZ);
-                    return;
-                }
-
-                //if (GameDataManicDigger.IsDoorTile(activematerial))
-                //{
-                //    if (z + 1 == d_Map.MapSizeZ || z == 0) return;
-                //}
-
-                if (activematerial == d_Data.BlockIdCuboid())
-                {
-                    ClearFillArea();
-
-                    if (fillstart != null)
-                    {
-                        Vector3IntRef f = fillstart;
-                        if (!IsFillBlock(GetBlock(f.X, f.Y, f.Z)))
-                        {
-                            fillarea.Set(f.X, f.Y, f.Z, GetBlock(f.X, f.Y, f.Z));
-                        }
-                        SetBlock(f.X, f.Y, f.Z, d_Data.BlockIdFillStart());
-
-
-                        FillFill(v, fillstart);
-                    }
-                    if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
-                    {
-                        fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
-                    }
-                    SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdCuboid());
-                    fillend = v;
-                    RedrawBlock(v.X, v.Y, v.Z);
-                    return;
-                }
-                if (activematerial == d_Data.BlockIdFillStart())
-                {
-                    ClearFillArea();
-                    if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
-                    {
-                        fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
-                    }
-                    SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdFillStart());
-                    fillstart = v;
-                    fillend = null;
-                    RedrawBlock(v.X, v.Y, v.Z);
-                    return;
-                }
-                if (fillarea.ContainsKey(v.X, v.Y, v.Z))// && fillarea[v])
-                {
-                    SendFillArea(fillstart.X, fillstart.Y, fillstart.Z, fillend.X, fillend.Y, fillend.Z, activematerial);
-                    ClearFillArea();
-                    fillstart = null;
-                    fillend = null;
-                    return;
-                }
-            }
-            else
-            {
-                if (blocktypes[activematerial].IsTool)
-                {
-                    OnPickUseWithTool(blockposX, blockposY, blockposoldZ);
-                    return;
-                }
-                //delete fill start
-                if (fillstart != null && fillstart.X == v.X && fillstart.Y == v.Y && fillstart.Z == v.Z)
-                {
-                    ClearFillArea();
-                    fillstart = null;
-                    fillend = null;
-                    return;
-                }
-                //delete fill end
-                if (fillend != null && fillend.X == v.X && fillend.Y == v.Y && fillend.Z == v.Z)
-                {
-                    ClearFillArea();
-                    fillend = null;
-                    return;
-                }
-            }
-            if (mode == Packet_BlockSetModeEnum.Create && activematerial == d_Data.BlockIdMinecart())
-            {
-                //CommandRailVehicleBuild cmd2 = new CommandRailVehicleBuild();
-                //cmd2.x = (short)x;
-                //cmd2.y = (short)y;
-                //cmd2.z = (short)z;
-                //TrySendCommand(MakeCommand(CommandId.RailVehicleBuild, cmd2));
-                return;
-            }
-            //if (TrySendCommand(MakeCommand(CommandId.Build, cmd)))
-            SendSetBlockAndUpdateSpeculative(activematerial, x, y, z, mode);
+            mode = Packet_BlockSetModeEnum.BuildOnSource;
         }
+        else
+        {
+            float xfract = collisionPos[0] - MathFloor(collisionPos[0]);
+            float zfract = collisionPos[2] - MathFloor(collisionPos[2]);
+            
+            int railstart = d_Data.BlockIdRailstart();
+            if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical
+                || activematerial == railstart + RailDirectionFlags.Corners)
+            {
+                RailDirection dirnew;
+                if (activematerial == railstart + RailDirectionFlags.TwoHorizontalVertical)
+                {
+                    dirnew = PickHorizontalVertical(xfract, zfract);
+                }
+                else
+                {
+                    dirnew = PickCorners(xfract, zfract);
+                }
+                int dir = d_Data.Rail()[GetBlock(blockposoldX, blockposoldY, blockposoldZ)];
+                if (dir != 0)
+                {
+                    blockposX = blockposoldX;
+                    blockposY = blockposoldY;
+                    blockposZ = blockposoldZ;
+                }
+                activematerial = railstart + (dir | DirectionUtils.ToRailDirectionFlags(dirnew));
+                //Console.WriteLine(blockposold);
+                //Console.WriteLine(xfract + ":" + zfract + ":" + activematerial + ":" + dirnew);
+            }
+
+            mode = right ? Packet_BlockSetModeEnum.Create : Packet_BlockSetModeEnum.Destroy;
+            {
+                if (IsAnyPlayerInPos(x, y, z) || activematerial == 151)
+                {
+                    return;
+                }
+                Vector3IntRef v = Vector3IntRef.Create(x, y, z);
+                Vector3IntRef oldfillstart = fillstart;
+                Vector3IntRef oldfillend = fillend;
+                if (mode == Packet_BlockSetModeEnum.Create)
+                {
+                    if (blocktypes[activematerial].IsTool)
+                    {
+                        OnPickUseWithTool(blockposX, blockposY, blockposZ);
+                        return;
+                    }
+
+                    //if (GameDataManicDigger.IsDoorTile(activematerial))
+                    //{
+                    //    if (z + 1 == d_Map.MapSizeZ || z == 0) return;
+                    //}
+
+                    if (activematerial == d_Data.BlockIdCuboid())
+                    {
+                        ClearFillArea();
+
+                        if (fillstart != null)
+                        {
+                            Vector3IntRef f = fillstart;
+                            if (!IsFillBlock(GetBlock(f.X, f.Y, f.Z)))
+                            {
+                                fillarea.Set(f.X, f.Y, f.Z, GetBlock(f.X, f.Y, f.Z));
+                            }
+                            SetBlock(f.X, f.Y, f.Z, d_Data.BlockIdFillStart());
+
+
+                            FillFill(v, fillstart);
+                        }
+                        if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
+                        {
+                            fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
+                        }
+                        SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdCuboid());
+                        fillend = v;
+                        RedrawBlock(v.X, v.Y, v.Z);
+                        return;
+                    }
+                    if (activematerial == d_Data.BlockIdFillStart())
+                    {
+                        ClearFillArea();
+                        if (!IsFillBlock(GetBlock(v.X, v.Y, v.Z)))
+                        {
+                            fillarea.Set(v.X, v.Y, v.Z, GetBlock(v.X, v.Y, v.Z));
+                        }
+                        SetBlock(v.X, v.Y, v.Z, d_Data.BlockIdFillStart());
+                        fillstart = v;
+                        fillend = null;
+                        RedrawBlock(v.X, v.Y, v.Z);
+                        return;
+                    }
+                    if (fillarea.ContainsKey(v.X, v.Y, v.Z))// && fillarea[v])
+                    {
+                        SendFillArea(fillstart.X, fillstart.Y, fillstart.Z, fillend.X, fillend.Y, fillend.Z, activematerial);
+                        ClearFillArea();
+                        fillstart = null;
+                        fillend = null;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (blocktypes[activematerial].IsTool)
+                    {
+                        OnPickUseWithTool(blockposX, blockposY, blockposoldZ);
+                        return;
+                    }
+                    //delete fill start
+                    if (fillstart != null && fillstart.X == v.X && fillstart.Y == v.Y && fillstart.Z == v.Z)
+                    {
+                        ClearFillArea();
+                        fillstart = null;
+                        fillend = null;
+                        return;
+                    }
+                    //delete fill end
+                    if (fillend != null && fillend.X == v.X && fillend.Y == v.Y && fillend.Z == v.Z)
+                    {
+                        ClearFillArea();
+                        fillend = null;
+                        return;
+                    }
+                }
+                if (mode == Packet_BlockSetModeEnum.Create && activematerial == d_Data.BlockIdMinecart())
+                {
+                    //CommandRailVehicleBuild cmd2 = new CommandRailVehicleBuild();
+                    //cmd2.x = (short)x;
+                    //cmd2.y = (short)y;
+                    //cmd2.z = (short)z;
+                    //TrySendCommand(MakeCommand(CommandId.RailVehicleBuild, cmd2));
+                    return;
+                }
+                //if (TrySendCommand(MakeCommand(CommandId.Build, cmd)))
+            }
+        }
+        SendSetBlockAndUpdateSpeculative(activematerial, x, y, z, mode);
     }
 
     internal void Set3dProjection1(float zfar_)
@@ -7804,11 +7848,6 @@
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
 
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
-        //TOREDO FRANK
-        //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
-        //{
-        //    d_Inventory.RightHand[ActiveMaterial] = new Packet_Item();
-        //}
         int activeblock = 0;
         if (activeitem != null) { activeblock = activeitem.BlockId; }
         if (activeblock != PreviousActiveMaterialBlock)
@@ -9028,7 +9067,9 @@
                 }
                 else
                 {
+                    //TODO check guns avaibility
                     OrthoMode(Width(), Height());
+                    //get current handimage (even if its a gun)
                     if (lasthandimage != img)
                     {
                         lasthandimage = img;
@@ -9041,27 +9082,30 @@
                         }
                     }
 
-                    GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
-                    GLRotate(toolRotation, 0, 0, 90);
-
-                    if (guistate == GuiState.Normal && mouseLeft)
+                    //Frank : rotating the handtools here!
+                    //if activematerial is a tool, stick or bucket
+                    if (d_Inventory.RightHand[ActiveMaterial].BlockId >= 154 && d_Inventory.RightHand[ActiveMaterial].BlockId <= 177)
                     {
-                        if (up)
-                            toolRotation += 4;
+                        GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
+                        GLRotate(toolRotation, 0, 0, 90);
+                        if (guistate == GuiState.Normal && mouseLeft)
+                        {
+                            if (up)
+                                toolRotation += 4;
+                            else
+                                toolRotation -= 4;
+
+                            if (toolRotation < -170)
+                                up = true;
+                            else if (toolRotation > -125)
+                                up = false;
+                        }
                         else
-                            toolRotation -= 4;
-
-                        if (toolRotation < -170)
-                            up = true;
-                        else if (toolRotation > -125)
+                        {
+                            toolRotation = -125;
                             up = false;
+                        }
                     }
-                    else
-                    {
-                        toolRotation = -125;
-                        up = false;
-                    }
-
                     Draw2dTexture(handTexture, 0, 0, 750 / 2, 750 / 2, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
                     PerspectiveMode();
                 }
