@@ -1,6 +1,8 @@
 ﻿public class Game
 {
+    //Added by someone?...
     internal bool IsRunning;
+
     public Game()
     {
         pixelsCurrentLenght = 64 * 32 * 3;
@@ -406,8 +408,11 @@
     {
         Chunk chunk = GetChunk(x, y, z);
         int pos = Index3d(x % chunksize, y % chunksize, z % chunksize, chunksize, chunksize);
+        //Frank + JRC : if block is stick, tool, bucket, armor....
+        //dont place it
+        //Note: must to the same verification on the server side too.
         if (tileType >= 154 && tileType <= 177 || tileType >= 63 && tileType <= 78)
-            return; // JRC
+            return;
         SetBlockInChunk(chunk, pos, tileType);
     }
 
@@ -1377,7 +1382,9 @@
     internal bool AllowFreemove;
     internal bool enableCameraControl;
 
+    //Added by someone...
     internal bool CREATIVE;
+    //Frank : TOREDO; take from other branch OR DELETE!
     public void ChangeGameMode(bool creative)
     {
         CREATIVE = creative;
@@ -1396,8 +1403,8 @@
         }
     }
 
-
-
+    //Frank : edited: the user cannot respawn manually if he press the good key.
+    // well in survival.
     internal void Respawn()
     {
         if (AllowFreemove)
@@ -7815,11 +7822,6 @@
         platform.AudioUpdateListener(EyesPosX(), EyesPosY(), EyesPosZ(), orientationX, orientationY, orientationZ);
 
         Packet_Item activeitem = d_Inventory.RightHand[ActiveMaterial];
-        //TOREDO FRANK
-        //if (activeitem.BlockId >= 155 && activeitem.BlockId <= 174 && activeitem.Durability <= 1)
-        //{
-        //    d_Inventory.RightHand[ActiveMaterial] = new Packet_Item();
-        //}
         int activeblock = 0;
         if (activeitem != null) { activeblock = activeitem.BlockId; }
         if (activeblock != PreviousActiveMaterialBlock)
@@ -9039,7 +9041,9 @@
                 }
                 else
                 {
+                    //TODO check guns avaibility
                     OrthoMode(Width(), Height());
+                    //get current handimage (even if its a gun)
                     if (lasthandimage != img)
                     {
                         lasthandimage = img;
@@ -9052,27 +9056,30 @@
                         }
                     }
 
-                    GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
-                    GLRotate(toolRotation, 0, 0, 90);
-
-                    if (guistate == GuiState.Normal && mouseLeft)
+                    //Frank : rotating the handtools here!
+                    //if activematerial is a tool, stick or bucket
+                    if (d_Inventory.RightHand[ActiveMaterial].BlockId >= 154 && d_Inventory.RightHand[ActiveMaterial].BlockId <= 177)
                     {
-                        if (up)
-                            toolRotation += 4;
+                        GLTranslate(Width() * 2 / 3, Height() * 11 / 10, 0);
+                        GLRotate(toolRotation, 0, 0, 90);
+                        if (guistate == GuiState.Normal && mouseLeft)
+                        {
+                            if (up)
+                                toolRotation += 4;
+                            else
+                                toolRotation -= 4;
+
+                            if (toolRotation < -170)
+                                up = true;
+                            else if (toolRotation > -125)
+                                up = false;
+                        }
                         else
-                            toolRotation -= 4;
-
-                        if (toolRotation < -170)
-                            up = true;
-                        else if (toolRotation > -125)
+                        {
+                            toolRotation = -125;
                             up = false;
+                        }
                     }
-                    else
-                    {
-                        toolRotation = -125;
-                        up = false;
-                    }
-
                     Draw2dTexture(handTexture, 0, 0, 750 / 2, 750 / 2, null, 0, Game.ColorFromArgb(255, 255, 255, 255), false);
                     PerspectiveMode();
                 }

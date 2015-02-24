@@ -1186,7 +1186,6 @@ namespace ManicDigger.Mods
                 Durability = 60
             });
 
-
             m.SetBlockType(160, "Silver axe", new BlockType()
             {
                 AllTextures = "Grid_Silver_Axe",
@@ -1237,7 +1236,6 @@ namespace ManicDigger.Mods
                 WalkSpeedWhenUsed = 1f,
                 Durability = 60
             });
-
 
             //m.SetBlockType(165, "Silver hoe", new BlockType()
             //{

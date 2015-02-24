@@ -460,18 +460,21 @@
     TextTexture[] textTextures;
     int textTexturesCount;
 
+    //Frank: total redid the menu cuz creating a new world before wasnt really easy to understand...
     internal void StartSingleplayer()
     {
         screen = new ScreenSingleplayer();
         screen.menu = this;
     }
 
+    //Frank : menu to enter the game name...
     internal void StartWriteWorldName()
     {
         screen = new ScreenWriteWorldName();
         screen.menu = this;
     }
 
+    //Frank : menu to select creative or survival in SinglePlayer
     internal void StartSelectGamemode()
     {
         screen = new ScreenGameMode();
@@ -1012,6 +1015,7 @@ public class ScreenMain : Screen
     }
 }
 
+//Frank : redid...
 public class ScreenSingleplayer : Screen
 {
     MenuWidget newWorld;
@@ -1152,6 +1156,7 @@ public class ScreenSingleplayer : Screen
     }
 }
 
+//Frank : menu to enter new game name
 public class ScreenWriteWorldName : Screen
 {
     MenuWidget back;
@@ -1258,6 +1263,7 @@ public class ScreenWriteWorldName : Screen
     }
 }
 
+//Frank : menu to select gamemode after the ScreenWriteWorldName...
 public class ScreenGameMode : Screen
 {
     MenuWidget back;
