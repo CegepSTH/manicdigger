@@ -1662,6 +1662,7 @@ public class ScreenGame : Screen
         singleplayerSavePath = singleplayerSavePath_;
         connectData = connectData_;
 
+        game.isNewGame = newgame;
         game.platform = platform;
         game.issingleplayer = singleplayer;
         game.assets = menu.assets;
