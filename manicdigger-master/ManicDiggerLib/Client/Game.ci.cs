@@ -2269,6 +2269,7 @@
     {
         if (!AllowFreemove)
         {
+            //The First Packet is send to initialize the armor of the player, oterwise, the fist it would cause no damage.
             Packet_Client pArmor1 = new Packet_Client();
             {
                 pArmor1.Id = Packet_ClientIdEnum.Armor;
@@ -2329,7 +2330,7 @@
 
             }
             SendPacketClient(p1);
-            if (damageSource != Packet_DeathReasonEnum.Drowning)
+            if (damageSource != Packet_DeathReasonEnum.Drowning) //Armor won't protect you from drowning
             {
                 Packet_Client p2 = new Packet_Client();
                 {
@@ -7524,7 +7525,7 @@
                         DrawAim();
                     }
                     d_HudInventory.DrawMaterialSelector();
-                    //added by Alex
+                    //added by SwampGerman: Calculate the armor of the player (should be donne onequip)
                     if (!AllowFreemove)
                     {
                         int armor = 0;
