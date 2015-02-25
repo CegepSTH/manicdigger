@@ -2528,8 +2528,10 @@ namespace ManicDiggerServer
                                 nbArmorPiece += (gauntlet != null) ? (gauntlet.Durability > 0) ? 1 : 0 : 0;
                                 nbArmorPiece += (mainArmor != null) ? (mainArmor.Durability > 0) ? 1 : 0 : 0;
 
-                                damage = (int)((float)(stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece);
+                                damage = (int)((float)(stats.CurrentArmor - packet.Armor.CurrentArmor) / nbArmorPiece); //Calculate de damage to substract to the pieces of armor
                                 damage = (damage >= 1) ? damage : 1;
+
+                                
 
                                 if (helmet != null)
                                 {
