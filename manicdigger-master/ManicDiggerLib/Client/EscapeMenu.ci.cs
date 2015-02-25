@@ -75,7 +75,7 @@
             game.ExitToMainMenu();
             //Frank : Thread sleep to let the server save! otherwhise the thread is killed before...
             if (game.issingleplayer)
-                game.platform.ThreadSleep(2700);
+                game.platform.ThreadSleep(4000);
             game.platform.Exit();
         }
     }
