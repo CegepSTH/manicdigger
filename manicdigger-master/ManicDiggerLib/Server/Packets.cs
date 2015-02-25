@@ -34,6 +34,6 @@ namespace GameModeFortress
         [ProtoMember(5, IsRequired = false)]
         public int CurrentArmor = 0;
         [ProtoMember(6, IsRequired = false)]
-        public int MaxArmor = 1819;
+        public int MaxArmor = 910;
     }
 }

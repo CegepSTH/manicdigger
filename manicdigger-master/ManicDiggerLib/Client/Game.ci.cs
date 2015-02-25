@@ -2,9 +2,12 @@
 {
     //Added by someone?...
     internal bool IsRunning;
+    internal bool isNewGame;
 
     public Game()
     {
+        isNewGame = false;
+
         pixelsCurrentLenght = 64 * 32 * 3;
         CREATIVE = true;
         //FRANK - Const for rotation of the tools in the hand
@@ -4675,15 +4678,16 @@
         materialSlots = d_Data.DefaultMaterialSlots();
         GuiStateBackToGame();
 
-        Packet_Client p = new Packet_Client();
+        if (isNewGame)
         {
-            p.Id = Packet_ClientIdEnum.SpecialKey;
-            p.SpecialKey_ = new Packet_ClientSpecialKey();
-            p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+            Packet_Client p = new Packet_Client();
+            {
+                p.Id = Packet_ClientIdEnum.SpecialKey;
+                p.SpecialKey_ = new Packet_ClientSpecialKey();
+                p.SpecialKey_.Key_ = Packet_SpecialKeyEnum.Respawn;
+            }
+            SendPacketClient(p);
         }
-        SendPacketClient(p);
-
-
 
         Packet_Client p1 = new Packet_Client();
         p1.Id = Packet_ClientIdEnum.IsCreative;

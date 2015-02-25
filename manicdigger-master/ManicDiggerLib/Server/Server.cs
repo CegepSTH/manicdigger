@@ -1999,7 +1999,7 @@ namespace ManicDiggerServer
             p.CurrentOxygen = 10;
             p.MaxOxygen = 10;
             p.CurrentArmor = 0;
-            p.MaxArmor = 1819;
+            p.MaxArmor = 910;
             return p;
         }
         public Vector3i PlayerBlockPosition(ClientOnServer c)
