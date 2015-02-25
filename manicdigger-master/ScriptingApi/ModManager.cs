@@ -1145,7 +1145,12 @@ namespace ManicDigger
             AddCraftRecipe(ings, new CraftIngredient(74, 1, 4, 2),92);
             #endregion
 
-
+            //Iron bucket!
+            ings.Clear();
+            ings.Add(new CraftIngredient(15, 1, 0, 2));
+            ings.Add(new CraftIngredient(15, 1, 1, 3));
+            ings.Add(new CraftIngredient(15, 1, 2, 2));
+            AddCraftRecipe(ings, new CraftIngredient(177, 1, 4, 2), 0);
         }
 
         //Add a recipe to the game
