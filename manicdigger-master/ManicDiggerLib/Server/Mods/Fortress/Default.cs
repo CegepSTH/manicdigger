@@ -1479,74 +1479,7 @@ namespace ManicDigger.Mods
             m.AddToCreativeInventory("LavaBucket");
             m.AddToCreativeInventory("WBucket");
     
-        
-            
-            m.AddToStartInventory("Torch", 6);
-            m.AddToStartInventory("Source", 6);
-            m.AddToStartInventory("EmptyBucket", 6);
-            m.AddToStartInventory("WBucket", 6);
-            m.AddToStartInventory("LavaBucket", 6);
-            //m.AddToStartInventory("Crops1", 1);
-            //m.AddToStartInventory("CraftingTable", 6);
-            //m.AddToStartInventory("GoldCoin", 2);
-            //m.AddToStartInventory("GoldBar", 5);
-            //m.AddToStartInventory("SilverCoin", 1);
-            //m.AddToStartInventory("Compass", 1);
-            m.AddToStartInventory("Stick", 16);
-
-            m.AddToStartInventory("Wooden pickaxe", 1);
-            m.AddToStartInventory("Stone pickaxe", 1);
-            m.AddToStartInventory("Iron pickaxe", 1);
-            m.AddToStartInventory("Golden pickaxe", 1);
-            m.AddToStartInventory("Silver pickaxe", 1);
-            
-            m.AddToStartInventory("Wooden axe", 1);
-            m.AddToStartInventory("Stone axe", 1);
-            m.AddToStartInventory("Iron axe", 1);
-            m.AddToStartInventory("Golden axe", 1);
-            m.AddToStartInventory("Silver axe", 1);
-
-            m.AddToStartInventory("WoodHelm", 1);
-            m.AddToStartInventory("IronHelm", 1);
-            m.AddToStartInventory("SilverHelm", 1);
-            m.AddToStartInventory("GoldHelm", 1);
-
-            m.AddToStartInventory("WoodChestArmor", 1);
-            m.AddToStartInventory("IronChestArmor", 1);
-            m.AddToStartInventory("SilverChestArmor", 1);
-            m.AddToStartInventory("GoldChestArmor", 1);
-
-            m.AddToStartInventory("WoodGlove", 1);
-            m.AddToStartInventory("IronGlove", 1);
-            m.AddToStartInventory("SilverGlove", 1);
-            m.AddToStartInventory("GoldGlove", 1);
-
-            m.AddToStartInventory("WoodBoots", 1);
-            m.AddToStartInventory("IronBoots", 1);
-            m.AddToStartInventory("SilverBoots", 1);
-            m.AddToStartInventory("GoldBoots", 1);
-
-            //m.AddToStartInventory("WoodPants", 1);
-            //m.AddToStartInventory("IronPants", 1);
-            //m.AddToStartInventory("SilverPants", 1);
-            //m.AddToStartInventory("GoldPants", 1);
-
-
-
-            //m.AddToStartInventory("Wooden hoe", 1);
-            //m.AddToStartInventory("Stone hoe", 1);
-            //m.AddToStartInventory("Iron hoe", 1);
-            //m.AddToStartInventory("Golden hoe", 1);
-            //m.AddToStartInventory("Silver hoe", 1);
-            
-            m.AddToStartInventory("Wooden shovel", 1);
-            m.AddToStartInventory("Stone shovel", 1);
-            m.AddToStartInventory("Iron shovel", 1);
-            m.AddToStartInventory("Golden shovel", 1);
-            m.AddToStartInventory("Silver shovel", 1);
-
-            m.AddToStartInventory("Water", 1000);
-           
+            m.AddToStartInventory("Torch", 12);
 
             m.AddCraftingRecipe("Cobblestone", 1, "Stone", 2);
             m.AddCraftingRecipe("Stone", 2, "Cobblestone", 1);
